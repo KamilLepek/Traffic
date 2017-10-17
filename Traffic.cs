@@ -13,7 +13,7 @@ namespace Traffic
 
         static void Main(string[] args)
         {
-            //ponizej syf, ktory służy tylko do przetestowania gównaa
+            //usuniety brzydki komentarz
             var rysiu = new VehicleGenerator();
             var cars = rysiu.generateRandomCars(10);
             foreach(var car in cars)
