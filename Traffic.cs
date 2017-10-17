@@ -14,11 +14,11 @@ namespace Traffic
         static void Main(string[] args)
         {
             //ponizej syf, ktory służy tylko do przetestowania gównaa
-            VehicleGenerator zbysiu = new VehicleGenerator();
-            List<Car> cars = zbysiu.generateRandomCars(10);
-            foreach(Car car in cars)
+            var rysiu = new VehicleGenerator();
+            var cars = rysiu.generateRandomCars(10);
+            foreach(var car in cars)
             {
-                car.printStatistics();
+                car.PrintStatistics();
             }
             Console.ReadKey();
         }
