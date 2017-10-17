@@ -14,9 +14,9 @@ namespace Traffic
         static void Main(string[] args)
         {
             //ponizej syf, ktory służy tylko do przetestowania gównaa
-            VehicleGenerator zbysiu = new VehicleGenerator();
-            List<Car> cars = zbysiu.generateRandomCars(10);
-            foreach(Car car in cars)
+            var zbysiu = new VehicleGenerator();
+            var cars = zbysiu.generateRandomCars(10);
+            foreach(var car in cars)
             {
                 car.printStatistics();
             }

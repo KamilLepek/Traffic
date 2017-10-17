@@ -18,7 +18,7 @@ namespace Traffic.Vehicles
 
         public override void printStatistics()
         {
-            base.printStatistics();
+            base.PrintStatistics();
             Console.WriteLine("Numer Rejestracyjny: {0}", registrationNumber);
             Console.WriteLine("------------------------");
         }

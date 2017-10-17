@@ -17,7 +17,7 @@ namespace Traffic.Utilities
             this.gen = new Random();
         }
 
-        private string generateRandomRegistrationPlate()
+        private string GenerateRandomRegistrationPlate()
         {
             int voivodeship = this.gen.Next(1, 17);
             string registration = string.Empty;
@@ -87,12 +87,13 @@ namespace Traffic.Utilities
             return registration;
         }
 
-        public List<Car> generateRandomCars(int amount)
+        public IEnumerable<Car> generateRandomCars(int amount)
         {
-            List<Car> list = new List<Car>();
+            var list = new List<Car>();
             for (int i = 0; i < amount; i++)
             {
-                list.Add(new Car((float)this.gen.NextDouble() * 200, (float)this.gen.NextDouble() * 500, (float)this.gen.NextDouble() * 50, this.generateRandomRegistrationPlate()));
+                list.Add(new Car((float)this.gen.NextDouble() * 200, (float)this.gen.NextDouble() * 500, 
+                    (float)this.gen.NextDouble() * 50, this.GenerateRandomRegistrationPlate()));
             }
             return list;
         }

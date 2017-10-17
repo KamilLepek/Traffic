@@ -34,7 +34,7 @@ namespace Traffic
             this.distanceHeld = dist;
         }
 
-        public virtual void printStatistics()
+        public virtual void PrintStatistics()
         {
             Console.WriteLine("------------------------");
             Console.WriteLine("Predkosc maksymalna: {0} km/h", maximumVelocity);
