@@ -14,8 +14,8 @@ namespace Traffic
         static void Main(string[] args)
         {
             //ponizej syf, ktory służy tylko do przetestowania gównaa
-            var zbysiu = new VehicleGenerator();
-            var cars = zbysiu.generateRandomCars(10);
+            var rysiu = new VehicleGenerator();
+            var cars = rysiu.generateRandomCars(10);
             foreach(var car in cars)
             {
                 car.printStatistics();
