@@ -18,7 +18,7 @@ namespace Traffic
             var cars = rysiu.generateRandomCars(10);
             foreach(var car in cars)
             {
-                car.printStatistics();
+                car.PrintStatistics();
             }
             Console.ReadKey();
         }
