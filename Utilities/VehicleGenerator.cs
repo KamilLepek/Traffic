@@ -4,98 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Traffic.Vehicles;
+using Traffic.Utilities;
+using Traffic.World;
+using Traffic.World.Edges;
+using Traffic.World.Vertices;
 
 namespace Traffic.Utilities
 {
     public class VehicleGenerator
     {
 
-        private Random gen;
+        public Map Map { get; private set; }
 
-        public VehicleGenerator()
+        public VehicleGenerator(Map m)
         {
-            this.gen = new Random();
+            this.Map = m;
         }
 
-        private string GenerateRandomRegistrationPlate()
-        {
-            int voivodeship = this.gen.Next(1, 17);
-            string registration = string.Empty;
-            switch(voivodeship)
-            {
-                case 1:
-                    registration += 'G';
-                    break;
-                case 2:
-                    registration += 'Z';
-                    break;
-                case 3:
-                    registration += 'N';
-                    break;
-                case 4:
-                    registration += 'B';
-                    break;
-                case 5:
-                    registration += 'C';
-                    break;
-                case 6:
-                    registration += 'P';
-                    break;
-                case 7:
-                    registration += 'F';
-                    break;
-                case 8:
-                    registration += 'D';
-                    break;
-                case 9:
-                    registration += 'O';
-                    break;
-                case 10:
-                    registration += 'S';
-                    break;
-                case 11:
-                    registration += 'E';
-                    break;
-                case 12:
-                    registration += 'T';
-                    break;
-                case 13:
-                    registration += 'K';
-                    break;
-                case 14:
-                    registration += 'R';
-                    break;
-                case 15:
-                    registration += 'L';
-                    break;
-                case 16:
-                    registration += 'W';
-                    break;
-                default:
-                    return "Error";
-            }
-            registration += (char)('A' + this.gen.Next(0, 26));
-            registration += (char)('A' + this.gen.Next(0, 26));
-            registration += ' ';
-            for (int i = 0; i < 3; i++)
-            {
-                if (this.gen.Next(10) % 2 == 1)
-                    registration += (char)(48 + this.gen.Next(0, 10));
-                else
-                    registration += (char)('A' + this.gen.Next(0, 26));
-            }
-            return registration;
-        }
-
-        public IEnumerable<Car> generateRandomCars(int amount)
+        public List<Car> GenerateRandomCars(int amount)
         {
             var list = new List<Car>();
             for (int i = 0; i < amount; i++)
             {
-                list.Add(new Car((float)this.gen.NextDouble() * 200, (float)this.gen.NextDouble() * 500, 
-                    (float)this.gen.NextDouble() * 50, this.GenerateRandomRegistrationPlate()));
+                list.Add(new Car(RandomGenerator.Velocity() , RandomGenerator.ReactionTime(), 
+                        RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(), this.GenerateRandomSpawnPoint() ));
             }
             return list;
+        }
+
+        /// <summary>
+        /// W domysle chciałem tu wygenerować losowy spawn point, ale już nie w układzie tym naszym szachowym row/column, tylko normalnie współrzędne
+        /// </summary>
+        /// <returns>PÓKI CO ZWRACA NA STAŁE 0</returns>
+        private Point GenerateRandomSpawnPoint()
+        {
+            return new Point(0, 0);
+            var startingPoint = this.Map.SpawnPoints[RandomGenerator.Int(this.Map.SpawnPoints.Count)];
+            switch(startingPoint.Orientation)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    throw new Exception("Co sie stao");
+            }
         }
     }
 }

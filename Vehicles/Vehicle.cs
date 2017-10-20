@@ -4,42 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Traffic.Utilities;
 
-namespace Traffic
+namespace Traffic.Vehicles
 {
     public abstract class Vehicle
     {
+        /// <summary>
+        /// coordinates of vehicle
+        /// </summary>
+        public Point Position { get; set; }
 
         /// <summary>
         /// maximum velocity in km/h
         /// </summary>
-        public float maximumVelocity { get; private set; }
+        protected float MaximumVelocity { get; private set; }
 
         /// <summary>
         /// reaction time in ms
         /// </summary>
-        protected float reactionTime { get; private set; }
+        protected float ReactionTime { get; private set; }
 
         /// <summary>
-        /// distance held in m
+        /// minimum distance held in m
         /// </summary>
-        protected float distanceHeld { get; private set; }
+        protected float DistanceHeld { get; private set; }
 
         //TODO: spawn point? destination point?
 
-        protected Vehicle(float v, float t, float dist)
+        protected Vehicle(float v, float t, float dist, Point spawnPoint)
         {
-            this.maximumVelocity = v;
-            this.reactionTime = t;
-            this.distanceHeld = dist;
+            this.Position = spawnPoint;
+            this.MaximumVelocity = v;
+            this.ReactionTime = t;
+            this.DistanceHeld = dist;
         }
 
         public virtual void PrintStatistics()
         {
             Console.WriteLine("------------------------");
-            Console.WriteLine("Predkosc maksymalna: {0} km/h", maximumVelocity);
-            Console.WriteLine("Czas reakcji: {0} ms", reactionTime);
-            Console.WriteLine("Zachowywana odleglosc: {0} m", distanceHeld);
+            Console.WriteLine("Predkosc maksymalna: {0} km/h", MaximumVelocity);
+            Console.WriteLine("Czas reakcji: {0} ms", ReactionTime);
+            Console.WriteLine("Zachowywana odleglosc: {0} m", DistanceHeld);
         }
     }
 }

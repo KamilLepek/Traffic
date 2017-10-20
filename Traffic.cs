@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Traffic.Vehicles;
 using Traffic.Utilities;
+using Traffic.World;
+using Traffic.Graphics;
 
 namespace Traffic
 {
@@ -13,14 +15,13 @@ namespace Traffic
 
         static void Main(string[] args)
         {
-            //usuniety brzydki komentarz
-            int a = 3;
-            var rysiu = new VehicleGenerator();
-            var cars = rysiu.generateRandomCars(10);
-            foreach(var car in cars)
-            {
-                car.PrintStatistics();
-            }
+            var world = new Map(9, 12);
+
+            var hehe = new ConsolePreview(world);
+
+            var mariuszPudzianPudzianowski = new VehicleGenerator(world);
+            mariuszPudzianPudzianowski.GenerateRandomCars(1);
+
             Console.ReadKey();
         }
     }
