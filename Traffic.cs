@@ -14,6 +14,7 @@ namespace Traffic
         static void Main(string[] args)
         {
             //usuniety brzydki komentarz
+            int a = 3;
             var rysiu = new VehicleGenerator();
             var cars = rysiu.generateRandomCars(10);
             foreach(var car in cars)
