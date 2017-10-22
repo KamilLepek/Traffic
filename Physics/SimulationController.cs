@@ -19,7 +19,7 @@ namespace Traffic.Physics
         public bool IsSpawningAllowed { get; private set; }
 
 
-        public SimulationController(int vert, int horiz, int vehicles)
+        public SimulationController(int horiz, int vert, int vehicles)
         {
             ConsoleLogger.DeleteLogs();
             this.World = new Map(horiz, vert, vehicles);

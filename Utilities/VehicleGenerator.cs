@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Traffic.Vehicles;
 using Traffic.Utilities;
 using Traffic.World;
@@ -39,7 +38,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Respawns vehicles asynchrounusly
+        /// Method to respawn vehicles in order to achieve desired amount of vehicles at any time
         /// </summary>
         public void VehiclesSpawner(List<Vehicle> vehicles, int desiredAmountOfVehicles, int spawnPointsAmount)
         {
