@@ -5,11 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Traffic.Utilities;
+using Traffic.World;
+using Traffic.World.Vertices;
 
 namespace Traffic.Vehicles
 {
     public abstract class Vehicle
     {
+        /// <summary>
+        /// Object the vehicle is on (Spawn/Street/Intersection)
+        /// </summary>
+        public WorldObject Place { get; set; }
+
         /// <summary>
         /// coordinates of vehicle
         /// </summary>
@@ -32,9 +39,10 @@ namespace Traffic.Vehicles
 
         //TODO: spawn point? destination point?
 
-        protected Vehicle(float v, float t, float dist, Point spawnPoint)
+        protected Vehicle(float v, float t, float dist, EndPoint spawnPlace)
         {
-            this.Position = spawnPoint;
+            this.Place = spawnPlace;
+            spawnPlace.IsOccupied = true;
             this.MaximumVelocity = v;
             this.ReactionTime = t;
             this.DistanceHeld = dist;
