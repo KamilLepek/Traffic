@@ -17,7 +17,10 @@ namespace Traffic.Utilities
         //Map constants
         public const float StreetWidth = 10; //m
         public const float StreetLength = 250; //m
-
         public const float IntersectionSize = 10; //m width/height
+
+        public const int TimeSpawnInterval = 2000; //ms
+
+        public const string LogFile = @"logs.txt";
     }
 }

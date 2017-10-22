@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Traffic.Vehicles;
 using Traffic.Utilities;
 using Traffic.World;
 using Traffic.World.Edges;
 using Traffic.World.Vertices;
+using Traffic.Exceptions;
+using System.Threading;
 
 namespace Traffic.Utilities
 {
@@ -21,38 +22,49 @@ namespace Traffic.Utilities
             this.Map = m;
         }
 
-        public List<Car> GenerateRandomCars(int amount)
+        /// <summary>
+        /// Adds randomly generated vehicles to list
+        /// </summary>
+        /// <param name="Vehicles">List that we add to</param>
+        /// <param name="amount">amount of cars to generate</param>
+        public void GenerateRandomVehicles(List<Vehicle> vehicles, int amount)
         {
-            var list = new List<Car>();
             for (int i = 0; i < amount; i++)
             {
-                list.Add(new Car(RandomGenerator.Velocity() , RandomGenerator.ReactionTime(), 
-                        RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(), this.GenerateRandomSpawnPoint() ));
+                //w domyśle tutaj można jeszcze losować typ obiektu jaki będziemy dodawać do listy, np Car/Bicycle/BattlElephant
+                vehicles.Add(new Car(RandomGenerator.Velocity() , RandomGenerator.ReactionTime(), 
+                        RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(), this.GenerateRandomSpawn() ));
             }
-            return list;
         }
 
         /// <summary>
-        /// W domysle chciałem tu wygenerować losowy spawn point, ale już nie w układzie tym naszym szachowym row/column, tylko normalnie współrzędne
+        /// Method to respawn vehicles in order to achieve desired amount of vehicles at any time
         /// </summary>
-        /// <returns>PÓKI CO ZWRACA NA STAŁE 0</returns>
-        private Point GenerateRandomSpawnPoint()
+        public void VehiclesSpawner(List<Vehicle> vehicles, int desiredAmountOfVehicles, int spawnPointsAmount)
         {
-            return new Point(0, 0);
-            var startingPoint = this.Map.SpawnPoints[RandomGenerator.Int(this.Map.SpawnPoints.Count)];
-            switch(startingPoint.Orientation)
-            {
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                default:
-                    throw new Exception("Co sie stao");
-            }
+            if (vehicles.Count == desiredAmountOfVehicles)
+                return;
+            int missing = desiredAmountOfVehicles - vehicles.Count;
+            if (missing > spawnPointsAmount)
+                this.GenerateRandomVehicles(vehicles, spawnPointsAmount);
+            else
+                this.GenerateRandomVehicles(vehicles, missing);
+        }
+
+        /// <summary>
+        /// Returns random EndPoint that is not occupied
+        /// </summary>
+        private EndPoint GenerateRandomSpawn()
+        {
+            List<EndPoint> notOccupied = this.Map.SpawnPoints.Where(item => item.IsOccupied == false).ToList();
+            if (notOccupied.Count == 0)
+                throw new NoUnoccupiedSpawnException("There are no unoccupied spawn points");
+            var startingPoint = notOccupied[RandomGenerator.Int(notOccupied.Count)];
+
+            ConsoleLogger.Log("Respawn r:" + startingPoint.RowNumber + " c:" + startingPoint.ColumnNumber);
+
+            startingPoint.IsOccupied = true;
+            return startingPoint;
         }
     }
 }

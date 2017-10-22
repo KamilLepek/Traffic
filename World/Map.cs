@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Traffic.World.Edges;
 using Traffic.World.Vertices;
 using Traffic.Utilities;
+using Traffic.Vehicles;
+using System.Diagnostics;
 
 namespace Traffic.World
 {
     public class Map
     {
-
+        public List<Vehicle> Vehicles { get; set; }
         public List<EndPoint> SpawnPoints { get; private set; }
         public List<Street> Streets { get; private set; }
         public List<Intersection> Intersections { get; private set; }
@@ -19,17 +21,23 @@ namespace Traffic.World
         public double MapWidth { get; private set; }
         public double MapHeight { get; private set; }
 
+        public int DesiredAmountOfVehicles { get; private set; }
+
+        public Stopwatch sw { get; private set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="a">rows</param>
         /// <param name="b">collumns</param>
-        public Map(int a, int b)
+        public Map(int a, int b, int des)
         {
+            this.sw = new Stopwatch();
+            this.DesiredAmountOfVehicles = des;
             this.Streets = new List<Street>();
             this.SpawnPoints = new List<EndPoint>();
             this.Intersections = new List<Intersection>();
+            this.Vehicles = new List<Vehicle>();
 
             this.MapHeight = (a + 1) * Constants.StreetLength + a * Constants.IntersectionSize;
             this.MapWidth = (b + 1) * Constants.StreetLength + b * Constants.IntersectionSize;

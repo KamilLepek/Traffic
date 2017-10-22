@@ -14,12 +14,15 @@ namespace Traffic.World.Vertices
     public class EndPoint : AbstractVertex
     {
 
+        public bool IsOccupied { get; set; } 
+
         public int Orientation {get; private set;} //0 -góra, 1- prawo, 2-dół, 3-lewo ,można zmienić na enuma prawilniej. Potrzebne do respienia auta w odpowiednim miejscu, pewnie można to lepiej ohandlować bez tego
 
         public Street Street { get; private set; }
 
         public EndPoint(Street street)
         {
+            this.IsOccupied = false;
             this.Street = street;
             this.SetRowAndColumn(street);
         }

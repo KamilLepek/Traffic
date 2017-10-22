@@ -7,6 +7,7 @@ using Traffic.Vehicles;
 using Traffic.Utilities;
 using Traffic.World;
 using Traffic.Graphics;
+using Traffic.Physics;
 
 namespace Traffic
 {
@@ -15,14 +16,15 @@ namespace Traffic
 
         static void Main(string[] args)
         {
-            var world = new Map(9, 12);
+            int desiredNumberOfVehicles = 20;
+            int verticalLines = 5;
+            int horizontalLines = 2;
 
-            var hehe = new ConsolePreview(world);
+            var controller = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
 
-            var mariuszPudzianPudzianowski = new VehicleGenerator(world);
-            mariuszPudzianPudzianowski.GenerateRandomCars(1);
-
-            Console.ReadKey();
+            var temporaryRysowanie = new ConsolePreview(controller.World); // will be changed dramatically in the future
+            
+            controller.HandleSimulation();
         }
     }
 }
