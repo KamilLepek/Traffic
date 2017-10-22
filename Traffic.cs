@@ -16,20 +16,15 @@ namespace Traffic
 
         static void Main(string[] args)
         {
-            ConsoleLogger.DeleteLogs();
-            int desiredNumberOfVehicles = 500;
-            var world = new Map(2, 2, desiredNumberOfVehicles);
-            var hehe = new ConsolePreview(world);
-            int amountOfSpawnPoints = world.SpawnPoints.Count;
-            var spawner = new VehicleGenerator(world);
-            var controller = new Controller(world, spawner);
-            
-            if(desiredNumberOfVehicles > amountOfSpawnPoints)
-                spawner.GenerateRandomVehicles(world.Vehicles, amountOfSpawnPoints);
-            else
-                spawner.GenerateRandomVehicles(world.Vehicles, desiredNumberOfVehicles);
+            int desiredNumberOfVehicles = 90;
+            int verticalLines = 2;
+            int horizontalLines = 2;
 
-            controller.HandleEverything();
+            var controller = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
+
+            var temporaryRysowanie = new ConsolePreview(controller.World); // will be changed dramatically in the future
+            
+            controller.HandleSimulation();
         }
     }
 }

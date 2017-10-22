@@ -22,7 +22,6 @@ namespace Traffic.World
         public double MapHeight { get; private set; }
 
         public int DesiredAmountOfVehicles { get; private set; }
-        public int NumberOfSpawnPoints { get; private set; }
 
         public Stopwatch sw { get; private set; }
 
@@ -45,7 +44,6 @@ namespace Traffic.World
             //liczba ulic będzie a*(b+1)+b*(a+1)
             //skrzyżowań a*b
             //endpointów 2*(a+b)
-            this.NumberOfSpawnPoints = 2 * (a + b);
 
             //pionowe ulice
             for (int i = 0; i < a + 1; i++) 

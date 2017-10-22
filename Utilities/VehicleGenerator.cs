@@ -8,6 +8,7 @@ using Traffic.Utilities;
 using Traffic.World;
 using Traffic.World.Edges;
 using Traffic.World.Vertices;
+using Traffic.Exceptions;
 using System.Threading;
 
 namespace Traffic.Utilities
@@ -58,7 +59,7 @@ namespace Traffic.Utilities
         {
             List<EndPoint> notOccupied = this.Map.SpawnPoints.Where(item => item.IsOccupied == false).ToList();
             if (notOccupied.Count == 0)
-                throw new Exception("There are no unoccupied spawn points");
+                throw new NoUnoccupiedSpawnException("There are no unoccupied spawn points");
             var startingPoint = notOccupied[RandomGenerator.Int(notOccupied.Count)];
 
             ConsoleLogger.Log("Respawn r:" + startingPoint.RowNumber + " c:" + startingPoint.ColumnNumber);
