@@ -16,7 +16,10 @@ namespace Traffic.World.Vertices
 
         public bool IsOccupied { get; set; } 
 
-        public int Orientation {get; private set;} //0 -góra, 1- prawo, 2-dół, 3-lewo ,można zmienić na enuma prawilniej. Potrzebne do respienia auta w odpowiednim miejscu, pewnie można to lepiej ohandlować bez tego
+        /// <summary>
+        /// determines side of the map where the spawn point exist
+        /// </summary>
+        public int Orientation {get; private set;} 
 
         public Street Street { get; private set; }
 
@@ -33,13 +36,13 @@ namespace Traffic.World.Vertices
             {
                 this.ColumnNumber = street.ColumnNumber;
                 this.RowNumber = street.RowNumber == 1 ? 0 : street.RowNumber + 1;
-                this.Orientation = street.RowNumber == 1 ? 0 : 2;
+                this.Orientation = street.RowNumber == 1 ? (int)Constants.Orientation.Top : (int)Constants.Orientation.Bottom;
             }
             else
             {
                 this.RowNumber = street.RowNumber;
                 this.ColumnNumber = street.ColumnNumber == 1 ? 0 : street.ColumnNumber + 1;
-                this.Orientation = street.ColumnNumber == 1 ? 3 : 1;
+                this.Orientation = street.ColumnNumber == 1 ? (int)Constants.Orientation.Left : (int)Constants.Orientation.Right;
             }
         }
     }

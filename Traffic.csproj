@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\NoUnoccupiedSpawnException.cs" />
     <Compile Include="Graphics\ConsolePreview.cs" />
+    <Compile Include="Graphics\GraphicsController.cs" />
     <Compile Include="Physics\SimulationController.cs" />
     <Compile Include="Traffic.cs" />
     <Compile Include="Utilities\ConsoleLogger.cs" />

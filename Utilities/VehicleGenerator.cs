@@ -31,9 +31,14 @@ namespace Traffic.Utilities
         {
             for (int i = 0; i < amount; i++)
             {
+                EndPoint spawnPoint = this.GenerateRandomSpawn();
+                EndPoint finnishPoint = this.GenerateRandomFinnish(spawnPoint);
+                List<int> initialRoute = this.GenerateInitialRoute(spawnPoint, finnishPoint);
+
                 //w domyśle tutaj można jeszcze losować typ obiektu jaki będziemy dodawać do listy, np Car/Bicycle/BattlElephant
-                vehicles.Add(new Car(RandomGenerator.Velocity() , RandomGenerator.ReactionTime(), 
-                        RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(), this.GenerateRandomSpawn() ));
+                vehicles.Add(new Car(RandomGenerator.Velocity(), RandomGenerator.ReactionTime(),
+                        RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(), 
+                        spawnPoint, initialRoute));
             }
         }
 
@@ -65,6 +70,34 @@ namespace Traffic.Utilities
 
             startingPoint.IsOccupied = true;
             return startingPoint;
+        }
+
+        /// <summary>
+        /// Returns random finnish point diffrent than spawn point
+        /// </summary>
+        private EndPoint GenerateRandomFinnish(EndPoint spawnPoint)
+        {
+            int randomIndex = RandomGenerator.Int(this.Map.SpawnPoints.Count);
+            if (this.Map.SpawnPoints[randomIndex] == spawnPoint)
+            {
+                if (randomIndex != 0)
+                    randomIndex--;
+                else
+                    randomIndex++;
+            }
+            return this.Map.SpawnPoints[randomIndex];
+        }
+
+        /// <summary>
+        /// Generates initial route for spawn point to finnish point
+        /// </summary>
+        /// <param name="spawnPoint"></param>
+        /// <param name="finnishPoint"></param>
+        /// <returns>List of decisions</returns>
+        private List<int> GenerateInitialRoute(EndPoint spawnPoint, EndPoint finnishPoint)
+        {
+            // TODO, use Constants.Decision
+            return new List<int>();
         }
     }
 }

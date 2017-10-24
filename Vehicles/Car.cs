@@ -13,9 +13,13 @@ namespace Traffic.Vehicles
 
         public string RegistrationNumber {get; private set;}
 
-        public Car(float v, float t, float dist, string n, EndPoint spawn) : base(v, t, dist, spawn)
+        public Car(float v, float t, float dist, string n, EndPoint spawn, List<int> initialRoute) : 
+            base(v, t, dist, spawn, initialRoute)
         {
+            this.VehicleLenght = Constants.CarLenght;
+            this.VehicleWidth = Constants.CarWidth;
             this.RegistrationNumber = n;
+            this.SetInitialPositionAndVelocityVector(spawn, Constants.CarLenght, Constants.CarWidth);
         }
 
         public override void PrintStatistics()
