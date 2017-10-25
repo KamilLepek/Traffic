@@ -25,7 +25,8 @@ namespace Traffic.Utilities
         /// </summary>
         public static float Velocity()
         {
-            return ((float)rnd.NextDouble()) * Constants.MaximumVelocity;
+            // to preserve that maximum velocity is not lower than initial velocity
+            return ((float)rnd.NextDouble()) * (Constants.MaximumVelocity - Constants.InitialVelocity) + Constants.InitialVelocity;
         }
 
         /// <summary>

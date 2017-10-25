@@ -16,14 +16,13 @@ namespace Traffic
 
         static void Main(string[] args)
         {
-            int desiredNumberOfVehicles = 20;
-            int verticalLines = 5;
-            int horizontalLines = 2;
+            int verticalLines = 10;
+            int horizontalLines = 7;
+            int desiredNumberOfVehicles = 2 * (verticalLines + horizontalLines); //to jest liczba spawnow, dla wiekszej ilosci rysowanie sie wywali(tzn bardziej nie ma sensu),
+            //bo nie ma poruszania ani kolizji i będą się stackować na tych ulicach,
+            //a jeśli damy powyższą wartość lub mniejszą, to powinno dać się cacy narysować auta po zrespieniu, bo każdy dostanie inny spawn :)
 
             var controller = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
-
-            var temporaryRysowanie = new ConsolePreview(controller.World); // will be changed dramatically in the future
-            
             controller.HandleSimulation();
         }
     }

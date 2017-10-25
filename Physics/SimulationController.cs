@@ -8,6 +8,7 @@ using Traffic.World.Vertices;
 using Traffic.Vehicles;
 using Traffic.Utilities;
 using System.Diagnostics;
+using Traffic.Graphics;
 
 namespace Traffic.Physics
 {
@@ -17,13 +18,14 @@ namespace Traffic.Physics
         public Map World { get; private set; }
         public VehicleGenerator Gen { get; private set; }
         public bool IsSpawningAllowed { get; private set; }
-
+        public GraphicsController Graphics { get; private set; }
 
         public SimulationController(int horiz, int vert, int vehicles)
         {
             ConsoleLogger.DeleteLogs();
             this.World = new Map(horiz, vert, vehicles);
             this.Gen = new VehicleGenerator(this.World);
+            this.Graphics = new GraphicsController(this.World);
         }
 
         /// <summary>
@@ -37,6 +39,8 @@ namespace Traffic.Physics
             {
                 this.HandleSpawnPoints();
                 this.HandleSpawning();
+                this.MoveVehicles();
+                this.Graphics.PrintMap();
             }
         }
 
@@ -66,13 +70,13 @@ namespace Traffic.Physics
         {
             // Mechanism to spawn new vehicles once per Constants.TimeSpawnInterval s
             long time = this.World.sw.ElapsedMilliseconds % Constants.TimeSpawnInterval;
-            if (time < 1 && this.IsSpawningAllowed)
+            if (time < 10 && this.IsSpawningAllowed)
             {
                 ConsoleLogger.Log("Time " + this.World.sw.ElapsedMilliseconds + "ms");
                 this.Gen.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
                 this.IsSpawningAllowed = false;
             }
-            else if (time >= 1 && !this.IsSpawningAllowed)
+            else if (time >= 10 && !this.IsSpawningAllowed)
                 this.IsSpawningAllowed = true;
         }
 
@@ -84,6 +88,14 @@ namespace Traffic.Physics
             ConsoleLogger.Log("Moved vehicle from r:" + vehicle.Place.RowNumber + " c:" + vehicle.Place.ColumnNumber +
                 " to r:" + ((EndPoint)vehicle.Place).Street.RowNumber + " c:" + ((EndPoint)vehicle.Place).Street.ColumnNumber);
             vehicle.Place = ((EndPoint)vehicle.Place).Street;
+        }
+
+        /// <summary>
+        /// Handles vehicles movement
+        /// </summary>
+        private void MoveVehicles()
+        {
+
         }
     }
 }
