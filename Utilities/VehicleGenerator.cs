@@ -32,8 +32,8 @@ namespace Traffic.Utilities
             for (int i = 0; i < amount; i++)
             {
                 EndPoint spawnPoint = this.GenerateRandomSpawn();
-                EndPoint finnishPoint = this.GenerateRandomFinnish(spawnPoint);
-                List<int> initialRoute = this.GenerateInitialRoute(spawnPoint, finnishPoint);
+                EndPoint finishPoint = this.GenerateRandomFinish(spawnPoint);
+                List<Decision> initialRoute = this.GenerateInitialRoute(spawnPoint, finishPoint);
 
                 //w domyśle tutaj można jeszcze losować typ obiektu jaki będziemy dodawać do listy, np Car/Bicycle/BattlElephant
                 vehicles.Add(new Car(RandomGenerator.Velocity(), RandomGenerator.ReactionTime(),
@@ -73,9 +73,9 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random finnish point diffrent than spawn point
+        /// Returns random finish point diffrent than spawn point
         /// </summary>
-        private EndPoint GenerateRandomFinnish(EndPoint spawnPoint)
+        private EndPoint GenerateRandomFinish(EndPoint spawnPoint)
         {
             int randomIndex = RandomGenerator.Int(this.Map.SpawnPoints.Count);
             if (this.Map.SpawnPoints[randomIndex] == spawnPoint)
@@ -89,15 +89,15 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Generates initial route for spawn point to finnish point
+        /// Generates initial route for spawn point to finish point
         /// </summary>
         /// <param name="spawnPoint"></param>
-        /// <param name="finnishPoint"></param>
+        /// <param name="finishPoint"></param>
         /// <returns>List of decisions</returns>
-        private List<int> GenerateInitialRoute(EndPoint spawnPoint, EndPoint finnishPoint)
+        private List<Decision> GenerateInitialRoute(EndPoint spawnPoint, EndPoint finishPoint)
         {
             // TODO, use Constants.Decision
-            return new List<int>();
+            return new List<Decision>();
         }
     }
 }

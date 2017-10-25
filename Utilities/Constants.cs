@@ -29,9 +29,6 @@ namespace Traffic.Utilities
         public const float CarLenght = 5; //m
         public const float CarWidth = 2; //m
 
-        public enum Decision { Forward, Left, Right };
-        public enum Orientation { Top, Right, Bottom, Left };
-
         //Graphics display constants
         public const float CameraMovementSpeed = 10.0f;
         public const float CameraZoomSpeed = 15.0f;
