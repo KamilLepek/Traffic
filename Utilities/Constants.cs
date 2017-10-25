@@ -28,8 +28,5 @@ namespace Traffic.Utilities
         //Car Lenght/width
         public const float CarLenght = 5; //m
         public const float CarWidth = 3; //m
-
-        public enum Decision { Forward, Left, Right };
-        public enum Orientation { Top, Right, Bottom, Left };
     }
 }

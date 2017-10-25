@@ -19,7 +19,7 @@ namespace Traffic.World.Vertices
         /// <summary>
         /// determines side of the map where the spawn point exist
         /// </summary>
-        public int Orientation {get; private set;} 
+        public Orientation Orient {get; private set;} 
 
         public Street Street { get; private set; }
 
@@ -36,13 +36,13 @@ namespace Traffic.World.Vertices
             {
                 this.ColumnNumber = street.ColumnNumber;
                 this.RowNumber = street.RowNumber == 1 ? 0 : street.RowNumber + 1;
-                this.Orientation = street.RowNumber == 1 ? (int)Constants.Orientation.Top : (int)Constants.Orientation.Bottom;
+                this.Orient = street.RowNumber == 1 ? Orientation.Top : Orientation.Bottom;
             }
             else
             {
                 this.RowNumber = street.RowNumber;
                 this.ColumnNumber = street.ColumnNumber == 1 ? 0 : street.ColumnNumber + 1;
-                this.Orientation = street.ColumnNumber == 1 ? (int)Constants.Orientation.Left : (int)Constants.Orientation.Right;
+                this.Orient = street.ColumnNumber == 1 ? Orientation.Left : Orientation.Right;
             }
         }
     }

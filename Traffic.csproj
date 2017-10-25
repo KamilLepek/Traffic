@@ -50,6 +50,7 @@
     <Compile Include="Traffic.cs" />
     <Compile Include="Utilities\ConsoleLogger.cs" />
     <Compile Include="Utilities\Constants.cs" />
+    <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\Point.cs" />
     <Compile Include="Utilities\RandomGenerator.cs" />
     <Compile Include="Utilities\VehicleGenerator.cs" />
