@@ -18,30 +18,31 @@ namespace Traffic.Physics
         public Map World { get; private set; }
         public VehicleGenerator Gen { get; private set; }
         public bool IsSpawningAllowed { get; private set; }
-        public GraphicsController Graphics { get; private set; }
 
         public SimulationController(int horiz, int vert, int vehicles)
         {
             ConsoleLogger.DeleteLogs();
             this.World = new Map(horiz, vert, vehicles);
             this.Gen = new VehicleGenerator(this.World);
-            this.Graphics = new GraphicsController(this.World);
         }
 
         /// <summary>
-        /// Main method of the solution
+        /// Initializes simulation
         /// </summary>
-        public void HandleSimulation()
+        public void InitSimulation()
         {
             this.World.sw.Start();
             this.Gen.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
-            while (true)
-            {
-                this.HandleSpawnPoints();
-                this.HandleSpawning();
-                this.MoveVehicles();
-                this.Graphics.PrintMap();
-            }
+        }
+
+        /// <summary>
+        /// Single simulation tick
+        /// </summary>
+        public void PerformSimulationTick()
+        {
+            this.HandleSpawnPoints();
+            this.HandleSpawning();
+            this.MoveVehicles();
         }
 
         /// <summary>

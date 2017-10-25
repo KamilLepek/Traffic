@@ -18,12 +18,15 @@ namespace Traffic
         {
             int verticalLines = 10;
             int horizontalLines = 7;
-            int desiredNumberOfVehicles = 2 * (verticalLines + horizontalLines); //to jest liczba spawnow, dla wiekszej ilosci rysowanie sie wywali(tzn bardziej nie ma sensu),
+            int desiredNumberOfVehicles = 1; //to jest liczba spawnow, dla wiekszej ilosci rysowanie sie wywali(tzn bardziej nie ma sensu),
             //bo nie ma poruszania ani kolizji i będą się stackować na tych ulicach,
             //a jeśli damy powyższą wartość lub mniejszą, to powinno dać się cacy narysować auta po zrespieniu, bo każdy dostanie inny spawn :)
 
-            var controller = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
-            controller.HandleSimulation();
+            var simulationController = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
+            simulationController.InitSimulation();
+
+            var graphicsController = new GraphicsController(simulationController.World, simulationController.PerformSimulationTick);
+            graphicsController.Run(60.0); // 60 updatów świata na sekundę, tyle fpsów ile wyrobi
         }
     }
 }
