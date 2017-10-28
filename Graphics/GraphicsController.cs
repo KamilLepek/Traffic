@@ -13,11 +13,11 @@ namespace Traffic.Graphics
     public class GraphicsController : GameWindow
     {
 
-        private Map gameWorld;
-        private Action updateWorldHandler;
-        private DrawingService drawingService;
-        private CameraService cameraService;
-        private bool mousePressed = false;
+        private readonly Map gameWorld;
+        private readonly Action updateWorldHandler;
+        private readonly DrawingService drawingService;
+        private readonly CameraService cameraService;
+        private bool mousePressed;
 
         public GraphicsController(Map world, Action updateWorldHandler)
         {
@@ -90,7 +90,7 @@ namespace Traffic.Graphics
         /// <summary>
         /// Moves camera on pressed arrow keys
         /// </summary>
-        protected override void OnKeyDown(OpenTK.Input.KeyboardKeyEventArgs e)
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             base.OnKeyDown(e);
             cameraService.Move(e.Key);
@@ -99,7 +99,7 @@ namespace Traffic.Graphics
         /// <summary>
         /// Zooms in and out on mouse scroll event
         /// </summary>
-        protected override void OnMouseWheel(OpenTK.Input.MouseWheelEventArgs e)
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
             cameraService.Zoom(e.Delta > 0);

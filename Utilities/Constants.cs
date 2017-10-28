@@ -25,7 +25,7 @@
 
         //Graphics display constants
         public const float CameraKeysMovementSpeed = 0.1f;
-        public const float CameraMouseMovementSpeed = 0.01f;
+        public const float CameraMouseMovementSpeed = 0.003f;
         public const float CameraZoomSpeed = 15.0f;
         public const float InitialCameraDistance = -50.0f;
     }
