@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Traffic.World
+﻿namespace Traffic.World
 {
     /// <summary>
     /// Represents an object on the map (Edge or Vertex of our Graph)

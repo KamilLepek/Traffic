@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Traffic.Utilities
+﻿namespace Traffic.Utilities
 {
     public static class Constants
     {
@@ -26,11 +20,13 @@ namespace Traffic.Utilities
         public const string LogFile = @"logs.txt";
 
         //Car Lenght/width
-        public const float CarLenght = 5; //m
+        public const float CarLength = 5; //m
         public const float CarWidth = 2; //m
 
         //Graphics display constants
-        public const float CameraMovementSpeed = 10.0f;
+        public const float CameraKeysMovementSpeed = 0.1f;
+        public const float CameraMouseMovementSpeed = 0.01f;
         public const float CameraZoomSpeed = 15.0f;
+        public const float InitialCameraDistance = -50.0f;
     }
 }

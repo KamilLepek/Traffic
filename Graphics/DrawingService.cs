@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using Traffic.World.Edges;
@@ -52,19 +51,16 @@ namespace Traffic.Graphics
                 GL.Vertex3(streetCoordinates.X, 0.0f, streetCoordinates.Y + Constants.StreetWidth / 2);
             }
             GL.End();
-            //ConsoleLogger.Log(String.Format("Col {0} Row {1} X {2} Z {3}", street.ColumnNumber, street.RowNumber, streetX, streetZ));
         }
 
         public void GlDrawIntersection(Intersection intersection)
         {
-            float intersectionX, intersectionZ;
-
-            intersectionX = (intersection.ColumnNumber / 2) * Constants.StreetLength
-                + ((intersection.ColumnNumber / 2) - 1) * Constants.IntersectionSize
-                + Constants.IntersectionSize / 2;
-            intersectionZ = (intersection.RowNumber / 2) * Constants.StreetLength
-                + ((intersection.RowNumber / 2) - 1) * Constants.IntersectionSize
-                + Constants.IntersectionSize / 2;
+            float intersectionX = (intersection.ColumnNumber / 2) * Constants.StreetLength
+                                  + ((intersection.ColumnNumber / 2) - 1) * Constants.IntersectionSize
+                                  + Constants.IntersectionSize / 2;
+            float intersectionZ = (intersection.RowNumber / 2) * Constants.StreetLength
+                                  + ((intersection.RowNumber / 2) - 1) * Constants.IntersectionSize
+                                  + Constants.IntersectionSize / 2;
 
             GL.Begin(PrimitiveType.Polygon);
             GL.Color3(Color.Gray);
@@ -81,15 +77,13 @@ namespace Traffic.Graphics
             GL.Vertex3(intersectionX + Constants.IntersectionSize / 6, 0.0f, intersectionZ - Constants.IntersectionSize / 2);
             GL.Vertex3(intersectionX - Constants.IntersectionSize / 6, 0.0f, intersectionZ - Constants.IntersectionSize / 2);
             GL.End();
-
-            //ConsoleLogger.Log(String.Format("Col {0} Row {1} X {2} Z {3}", intersection.ColumnNumber, intersection.RowNumber, intersectionX, intersectionZ));
         }
 
         /// <summary>
         /// Returns the angle in degrees by which the direction vector is rotated over vertical axis (Z axis)
         /// </summary>
         /// <param name="direction">Vector to get angle from</param>
-        /// <returns>Angle</returns>
+        /// <returns>Angle in degrees</returns>
         private float GetRotationAngle(Utilities.Point direction)
         {
             if (direction.Y == 0) // we can't compute atan, it's either 90 or 270 degrees
@@ -99,18 +93,18 @@ namespace Traffic.Graphics
                 else
                     return 270.0f;
             }
-            float angle = (float)Math.Atan(direction.X/direction.Y);
+            double angle = Math.Atan(direction.X/direction.Y);
 
             if (direction.Y < 0) // computing tan loses information about signs of X and Y
-            {
-                angle += (float)Math.PI;
-            }
+                angle += Math.PI;
+            if (angle < 0) // Math.Atan returns angle from -90 to 90, need to get rid of negatives
+                angle += 2 * Math.PI;
+
             return (float)(angle*180/Math.PI);
         }
 
         public void GlDrawVehicle(Vehicle vehicle)
         {
-            //TODO NAPRAWIC, RYSUJE W ZLYM MIEJSCU I OBROT NIE DZIALA DOBRZE
             if (vehicle.Place is Street)
             {
                 Vector2 streetCoordinates = this.GetStreetCoordinates((Street)vehicle.Place);
@@ -118,25 +112,37 @@ namespace Traffic.Graphics
 
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.PushMatrix();
-                //GL.Translate(-streetCoordinates.X - vehicle.Position.X, 0, -streetCoordinates.Y - vehicle.Position.Y);
-                //GL.Rotate(-rotationAngle, Vector3.UnitY);
+                GL.Translate(streetCoordinates.X + vehicle.Position.X, 0, streetCoordinates.Y + vehicle.Position.Y);
+                GL.Rotate(rotationAngle, Vector3.UnitY);
                 
                 GL.Begin(PrimitiveType.Quads);
-                GL.Color3(Color.IndianRed);
-                GL.Vertex3(Constants.CarWidth / 2, 0.0f, Constants.CarLenght / 2);
-                GL.Vertex3(Constants.CarWidth / 2, 0.0f, -Constants.CarLenght / 2);
-                GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLenght / 2);
-                GL.Vertex3(-Constants.CarWidth / 2, 0.0f, Constants.CarLenght / 2);
+                GL.Color3(Color.Red);
+                GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
+                GL.Vertex3(Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
+                GL.Color3(Color.Gold);
+                GL.Vertex3(Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
+                GL.Vertex3(-Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
                 GL.End();
 
-                //GL.Translate(streetCoordinates.X + vehicle.Position.X, 0,streetCoordinates.Y + vehicle.Position.Y);
                 GL.PopMatrix();
-
-                //ConsoleLogger.Log(String.Format("DirX {0} DirY {1} PosX {2} PosY {3} rot {4}", vehicle.FrontVector.X,
-                //    vehicle.FrontVector.Y, vehicle.Position.X, vehicle.Position.Y, rotationAngle));
-                //ConsoleLogger.Log(String.Format("streetX {0} streetY {1} PosX {2} PosY {3} rot {4}", streetCoordinates.X,
-                //    streetCoordinates.Y, vehicle.Position.X, vehicle.Position.Y, rotationAngle));
             }
+        }
+
+        /// <summary>
+        /// Draw X and Z axes (Z in openGL correspondes with Y in TrafficSimulation models)
+        /// </summary>
+        public void GlDrawAxes()
+        {
+
+            GL.Begin(PrimitiveType.Lines);
+            GL.Vertex3(0.0f, 0.0f, 0.0f);
+            GL.Vertex3(1.0f, 0.0f, 0.0f);
+            GL.End();
+
+            GL.Begin(PrimitiveType.Lines);
+            GL.Vertex3(0.0f, 0.0f, 0.0f);
+            GL.Vertex3(0.0f, 0.0f, 1.0f);
+            GL.End();
         }
     }
 }

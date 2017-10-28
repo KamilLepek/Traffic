@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Traffic.World;
+﻿using Traffic.World;
 using Traffic.World.Vertices;
 using Traffic.Vehicles;
 using Traffic.Utilities;
-using System.Diagnostics;
-using Traffic.Graphics;
 
 namespace Traffic.Physics
 {

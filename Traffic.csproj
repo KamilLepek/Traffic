@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\NoUnoccupiedSpawnException.cs" />
+    <Compile Include="Graphics\CameraService.cs" />
     <Compile Include="Graphics\ConsolePreview.cs" />
     <Compile Include="Graphics\DrawingService.cs" />
     <Compile Include="Graphics\GraphicsController.cs" />
