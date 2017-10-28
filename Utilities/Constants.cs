@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Traffic.Utilities
+﻿namespace Traffic.Utilities
 {
     public static class Constants
     {
@@ -16,9 +10,9 @@ namespace Traffic.Utilities
         public const float InitialVelocity = 30; //km/h
 
         //Map constants
-        public const float StreetWidth = 10; //m
-        public const float StreetLength = 250; //m
-        public const float IntersectionSize = 10; //m width/height
+        public const float StreetWidth = 5; //m
+        public const float StreetLength = 20; //m
+        public const float IntersectionSize = 15; //m width/height
 
         //Time interval in which we spawn new vehicles if there is a need
         public const int TimeSpawnInterval = 2000; //ms
@@ -26,7 +20,13 @@ namespace Traffic.Utilities
         public const string LogFile = @"logs.txt";
 
         //Car Lenght/width
-        public const float CarLenght = 5; //m
-        public const float CarWidth = 3; //m
+        public const float CarLength = 5; //m
+        public const float CarWidth = 2; //m
+
+        //Graphics display constants
+        public const float CameraKeysMovementSpeed = 0.1f;
+        public const float CameraMouseMovementSpeed = 0.003f;
+        public const float CameraZoomSpeed = 15.0f;
+        public const float InitialCameraDistance = -50.0f;
     }
 }

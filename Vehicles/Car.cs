@@ -16,10 +16,10 @@ namespace Traffic.Vehicles
         public Car(float v, float t, float dist, string n, EndPoint spawn, List<Decision> initialRoute) : 
             base(v, t, dist, spawn, initialRoute)
         {
-            this.VehicleLenght = Constants.CarLenght;
+            this.VehicleLenght = Constants.CarLength;
             this.VehicleWidth = Constants.CarWidth;
             this.RegistrationNumber = n;
-            this.SetInitialPositionAndVelocityVector(spawn, Constants.CarLenght, Constants.CarWidth);
+            this.SetInitialPositionAndVelocityVector(spawn, Constants.CarLength, Constants.CarWidth);
         }
 
         public override void PrintStatistics()

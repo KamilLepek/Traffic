@@ -32,9 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\NoUnoccupiedSpawnException.cs" />
+    <Compile Include="Graphics\CameraService.cs" />
     <Compile Include="Graphics\ConsolePreview.cs" />
+    <Compile Include="Graphics\DrawingService.cs" />
     <Compile Include="Graphics\GraphicsController.cs" />
     <Compile Include="Physics\SimulationController.cs" />
     <Compile Include="Traffic.cs" />
@@ -66,6 +73,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
