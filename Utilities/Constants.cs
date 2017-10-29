@@ -11,13 +11,17 @@
 
         //Map constants
         public const float StreetWidth = 5; //m
-        public const float StreetLength = 20; //m
+        public const float StreetLength = 100; //m
         public const float IntersectionSize = 15; //m width/height
 
         //Time interval in which we spawn new vehicles if there is a need
         public const int TimeSpawnInterval = 2000; //ms
 
+        public const int TicksPerSecond = 60;
+
         public const string LogFile = @"logs.txt";
+
+        public const float MaximumVehicleRadius = 30; //do wyprzedzania
 
         //Car Lenght/width
         public const float CarLength = 5; //m
