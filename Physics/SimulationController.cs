@@ -8,8 +8,10 @@ namespace Traffic.Physics
     public class SimulationController
     {
 
-        public Map World { get; private set; }
-        public VehicleGenerator Gen { get; private set; }
+        public readonly Map World;
+        private readonly VehicleGenerator Gen;
+        private readonly PhysicsController Physics;
+        private readonly DecisionController Decisions;
         public bool IsSpawningAllowed { get; private set; }
 
         public SimulationController(int horiz, int vert, int vehicles)
@@ -17,6 +19,8 @@ namespace Traffic.Physics
             ConsoleLogger.DeleteLogs();
             this.World = new Map(horiz, vert, vehicles);
             this.Gen = new VehicleGenerator(this.World);
+            this.Physics = new PhysicsController(this.World);
+            this.Decisions = new DecisionController(this.World);
         }
 
         /// <summary>
@@ -35,7 +39,8 @@ namespace Traffic.Physics
         {
             this.HandleSpawnPoints();
             this.HandleSpawning();
-            this.MoveVehicles();
+            this.Decisions.HandleDecisions();
+            this.Physics.HandlePhysics();
         }
 
         /// <summary>
@@ -82,14 +87,6 @@ namespace Traffic.Physics
             ConsoleLogger.Log("Moved vehicle from r:" + vehicle.Place.RowNumber + " c:" + vehicle.Place.ColumnNumber +
                 " to r:" + ((EndPoint)vehicle.Place).Street.RowNumber + " c:" + ((EndPoint)vehicle.Place).Street.ColumnNumber);
             vehicle.Place = ((EndPoint)vehicle.Place).Street;
-        }
-
-        /// <summary>
-        /// Handles vehicles movement
-        /// </summary>
-        private void MoveVehicles()
-        {
-
         }
     }
 }
