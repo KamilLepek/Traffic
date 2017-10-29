@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Traffic.World.Vertices
+﻿namespace Traffic.World.Vertices
 {
     /// <summary>
     /// Represents vertex on the Map (intersection or spawn/end point)

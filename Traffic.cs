@@ -8,11 +8,10 @@ namespace Traffic
 
         static void Main(string[] args)
         {
-            int verticalLines = 10;
-            int horizontalLines = 7;
-            int desiredNumberOfVehicles = 2 * (verticalLines + horizontalLines); ; //to jest liczba spawnow, dla wiekszej ilosci rysowanie sie wywali(tzn bardziej nie ma sensu),
-            //bo nie ma poruszania ani kolizji i będą się stackować na tych ulicach,
-            //a jeśli damy powyższą wartość lub mniejszą, to powinno dać się cacy narysować auta po zrespieniu, bo każdy dostanie inny spawn :)
+            int verticalLines = 4;
+            int horizontalLines = 3;
+            int desiredNumberOfVehicles = 2 * (verticalLines + horizontalLines); ; 
+
 
             var simulationController = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
             simulationController.InitSimulation();

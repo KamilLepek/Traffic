@@ -27,6 +27,7 @@ namespace Traffic.World
         /// </summary>
         /// <param name="a">rows</param>
         /// <param name="b">collumns</param>
+        /// <param name="des">desired amount of vehicles</param>
         public Map(int a, int b, int des)
         {
             this.sw = new Stopwatch();

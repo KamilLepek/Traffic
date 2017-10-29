@@ -66,7 +66,7 @@ namespace Traffic.Physics
             long time = this.World.sw.ElapsedMilliseconds % Constants.TimeSpawnInterval;
             if (time < 10 && this.IsSpawningAllowed)
             {
-                ConsoleLogger.Log("Time " + this.World.sw.ElapsedMilliseconds + "ms");
+                //ConsoleLogger.Log("Time " + this.World.sw.ElapsedMilliseconds + "ms");
                 this.Gen.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
                 this.IsSpawningAllowed = false;
             }
