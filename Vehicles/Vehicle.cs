@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using Traffic.Utilities;
 using Traffic.World;
 using Traffic.World.Vertices;
@@ -16,6 +12,11 @@ namespace Traffic.Vehicles
         /// Object the vehicle is on (Spawn/Street/Intersection)
         /// </summary>
         public WorldObject Place { get; set; }
+
+        /// <summary>
+        /// Finish point of the vehicle, will be needed to determine in-flight route optimalization
+        /// </summary>
+        private readonly EndPoint FinnishPoint;
 
         /// <summary>
         /// coordinates of vehicle on World Object
@@ -53,13 +54,14 @@ namespace Traffic.Vehicles
         /// </summary>
         public List<Decision> Route { get; protected set; }
 
-        protected Vehicle(float v, float t, float dist, EndPoint spawnPlace, List<Decision>initialRoute)
+        protected Vehicle(float v, float t, float dist, EndPoint spawnPlace, List<Decision>initialRoute, EndPoint finnishPoint)
         {
             this.Place = spawnPlace;
             spawnPlace.IsOccupied = true;
             this.MaximumVelocity = v;
             this.ReactionTime = t;
             this.DistanceHeld = dist;
+            this.FinnishPoint = finnishPoint;
             this.Route = initialRoute;
         }
 
