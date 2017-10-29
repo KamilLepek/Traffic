@@ -124,8 +124,8 @@ namespace Traffic.Utilities
         {
             if (spawnPoint.Orient == Orientation.Top && finishPoint.Orient == Orientation.Bottom ||
                 spawnPoint.Orient == Orientation.Bottom && finishPoint.Orient == Orientation.Top ||
-                spawnPoint.Orient == Orientation.Left && spawnPoint.Orient == Orientation.Right ||
-                spawnPoint.Orient == Orientation.Right && spawnPoint.Orient == Orientation.Left)
+                spawnPoint.Orient == Orientation.Left && finishPoint.Orient == Orientation.Right ||
+                spawnPoint.Orient == Orientation.Right && finishPoint.Orient == Orientation.Left)
                 return true;
             return false;
         }
