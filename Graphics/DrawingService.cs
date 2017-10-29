@@ -31,6 +31,21 @@ namespace Traffic.Graphics
             return coordinates;
         }
 
+        private Vector2 GetIntersectionCoordinates(Intersection intersection)
+        {
+            var coordinates = new Vector2();
+
+            coordinates.X = (intersection.ColumnNumber / 2) * Constants.StreetLength
+                                  + ((intersection.ColumnNumber / 2) - 1) * Constants.IntersectionSize
+                                  + Constants.IntersectionSize / 2;
+
+            coordinates.Y = (intersection.RowNumber / 2) * Constants.StreetLength
+                                  + ((intersection.RowNumber / 2) - 1) * Constants.IntersectionSize
+                                  + Constants.IntersectionSize / 2;
+
+            return coordinates;
+        }
+
         public void GlDrawStreet(Street street)
         {
             Vector2 streetCoordinates = this.GetStreetCoordinates(street);
@@ -55,27 +70,22 @@ namespace Traffic.Graphics
 
         public void GlDrawIntersection(Intersection intersection)
         {
-            float intersectionX = (intersection.ColumnNumber / 2) * Constants.StreetLength
-                                  + ((intersection.ColumnNumber / 2) - 1) * Constants.IntersectionSize
-                                  + Constants.IntersectionSize / 2;
-            float intersectionZ = (intersection.RowNumber / 2) * Constants.StreetLength
-                                  + ((intersection.RowNumber / 2) - 1) * Constants.IntersectionSize
-                                  + Constants.IntersectionSize / 2;
+            var intersectionCoords = this.GetIntersectionCoordinates(intersection);
 
             GL.Begin(PrimitiveType.Polygon);
             GL.Color3(Color.Gray);
-            GL.Vertex3(intersectionX - Constants.IntersectionSize / 6, 0.0f, intersectionZ - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX - Constants.IntersectionSize / 2, 0.0f, intersectionZ - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX - Constants.IntersectionSize / 2, 0.0f, intersectionZ + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX - Constants.IntersectionSize / 6, 0.0f, intersectionZ + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX - Constants.IntersectionSize / 6, 0.0f, intersectionZ + Constants.IntersectionSize / 2);
-            GL.Vertex3(intersectionX + Constants.IntersectionSize / 6, 0.0f, intersectionZ + Constants.IntersectionSize / 2);
-            GL.Vertex3(intersectionX + Constants.IntersectionSize / 6, 0.0f, intersectionZ + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX + Constants.IntersectionSize / 2, 0.0f, intersectionZ + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX + Constants.IntersectionSize / 2, 0.0f, intersectionZ - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX + Constants.IntersectionSize / 6, 0.0f, intersectionZ - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionX + Constants.IntersectionSize / 6, 0.0f, intersectionZ - Constants.IntersectionSize / 2);
-            GL.Vertex3(intersectionX - Constants.IntersectionSize / 6, 0.0f, intersectionZ - Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 2);
             GL.End();
         }
 
@@ -105,27 +115,32 @@ namespace Traffic.Graphics
 
         public void GlDrawVehicle(Vehicle vehicle)
         {
+            var placeCoordinates = new Vector2();
+
             if (vehicle.Place is Street)
-            {
-                Vector2 streetCoordinates = this.GetStreetCoordinates((Street)vehicle.Place);
-                float rotationAngle = this.GetRotationAngle(vehicle.FrontVector);
+                placeCoordinates = this.GetStreetCoordinates((Street) vehicle.Place);
+            else if (vehicle.Place is Intersection)
+                placeCoordinates = this.GetIntersectionCoordinates((Intersection)vehicle.Place);
+            else 
+                return;
 
-                GL.MatrixMode(MatrixMode.Modelview);
-                GL.PushMatrix();
-                GL.Translate(streetCoordinates.X + vehicle.Position.X, 0, streetCoordinates.Y + vehicle.Position.Y);
-                GL.Rotate(rotationAngle, Vector3.UnitY);
+            float rotationAngle = this.GetRotationAngle(vehicle.FrontVector);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.PushMatrix();
+            GL.Translate(placeCoordinates.X + vehicle.Position.X, 0, placeCoordinates.Y + vehicle.Position.Y);
+            GL.Rotate(rotationAngle, Vector3.UnitY);
                 
-                GL.Begin(PrimitiveType.Quads);
-                GL.Color3(Color.Red);
-                GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
-                GL.Vertex3(Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
-                GL.Color3(Color.Gold);
-                GL.Vertex3(Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
-                GL.Vertex3(-Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
-                GL.End();
+            GL.Begin(PrimitiveType.Quads);
+            GL.Color3(Color.Red);
+            GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
+            GL.Vertex3(Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
+            GL.Color3(Color.Gold);
+            GL.Vertex3(Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
+            GL.Vertex3(-Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
+            GL.End();
 
-                GL.PopMatrix();
-            }
+            GL.PopMatrix();
         }
 
         /// <summary>
