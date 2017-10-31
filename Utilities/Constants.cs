@@ -21,7 +21,7 @@
 
         public const string LogFile = @"logs.txt";
 
-        public const float MaximumVehicleRadius = 30; //do wyprzedzania
+        public const float MaximumVehicleAngle = 30; //to check if we go in a specified direction +- this degrees, make sure it stays below 45 to make sense
 
         //Car Lenght/width
         public const float CarLength = 5; //m

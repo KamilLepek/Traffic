@@ -46,13 +46,13 @@ namespace Traffic.Physics
         private void UpdatePlace(Vehicle veh)
         {
             float angle = veh.FrontVector.GetRotationAngle();
-            if (angle < 30 || angle > 330)
+            if (angle < Constants.MaximumVehicleAngle || angle > 360 - Constants.MaximumVehicleAngle)
                 this.ChangePlaceIfNecessary(veh, Orientation.Bottom);//kontekst: hipotetycznie zmienimy place na ten o 1 nizej w naszym ukladzie, tj porusza się w dół
-            else if (angle > 60 && angle < 120)
+            else if (angle > 90 - Constants.MaximumVehicleAngle && angle < 90 + Constants.MaximumVehicleAngle)
                 this.ChangePlaceIfNecessary(veh, Orientation.Right);
-            else if (angle > 150 && angle < 210)
+            else if (angle > 180 - Constants.MaximumVehicleAngle && angle < 180 + Constants.MaximumVehicleAngle)
                 this.ChangePlaceIfNecessary(veh, Orientation.Top);
-            else if (angle > 240 && angle < 300)
+            else if (angle > 270 - Constants.MaximumVehicleAngle && angle < 270 + Constants.MaximumVehicleAngle)
                 this.ChangePlaceIfNecessary(veh, Orientation.Left);
         }
 
