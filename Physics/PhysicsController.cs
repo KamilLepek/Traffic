@@ -25,7 +25,6 @@ namespace Traffic.Physics
             for (int i = this.World.Vehicles.Count - 1; i >= 0; i--)
             {
                 this.MoveVehicle(this.World.Vehicles[i]);
-                this.UpdatePlace(this.World.Vehicles[i]);
             }
         }
 
@@ -37,6 +36,7 @@ namespace Traffic.Physics
         {
             veh.Position.X += veh.VelocityVector.X * (1f / Constants.TicksPerSecond);
             veh.Position.Y += veh.VelocityVector.Y * (1f / Constants.TicksPerSecond);
+            this.UpdatePlace(veh);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Traffic.Physics
                     veh.Position.Y > Constants.StreetLength && or == Orientation.Bottom ||
                     veh.Position.Y < 0 && or == Orientation.Top ||
                     veh.Position.X > Constants.StreetLength && or == Orientation.Right)
-                    this.StreetIntersectionSwapper(veh, or);
+                    this.ChangePlace(veh, or);
             }
             else if (veh.Place is Intersection)
             {
@@ -78,39 +78,17 @@ namespace Traffic.Physics
                     veh.Position.Y > Constants.IntersectionSize / 2 && or == Orientation.Bottom ||
                     veh.Position.Y < -Constants.IntersectionSize / 2 && or == Orientation.Top ||
                     veh.Position.X > Constants.IntersectionSize / 2 && or == Orientation.Right)
-                    this.StreetIntersectionSwapper(veh, or);
+                    this.ChangePlace(veh, or);
             }
         }
 
         /// <summary>
         /// Changes place from street to intersection OR from intersection to street
         /// </summary>
-        private void StreetIntersectionSwapper(Vehicle veh, Orientation or)
+        private void ChangePlace(Vehicle veh, Orientation or)
         {
-            int horizontal, vertical; //horizontal and vertical diffrence from actual place
-            switch (or)
-            {
-                case Orientation.Bottom:
-                    horizontal = 0;
-                    vertical = 1;
-                    break;
-                case Orientation.Left:
-                    horizontal = -1;
-                    vertical = 0;
-                    break;
-                case Orientation.Right:
-                    horizontal = 1;
-                    vertical = 0;
-                    break;
-                case Orientation.Top:
-                    horizontal = 0;
-                    vertical = -1;
-                    break;
-                default:
-                    horizontal = 0;
-                    vertical = 0;
-                    break;
-            }
+            int horizontal = 0, vertical = 0; //horizontal and vertical diffrence from actual place
+            UnitConverter.OrientationToRowColumnDiffrence(or, ref horizontal, ref vertical);
             ConsoleLogger.Log("R:" + veh.Place.RowNumber + " C:" + veh.Place.ColumnNumber);
             if (veh.Place is Street)
             {

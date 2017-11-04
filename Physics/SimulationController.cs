@@ -69,13 +69,13 @@ namespace Traffic.Physics
         {
             // Mechanism to spawn new vehicles once per Constants.TimeSpawnInterval s
             long time = this.World.sw.ElapsedMilliseconds % Constants.TimeSpawnInterval;
-            if (time < 10 && this.IsSpawningAllowed)
+            if (time < 100 && this.IsSpawningAllowed)
             {
                 //ConsoleLogger.Log("Time " + this.World.sw.ElapsedMilliseconds + "ms");
                 this.Gen.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
                 this.IsSpawningAllowed = false;
             }
-            else if (time >= 10 && !this.IsSpawningAllowed)
+            else if (time >= 100 && !this.IsSpawningAllowed)
                 this.IsSpawningAllowed = true;
         }
 
