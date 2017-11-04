@@ -89,30 +89,6 @@ namespace Traffic.Graphics
             GL.End();
         }
 
-        /// <summary>
-        /// Returns the angle in degrees by which the direction vector is rotated over vertical axis (Z axis)
-        /// </summary>
-        /// <param name="direction">Vector to get angle from</param>
-        /// <returns>Angle in degrees</returns>
-        private float GetRotationAngle(Utilities.Point direction)
-        {
-            if (direction.Y == 0) // we can't compute atan, it's either 90 or 270 degrees
-            {
-                if (direction.X > 0)
-                    return 90.0f;
-                else
-                    return 270.0f;
-            }
-            double angle = Math.Atan(direction.X/direction.Y);
-
-            if (direction.Y < 0) // computing tan loses information about signs of X and Y
-                angle += Math.PI;
-            if (angle < 0) // Math.Atan returns angle from -90 to 90, need to get rid of negatives
-                angle += 2 * Math.PI;
-
-            return (float)(angle*180/Math.PI);
-        }
-
         public void GlDrawVehicle(Vehicle vehicle)
         {
             var placeCoordinates = new Vector2();
@@ -124,7 +100,7 @@ namespace Traffic.Graphics
             else 
                 return;
 
-            float rotationAngle = this.GetRotationAngle(vehicle.FrontVector);
+            float rotationAngle = vehicle.FrontVector.GetRotationAngle();
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();

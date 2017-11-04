@@ -1,5 +1,6 @@
 ﻿using Traffic.Graphics;
 using Traffic.Physics;
+using Traffic.Utilities;
 
 namespace Traffic
 {
@@ -10,13 +11,13 @@ namespace Traffic
         {
             int verticalLines = 4;
             int horizontalLines = 3;
-            int desiredNumberOfVehicles = 2 * (verticalLines + horizontalLines);
+            int desiredNumberOfVehicles = 100;
 
             var simulationController = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
             simulationController.InitSimulation();
 
             var graphicsController = new GraphicsController(simulationController.World, simulationController.PerformSimulationTick);
-            graphicsController.Run(60.0); // 60 updatów świata na sekundę, tyle fpsów ile wyrobi
+            graphicsController.Run(Constants.TicksPerSecond);
         }
     }
 }
