@@ -113,12 +113,34 @@ namespace Traffic.Physics
 
         /// <summary>
         /// Computes and sets acceleration of a vehicle which is correcting its angle after turning
+        /// Actually cheats by setting velocity to desired velocity
         /// </summary>
         private void ComputeCorrectionAcceleration(Vehicle veh)
         {
-            // TODO Policzyć odpowiedni kąt i ustawić prostopadłe przyspieszenie dobrej długości (coś w stylu v*tg(alpha)/ticks_per_sec )
+            var desiredDirection = this.GetDesiredDirection(veh.FrontVector);
+            var speed = veh.VelocityVector.Length();
+            veh.VelocityVector.X = desiredDirection.X * speed;
+            veh.VelocityVector.Y = desiredDirection.Y * speed;
+            veh.FrontVector.X = veh.FrontVector.X;
+            veh.FrontVector.Y = veh.FrontVector.Y;
             veh.AccelerationVector.X = 0;
             veh.AccelerationVector.Y = 0;
+        }
+
+        /// <summary>
+        /// Returns the closest in terms of angle horizontal or vertical direction
+        /// </summary>
+        private Point GetDesiredDirection(Point realDirection)
+        {
+            var acceptedDirections = new List<Point>()
+            {
+                new Point(1,0),
+                new Point(-1,0),
+                new Point(0,1),
+                new Point(0,-1)
+            };
+            return acceptedDirections.First(d =>
+                d.AngleFrom(realDirection) == acceptedDirections.Min(p => p.AngleFrom(realDirection)));
         }
     }
 }
