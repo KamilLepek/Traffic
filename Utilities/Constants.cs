@@ -8,7 +8,7 @@
         public const double MaximumVelocity = 120; // km/h
         public const double MaximumReactionTime = 500; // ms
         public const double MinimumDistanceHeld = 25; // m
-        public const double InitialVelocity = 5; //km/h
+        public const double InitialVelocity = 30; //km/h
 
         //Map constants
         public const double StreetWidth = 5; //m

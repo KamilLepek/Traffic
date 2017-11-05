@@ -10,66 +10,33 @@ namespace Traffic.Physics
 {
     public class DecisionController
     {
-        public Map World;
+        private readonly Map world;
+        private readonly ManeuverService maneuverService;
 
         public DecisionController(Map world)
         {
-            this.World = world;
+            this.world = world;
+            this.maneuverService = new ManeuverService();
         }
 
         public void HandleDecisions()
         {
-            foreach (var vehicle in this.World.Vehicles)
+            foreach (var vehicle in this.world.Vehicles)
             {
-                this.CheckIfManeuverFinished(vehicle);
-                this.CheckIfManeuverStarts(vehicle);
+                this.UpdateManeuverIfNeccessary(vehicle);
                 this.ComputeAcceleration(vehicle);
             }
         }
 
-        /// <summary>
-        /// Determines if the driver of veh has finished performing his Maneuver, and if so sets the vehicle's Maneuver field to None
-        /// </summary>
-        private void CheckIfManeuverFinished(Vehicle veh)
+        private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
-            // Vehicle got out of intersection
-            if (!(veh.Place is Intersection) &&
-                (veh.Maneuver == Maneuvers.ForwardOnIntersect || veh.Maneuver == Maneuvers.TurnLeft ||
-                 veh.Maneuver == Maneuvers.TurnRight))
-            {
-                veh.Maneuver = Maneuvers.None;
-                veh.TurningArcRadius = 0;
-                veh.InitialTurningDirection = null;
-            }
-        }
-
-        /// <summary>
-        /// Determines if the driver of veh should start new maneuver, and if so sets the vehicle's Maneuver field.
-        /// </summary>
-        private void CheckIfManeuverStarts(Vehicle veh)
-        {
-            // Vehicle entered intersection
-            if ((veh.Place is Intersection) &&
-                (veh.Maneuver != Maneuvers.ForwardOnIntersect && veh.Maneuver != Maneuvers.TurnLeft &&
-                 veh.Maneuver != Maneuvers.TurnRight))
-            {
-                var decision = veh.Route.FirstOrDefault();
-                switch (decision)
-                {
-                    case Decision.Forward:
-                        veh.Maneuver = Maneuvers.ForwardOnIntersect;
-                        break;
-                    case Decision.Left:
-                        veh.Maneuver = Maneuvers.TurnLeft;
-                        veh.InitialTurningDirection = new Point(veh.FrontVector.X, veh.FrontVector.Y);
-                        break;
-                    case Decision.Right:
-                        veh.Maneuver = Maneuvers.TurnRight;
-                        veh.InitialTurningDirection = new Point(veh.FrontVector.X, veh.FrontVector.Y);
-                        break;
-                }
-                veh.Route.Remove(decision);
-            }
+            if (maneuverService.CheckIfVehicleEnteredIntersection(veh))
+                return;
+            if (maneuverService.CheckIfVehicleEnteredMiddleOfIntersection(veh))
+                return;
+            if (maneuverService.CheckIfVehicleLeftIntersection(veh))
+                return;
+            maneuverService.CheckIfVehicleLeftMiddleOfIntersection(veh);
         }
 
         /// <summary>
@@ -94,21 +61,21 @@ namespace Traffic.Physics
                 case Maneuvers.TurnRight:
                     this.ComputeTurnAcceleration(veh, false);
                     break;
+                case Maneuvers.CorrectAfterTurning:
+                    this.ComputeCorrectionAcceleration(veh);
+                    break;
             }
         }
 
         /// <summary>
         /// Computes and sets centripetal acceleration of a vehicle which is turning left
         /// </summary>
+        /// <param name="left">True if car is turning left, false if right</param>
         private void ComputeTurnAcceleration(Vehicle veh, bool left)
         {
-            ConsoleLogger.Log(String.Format("Angle:{0}", veh.FrontVector.AngleFrom(veh.InitialTurningDirection)));
-            var isInTheMiddleOfIntersection =
-                veh.Position.DistanceFrom(new Point(0, 0)) < Constants.TurnStartingPoint * Constants.IntersectionSize;
             var turnedAngle = veh.FrontVector.AngleFrom(veh.InitialTurningDirection);
             var hasntAlreadyTurned = turnedAngle < 90;
-
-            if (isInTheMiddleOfIntersection && hasntAlreadyTurned)
+            if (hasntAlreadyTurned)
             {
                 if (veh.TurningArcRadius == 0)
                     veh.TurningArcRadius = this.ComputeTurningArcRadius(veh, left);
@@ -132,12 +99,26 @@ namespace Traffic.Physics
             }
         }
 
+        /// <summary>
+        /// Returns radius of an arc the car is supposed to ride on.
+        /// </summary>
+        /// <param name="left">True if car is turning left, false if right</param>
         private double ComputeTurningArcRadius(Vehicle veh, bool left)
         {
             if (left)
                 return Math.Abs(veh.Position.X) + Math.Abs(veh.Position.Y); 
             else
                 return Math.Abs(Math.Abs(veh.Position.X) - Math.Abs(veh.Position.Y));
+        }
+
+        /// <summary>
+        /// Computes and sets acceleration of a vehicle which is correcting its angle after turning
+        /// </summary>
+        private void ComputeCorrectionAcceleration(Vehicle veh)
+        {
+            // TODO Policzyć odpowiedni kąt i ustawić prostopadłe przyspieszenie dobrej długości (coś w stylu v*tg(alpha)/ticks_per_sec )
+            veh.AccelerationVector.X = 0;
+            veh.AccelerationVector.Y = 0;
         }
     }
 }
