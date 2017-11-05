@@ -16,7 +16,7 @@
         public const double IntersectionSize = 15; //m width/height
 
         //Time interval in which we spawn new vehicles if there is a need
-        public const int TimeSpawnInterval = 2000; //ms
+        public const int TimeSpawnInterval = 1000; //ms
 
         public const int TicksPerSecond = 120;
 

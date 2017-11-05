@@ -63,6 +63,7 @@
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\Point.cs" />
     <Compile Include="Utilities\RandomGenerator.cs" />
+    <Compile Include="Utilities\UnitConverter.cs" />
     <Compile Include="Utilities\VehicleGenerator.cs" />
     <Compile Include="Vehicles\Car.cs" />
     <Compile Include="World\Vertices\AbstractVertex.cs" />
