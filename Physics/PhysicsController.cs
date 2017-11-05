@@ -10,11 +10,11 @@ namespace Traffic.Physics
 {
     public class PhysicsController
     {
-        public Map World;
+        private readonly Map world;
 
         public PhysicsController(Map world)
         {
-            this.World = world;
+            this.world = world;
         }
 
         /// <summary>
@@ -23,10 +23,10 @@ namespace Traffic.Physics
         public void HandlePhysics()
         {
             //by using for like this we can safely remove vehicles from the list while iterating
-            for (int i = this.World.Vehicles.Count - 1; i >= 0; i--)
+            for (int i = this.world.Vehicles.Count - 1; i >= 0; i--)
             {
-                this.UpdateVelocity(this.World.Vehicles[i]);
-                this.MoveVehicle(this.World.Vehicles[i]);
+                this.UpdateVelocity(this.world.Vehicles[i]);
+                this.MoveVehicle(this.world.Vehicles[i]);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Traffic.Physics
             ConsoleLogger.Log("R:" + veh.Place.RowNumber + " C:" + veh.Place.ColumnNumber);
             if (veh.Place is Street)
             {
-                veh.Place = this.World.Intersections.Find(item => (item.RowNumber == veh.Place.RowNumber + vertical)
+                veh.Place = this.world.Intersections.Find(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
                 if (veh.Place == null)
                 {
@@ -123,7 +123,7 @@ namespace Traffic.Physics
             }
             else if (veh.Place is Intersection)
             {
-                veh.Place = this.World.Streets.First(item => (item.RowNumber == veh.Place.RowNumber + vertical)
+                veh.Place = this.world.Streets.First(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
                 this.SetPositionAfterEnteringStreet(veh, or);
             }
@@ -187,7 +187,7 @@ namespace Traffic.Physics
         /// <param name="veh">vehicle to get rid of</param>
         private void KillVehicle(Vehicle veh)
         {
-            this.World.Vehicles.Remove(veh);
+            this.world.Vehicles.Remove(veh);
         }
     }
 }
