@@ -9,18 +9,18 @@ namespace Traffic.Physics
     {
 
         public readonly Map World;
-        private readonly VehicleGenerator Gen;
-        private readonly PhysicsController Physics;
-        private readonly DecisionController Decisions;
+        private readonly VehicleGenerator vehicleGenerator;
+        private readonly PhysicsController physicsController;
+        private readonly DecisionController decisionController;
         public bool IsSpawningAllowed { get; private set; }
 
         public SimulationController(int horiz, int vert, int vehicles)
         {
             ConsoleLogger.DeleteLogs();
             this.World = new Map(horiz, vert, vehicles);
-            this.Gen = new VehicleGenerator(this.World);
-            this.Physics = new PhysicsController(this.World);
-            this.Decisions = new DecisionController(this.World);
+            this.vehicleGenerator = new VehicleGenerator(this.World);
+            this.physicsController = new PhysicsController(this.World);
+            this.decisionController = new DecisionController(this.World);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Traffic.Physics
         public void InitSimulation()
         {
             this.World.sw.Start();
-            this.Gen.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
+            this.vehicleGenerator.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace Traffic.Physics
         {
             this.HandleSpawnPoints();
             this.HandleSpawning();
-            this.Decisions.HandleDecisions();
-            this.Physics.HandlePhysics();
+            this.decisionController.HandleDecisions();
+            this.physicsController.HandlePhysics();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Traffic.Physics
             if (time < 100 && this.IsSpawningAllowed)
             {
                 //ConsoleLogger.Log("Time " + this.World.sw.ElapsedMilliseconds + "ms");
-                this.Gen.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
+                this.vehicleGenerator.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
                 this.IsSpawningAllowed = false;
             }
             else if (time >= 100 && !this.IsSpawningAllowed)

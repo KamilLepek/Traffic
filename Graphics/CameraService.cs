@@ -10,7 +10,7 @@ namespace Traffic.Graphics
     /// </summary>
     internal class CameraService
     {
-        private float cameraDistance;
+        private double cameraDistance;
 
         public CameraService()
         {
@@ -22,7 +22,7 @@ namespace Traffic.Graphics
         /// </summary>
         public void InitCamera()
         {
-            Matrix4 modelview = Matrix4.LookAt(new Vector3(0.0f, -Constants.InitialCameraDistance, 0.0f), Vector3.Zero, -Vector3.UnitZ);
+            Matrix4 modelview = Matrix4.LookAt(new Vector3(0.0f, -(float)Constants.InitialCameraDistance, 0.0f), Vector3.Zero, -Vector3.UnitZ);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
         }
@@ -34,9 +34,9 @@ namespace Traffic.Graphics
         {
             Vector3 translationVector;
             if (zoomIn)
-                translationVector = new Vector3(0, Constants.CameraZoomSpeed, 0);
+                translationVector = new Vector3(0, (float)Constants.CameraZoomSpeed, 0);
             else
-                translationVector = new Vector3(0, -Constants.CameraZoomSpeed, 0);
+                translationVector = new Vector3(0, -(float)Constants.CameraZoomSpeed, 0);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.Translate(translationVector);
@@ -49,7 +49,7 @@ namespace Traffic.Graphics
         public void Move(Key keyboardKey)
         {
             Vector3 translationVector;
-            var movementSpeed = Constants.CameraKeysMovementSpeed * cameraDistance;
+            var movementSpeed = (float)(Constants.CameraKeysMovementSpeed * cameraDistance);
             switch (keyboardKey)
             {
                 case Key.Up:

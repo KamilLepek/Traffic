@@ -54,6 +54,7 @@
     <Compile Include="Graphics\DrawingService.cs" />
     <Compile Include="Graphics\GraphicsController.cs" />
     <Compile Include="Physics\DecisionController.cs" />
+    <Compile Include="Physics\ManeuverService.cs" />
     <Compile Include="Physics\PhysicsController.cs" />
     <Compile Include="Physics\SimulationController.cs" />
     <Compile Include="Traffic.cs" />

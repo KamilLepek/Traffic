@@ -1,4 +1,6 @@
-﻿namespace Traffic.Utilities
+﻿using System;
+
+namespace Traffic.Utilities
 {
     public static class UnitConverter
     {
@@ -27,6 +29,20 @@
                     vertical = 0;
                     break;
             }
+        }
+
+        public static Maneuver DecisionToManeuver(Decision decision)
+        {
+            switch (decision)
+            {
+                case Decision.Forward:
+                    return Maneuver.ForwardOnIntersect;
+                case Decision.Left:
+                    return Maneuver.TurnLeft;
+                case Decision.Right:
+                    return Maneuver.TurnRight;
+            }
+            throw new ArgumentOutOfRangeException();
         }
     }
 }

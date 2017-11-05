@@ -10,8 +10,8 @@ namespace Traffic.Vehicles
 
         public string RegistrationNumber {get; private set;}
 
-        public Car(float v, float t, float dist, string n, EndPoint spawn, List<Decision> initialRoute, EndPoint finnishPoint) : 
-            base(v, t, dist, spawn, initialRoute, finnishPoint)
+        public Car(double v, double t, double dist, string n, EndPoint spawn, List<Decision> initialRoute, EndPoint finishPoint) : 
+            base(v, t, dist, spawn, initialRoute, finishPoint)
         {
             this.VehicleLenght = Constants.CarLength;
             this.VehicleWidth = Constants.CarWidth;
