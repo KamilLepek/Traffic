@@ -19,26 +19,26 @@ namespace Traffic.Utilities
         /// <summary>
         /// Returns random velocity
         /// </summary>
-        public static float Velocity()
+        public static double Velocity()
         {
             // to preserve that maximum velocity is not lower than initial velocity
-            return ((float)rnd.NextDouble()) * (Constants.MaximumVelocity - Constants.InitialVelocity) + Constants.InitialVelocity;
+            return (rnd.NextDouble()) * (Constants.MaximumVelocity - Constants.InitialVelocity) + Constants.InitialVelocity;
         }
 
         /// <summary>
         /// Returns random reaction time
         /// </summary>
-        public static float ReactionTime()
+        public static double ReactionTime()
         {
-            return ((float)rnd.NextDouble()) * Constants.MaximumReactionTime;
+            return (rnd.NextDouble()) * Constants.MaximumReactionTime;
         }
 
         /// <summary>
         /// Returns random distance held
         /// </summary>
-        public static float DistanceHeld()
+        public static double DistanceHeld()
         {
-            return ((float)rnd.NextDouble()) * Constants.MinimumDistanceHeld;
+            return (rnd.NextDouble()) * Constants.MinimumDistanceHeld;
         }
 
         /// <summary>

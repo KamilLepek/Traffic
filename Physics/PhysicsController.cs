@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
@@ -24,8 +25,26 @@ namespace Traffic.Physics
             //by using for like this we can safely remove vehicles from the list while iterating
             for (int i = this.World.Vehicles.Count - 1; i >= 0; i--)
             {
+                this.UpdateVelocity(this.World.Vehicles[i]);
                 this.MoveVehicle(this.World.Vehicles[i]);
                 this.UpdatePlace(this.World.Vehicles[i]);
+            }
+        }
+
+        /// <summary>
+        /// Updates velocity and front vector of the given vehicle
+        /// </summary>
+        /// <param name="veh"></param>
+        private void UpdateVelocity(Vehicle veh)
+        {
+            veh.VelocityVector.X += veh.AccelerationVector.X * (1f / Constants.TicksPerSecond);
+            veh.VelocityVector.Y += veh.AccelerationVector.Y * (1f / Constants.TicksPerSecond);
+
+            // Don't update frontVector if velocity is zero - vehicle has stopped
+            if (Math.Abs(veh.VelocityVector.X) > Constants.DoubleErrorTolerance || Math.Abs(veh.VelocityVector.Y) > Constants.DoubleErrorTolerance)
+            {
+                veh.FrontVector.X = veh.VelocityVector.X;
+                veh.FrontVector.Y = veh.VelocityVector.Y;
             }
         }
 
@@ -45,7 +64,7 @@ namespace Traffic.Physics
         /// </summary>
         private void UpdatePlace(Vehicle veh)
         {
-            float angle = veh.FrontVector.GetRotationAngle();
+            double angle = veh.FrontVector.GetRotationAngle();
             if (angle < Constants.MaximumVehicleAngle || angle > 360 - Constants.MaximumVehicleAngle)
                 this.ChangePlaceIfNecessary(veh, Orientation.Bottom);//kontekst: hipotetycznie zmienimy place na ten o 1 nizej w naszym ukladzie, tj porusza się w dół
             else if (angle > 90 - Constants.MaximumVehicleAngle && angle < 90 + Constants.MaximumVehicleAngle)
@@ -111,7 +130,6 @@ namespace Traffic.Physics
                     vertical = 0;
                     break;
             }
-            ConsoleLogger.Log("R:" + veh.Place.RowNumber + " C:" + veh.Place.ColumnNumber);
             if (veh.Place is Street)
             {
                 veh.Place = this.World.Intersections.Find(item => (item.RowNumber == veh.Place.RowNumber + vertical)
@@ -122,17 +140,14 @@ namespace Traffic.Physics
                     return;
                 }
 
-                ConsoleLogger.Log("Vehicle STREET -> INTERSECTION");
                 this.SetPositionAfterEnteringIntersection(veh, or);
             }
             else if (veh.Place is Intersection)
             {
                 veh.Place = this.World.Streets.First(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
-                ConsoleLogger.Log("Vehicle INTERSECTION -> STREET");
                 this.SetPositionAfterEnteringStreet(veh, or);
             }
-            ConsoleLogger.Log("R:" + veh.Place.RowNumber + " C:" + veh.Place.ColumnNumber);
         }
 
         /// <summary>

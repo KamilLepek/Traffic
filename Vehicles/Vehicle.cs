@@ -16,7 +16,7 @@ namespace Traffic.Vehicles
         /// <summary>
         /// Finish point of the vehicle, will be needed to determine in-flight route optimalization
         /// </summary>
-        private readonly EndPoint FinnishPoint;
+        private readonly EndPoint FinishPoint;
 
         /// <summary>
         /// coordinates of vehicle on World Object
@@ -31,38 +31,51 @@ namespace Traffic.Vehicles
         /// <summary>
         /// maximum velocity in km/h
         /// </summary>
-        protected float MaximumVelocity { get; private set; }
+        protected double MaximumVelocity { get; private set; }
 
         /// <summary>
         /// reaction time in ms
         /// </summary>
-        protected float ReactionTime { get; private set; }
+        protected double ReactionTime { get; private set; }
 
         /// <summary>
         /// minimum distance held in m
         /// </summary>
-        protected float DistanceHeld { get; private set; }
-    
-        public float VehicleLenght { get; protected set; }
+        protected double DistanceHeld { get; private set; }
 
-        public float VehicleWidth { get; protected set; }
+        public double VehicleLenght { get; protected set; }
+
+        public double VehicleWidth { get; protected set; }
  
         public Point VelocityVector { get; set; }
+
+        public Point AccelerationVector { get; set; }
 
         /// <summary>
         /// List of decisions to make to finish the race
         /// </summary>
         public List<Decision> Route { get; protected set; }
 
-        protected Vehicle(float v, float t, float dist, EndPoint spawnPlace, List<Decision>initialRoute, EndPoint finnishPoint)
+        public Maneuvers Maneuver { get; set; }
+
+        /// <summary>
+        /// If the vehicle is turning, it's the middle point of the arc. Else it's null
+        /// </summary>
+        public double TurningArcRadius { get; set; }
+
+        public Point InitialTurningDirection { get; set; }
+
+        protected Vehicle(double v, double t, double dist, EndPoint spawnPlace, List<Decision> initialRoute, EndPoint finishPoint)
         {
             this.Place = spawnPlace;
             spawnPlace.IsOccupied = true;
             this.MaximumVelocity = v;
             this.ReactionTime = t;
             this.DistanceHeld = dist;
-            this.FinnishPoint = finnishPoint;
+            this.FinishPoint = finishPoint;
             this.Route = initialRoute;
+            this.AccelerationVector = new Point(0,0);
+            this.Maneuver = Maneuvers.None;
         }
 
         public virtual void PrintStatistics()
@@ -73,7 +86,7 @@ namespace Traffic.Vehicles
             Console.WriteLine("Zachowywana odleglosc: {0} m", DistanceHeld);
         }
 
-        protected void SetInitialPositionAndVelocityVector(EndPoint spawnPlace, float vehicleLenght, float vehicleWidth, float value = Constants.InitialVelocity)
+        protected void SetInitialPositionAndVelocityVector(EndPoint spawnPlace, double vehicleLenght, double vehicleWidth, double value = Constants.InitialVelocity)
         {
             switch (spawnPlace.Orient)
             {

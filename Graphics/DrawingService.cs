@@ -35,13 +35,13 @@ namespace Traffic.Graphics
         {
             var coordinates = new Vector2();
 
-            coordinates.X = (intersection.ColumnNumber / 2) * Constants.StreetLength
+            coordinates.X = (float)((intersection.ColumnNumber / 2) * Constants.StreetLength
                                   + ((intersection.ColumnNumber / 2) - 1) * Constants.IntersectionSize
-                                  + Constants.IntersectionSize / 2;
+                                  + Constants.IntersectionSize / 2);
 
-            coordinates.Y = (intersection.RowNumber / 2) * Constants.StreetLength
+            coordinates.Y = (float)((intersection.RowNumber / 2) * Constants.StreetLength
                                   + ((intersection.RowNumber / 2) - 1) * Constants.IntersectionSize
-                                  + Constants.IntersectionSize / 2;
+                                  + Constants.IntersectionSize / 2);
 
             return coordinates;
         }
@@ -100,12 +100,12 @@ namespace Traffic.Graphics
             else 
                 return;
 
-            float rotationAngle = vehicle.FrontVector.GetRotationAngle();
+            double rotationAngle = vehicle.FrontVector.GetRotationAngle();
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             GL.Translate(placeCoordinates.X + vehicle.Position.X, 0, placeCoordinates.Y + vehicle.Position.Y);
-            GL.Rotate(rotationAngle, Vector3.UnitY);
+            GL.Rotate(rotationAngle, Vector3d.UnitY);
                 
             GL.Begin(PrimitiveType.Quads);
             GL.Color3(Color.Red);
