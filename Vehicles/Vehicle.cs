@@ -56,7 +56,7 @@ namespace Traffic.Vehicles
         /// </summary>
         public List<Decision> Route { get; protected set; }
 
-        public Maneuvers Maneuver { get; set; }
+        public Maneuver Maneuver { get; set; }
 
         /// <summary>
         /// If the vehicle is turning, it's the middle point of the arc. Else it's null
@@ -75,7 +75,7 @@ namespace Traffic.Vehicles
             this.FinishPoint = finishPoint;
             this.Route = initialRoute;
             this.AccelerationVector = new Point(0,0);
-            this.Maneuver = Maneuvers.None;
+            this.Maneuver = Maneuver.None;
         }
 
         public virtual void PrintStatistics()

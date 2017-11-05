@@ -17,23 +17,14 @@ namespace Traffic.Physics
         {
             if (veh.Place is Intersection &&
                 veh.Position.DistanceFrom(new Point(0, 0)) < Constants.TurnStartingPoint * Constants.IntersectionSize &&
-                veh.Maneuver != Maneuvers.ForwardOnIntersect && veh.Maneuver != Maneuvers.TurnLeft &&
-                 veh.Maneuver != Maneuvers.TurnRight)
+                veh.Maneuver != Maneuver.ForwardOnIntersect && veh.Maneuver != Maneuver.TurnLeft &&
+                 veh.Maneuver != Maneuver.TurnRight)
             {
                 var decision = veh.Route.FirstOrDefault();
-                switch (decision)
+                veh.Maneuver = UnitConverter.DecisionToManeuver(decision);
+                if (decision == Decision.Left || decision == Decision.Right)
                 {
-                    case Decision.Forward:
-                        veh.Maneuver = Maneuvers.ForwardOnIntersect;
-                        break;
-                    case Decision.Left:
-                        veh.Maneuver = Maneuvers.TurnLeft;
-                        veh.InitialTurningDirection = new Point(veh.FrontVector.X, veh.FrontVector.Y);
-                        break;
-                    case Decision.Right:
-                        veh.Maneuver = Maneuvers.TurnRight;
-                        veh.InitialTurningDirection = new Point(veh.FrontVector.X, veh.FrontVector.Y);
-                        break;
+                    veh.InitialTurningDirection = new Point(veh.FrontVector.X, veh.FrontVector.Y);
                 }
                 veh.Route.Remove(decision);
                 return true;
@@ -44,10 +35,10 @@ namespace Traffic.Physics
         public bool CheckIfVehicleLeftIntersection(Vehicle veh)
         {
             if (!(veh.Place is Intersection) &&
-                (veh.Maneuver == Maneuvers.ForwardOnIntersect || veh.Maneuver == Maneuvers.TurnLeft ||
-                 veh.Maneuver == Maneuvers.TurnRight))
+                (veh.Maneuver == Maneuver.ForwardOnIntersect || veh.Maneuver == Maneuver.TurnLeft ||
+                 veh.Maneuver == Maneuver.TurnRight))
             {
-                veh.Maneuver = Maneuvers.None;
+                veh.Maneuver = Maneuver.None;
                 return true;
             }
             return false;
@@ -58,10 +49,10 @@ namespace Traffic.Physics
             if (veh.Place is Intersection &&
                 veh.Position.DistanceFrom(new Point(0, 0)) >=
                 Constants.TurnStartingPoint * Constants.IntersectionSize &&
-                (veh.Maneuver == Maneuvers.TurnLeft ||
-                 veh.Maneuver == Maneuvers.TurnRight))
+                (veh.Maneuver == Maneuver.TurnLeft ||
+                 veh.Maneuver == Maneuver.TurnRight))
             {
-                veh.Maneuver = Maneuvers.CorrectAfterTurning;
+                veh.Maneuver = Maneuver.CorrectAfterTurning;
                 veh.TurningArcRadius = 0;
                 veh.InitialTurningDirection = null;
                 return true;

@@ -46,21 +46,21 @@ namespace Traffic.Physics
         {
             switch (veh.Maneuver)
             {
-                case Maneuvers.None:
+                case Maneuver.None:
                     veh.AccelerationVector.X = 0;
                     veh.AccelerationVector.Y = 0;
                     break;
-                case Maneuvers.ForwardOnIntersect:
+                case Maneuver.ForwardOnIntersect:
                     veh.AccelerationVector.X = 0;
                     veh.AccelerationVector.Y = 0;
                     break;
-                case Maneuvers.TurnLeft:
+                case Maneuver.TurnLeft:
                     this.ComputeTurnAcceleration(veh, true);
                     break;
-                case Maneuvers.TurnRight:
+                case Maneuver.TurnRight:
                     this.ComputeTurnAcceleration(veh, false);
                     break;
-                case Maneuvers.CorrectAfterTurning:
+                case Maneuver.CorrectAfterTurning:
                     this.ComputeCorrectionAcceleration(veh);
                     break;
             }
