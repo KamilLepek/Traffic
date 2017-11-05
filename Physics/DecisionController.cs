@@ -4,7 +4,6 @@ using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
-using Traffic.World.Vertices;
 
 namespace Traffic.Physics
 {
@@ -121,8 +120,8 @@ namespace Traffic.Physics
             var speed = veh.VelocityVector.Length();
             veh.VelocityVector.X = desiredDirection.X * speed;
             veh.VelocityVector.Y = desiredDirection.Y * speed;
-            veh.FrontVector.X = veh.FrontVector.X;
-            veh.FrontVector.Y = veh.FrontVector.Y;
+            veh.FrontVector.X = veh.VelocityVector.X;
+            veh.FrontVector.Y = veh.VelocityVector.Y;
             veh.AccelerationVector.X = 0;
             veh.AccelerationVector.Y = 0;
         }
