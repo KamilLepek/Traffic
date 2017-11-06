@@ -31,7 +31,7 @@ namespace Traffic.Vehicles
         /// <summary>
         /// maximum velocity in km/h
         /// </summary>
-        protected double MaximumVelocity { get; private set; }
+        public double MaximumVelocity { get; private set; }
 
         /// <summary>
         /// reaction time in ms
@@ -75,7 +75,7 @@ namespace Traffic.Vehicles
             this.FinishPoint = finishPoint;
             this.Route = initialRoute;
             this.AccelerationVector = new Point(0,0);
-            this.Maneuver = Maneuver.None;
+            this.Maneuver = Maneuver.Accelerate;
         }
 
         public virtual void PrintStatistics()

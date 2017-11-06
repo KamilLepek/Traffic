@@ -4,6 +4,7 @@ using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
+using Traffic.World.Edges;
 
 namespace Traffic.Physics
 {
@@ -29,6 +30,8 @@ namespace Traffic.Physics
 
         private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
+            if (maneuverService.CheckIfVehicleIsLeavingStreet(veh))
+                return;
             if (maneuverService.CheckIfVehicleEnteredIntersection(veh))
                 return;
             if (maneuverService.CheckIfVehicleEnteredMiddleOfIntersection(veh))
@@ -46,9 +49,14 @@ namespace Traffic.Physics
         {
             switch (veh.Maneuver)
             {
-                case Maneuver.None:
-                    veh.AccelerationVector.X = 0;
-                    veh.AccelerationVector.Y = 0;
+                case Maneuver.DecelerateOnStreet:
+                    this.ComputeDeceleration(veh, true);
+                    break;
+                case Maneuver.Accelerate:
+                    this.ComputeAccelerationOnStraightRoad(veh);
+                    break;
+                case Maneuver.DecelerateOnIntersection:
+                    this.ComputeDeceleration(veh, false);
                     break;
                 case Maneuver.ForwardOnIntersect:
                     veh.AccelerationVector.X = 0;
@@ -64,6 +72,47 @@ namespace Traffic.Physics
                     this.ComputeCorrectionAcceleration(veh);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Vehicles tries to decelerate in order to achieve desired velocity
+        /// </summary>
+        /// <param name="isStreet">true if we are decelerating on street, false if on intersection</param>
+        private void ComputeDeceleration(Vehicle veh, bool isStreet)
+        {
+            double desiredVelocity = isStreet
+                ? Constants.BeforeEnteringIntersectionDesiredVelocity
+                : Constants.IntersectionDesiredVelocity;
+            if (veh.VelocityVector.Length() <= desiredVelocity)
+            {
+                veh.AccelerationVector.X = 0;
+                veh.AccelerationVector.Y = 0;
+            }
+            else
+            {
+                veh.AccelerationVector.X = -veh.FrontVector.X * (Constants.DriverDecelerationMultiplier / veh.FrontVector.Length());
+                veh.AccelerationVector.Y = -veh.FrontVector.Y * (Constants.DriverDecelerationMultiplier / veh.FrontVector.Length());
+            }
+        }
+
+        /// <summary>
+        /// Vehicle tries to accelerate in order to achieve maximum velocity while on a straight road
+        /// </summary>
+        private void ComputeAccelerationOnStraightRoad(Vehicle veh)
+        {
+            if (veh.VelocityVector.Length() == veh.MaximumVelocity)
+            {
+                veh.AccelerationVector.X = 0;
+                veh.AccelerationVector.Y = 0;
+                return;
+            }
+            else if (veh.VelocityVector.Length() < veh.MaximumVelocity)
+            {
+                veh.AccelerationVector.X = veh.FrontVector.X * (Constants.DriverAcceleratingOnStraightRoadMultiplier / veh.FrontVector.Length());
+                veh.AccelerationVector.Y = veh.FrontVector.Y * (Constants.DriverAcceleratingOnStraightRoadMultiplier / veh.FrontVector.Length());
+            }
+            if(veh.VelocityVector.Length() > veh.MaximumVelocity)//to correct if we accelerated a bit too much
+                veh.VelocityVector.ChangeLenghtOfVector(veh.MaximumVelocity);
         }
 
         /// <summary>

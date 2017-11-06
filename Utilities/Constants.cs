@@ -9,11 +9,15 @@
         public const double MaximumReactionTime = 500; // ms
         public const double MinimumDistanceHeld = 25; // m
         public const double InitialVelocity = 30; //km/h
+        public const double BeforeEnteringIntersectionDesiredVelocity = 45; // km/h
+        public const double IntersectionDesiredVelocity = 25; //km/h
+        public const double DriverAcceleratingOnStraightRoadMultiplier = 15;
+        public const double DriverDecelerationMultiplier = 80;
 
         //Map constants
         public const double StreetWidth = 5; //m
-        public const double StreetLength = 100; //m
-        public const double IntersectionSize = 15; //m width/height
+        public const double StreetLength = 500; //m
+        public const double IntersectionSize = 75; //m width/height
 
         //Time interval in which we spawn new vehicles if there is a need
         public const int TimeSpawnInterval = 1000; //ms
@@ -31,12 +35,15 @@
         //Graphics display constants
         public const double CameraKeysMovementSpeed = 0.1;
         public const double CameraMouseMovementSpeed = 0.003;
-        public const double CameraZoomSpeed = 15.0;
+        public const double CameraZoomSpeed = 40.0;
         public const double InitialCameraDistance = -300.0;
 
         // Maneuver constants
 
         // how far (fraction of intersection size) from the intersection center should the driver start turning
         public const double TurnStartingPoint = 0.3;
+
+        // how far (fraction of street lenght) from the beginning of street should the driver start breaking
+        public const double BreakStartingPoint = 0.85;
     }
 }
