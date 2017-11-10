@@ -8,7 +8,7 @@ namespace Traffic.Physics
 {
     internal class ManeuverService
     {
-        public bool CheckIfVehicleIsLeavingStreet(Vehicle veh)
+        public bool CheckIfVehicleIsApproachingEndOfStreet(Vehicle veh)
         {
             if (veh.Place is Street &&
                 veh.Maneuver == Maneuver.Accelerate)

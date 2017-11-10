@@ -4,7 +4,6 @@ using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
-using Traffic.World.Edges;
 
 namespace Traffic.Physics
 {
@@ -30,7 +29,7 @@ namespace Traffic.Physics
 
         private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
-            if (maneuverService.CheckIfVehicleIsLeavingStreet(veh))
+            if (maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
                 return;
             if (maneuverService.CheckIfVehicleEnteredIntersection(veh))
                 return;
@@ -100,19 +99,16 @@ namespace Traffic.Physics
         /// </summary>
         private void ComputeAccelerationOnStraightRoad(Vehicle veh)
         {
-            if (veh.VelocityVector.Length() == veh.MaximumVelocity)
+            if (veh.VelocityVector.Length() >= veh.MaximumVelocity)
             {
                 veh.AccelerationVector.X = 0;
                 veh.AccelerationVector.Y = 0;
-                return;
             }
             else if (veh.VelocityVector.Length() < veh.MaximumVelocity)
             {
                 veh.AccelerationVector.X = veh.FrontVector.X * (Constants.DriverAcceleratingOnStraightRoadMultiplier / veh.FrontVector.Length());
                 veh.AccelerationVector.Y = veh.FrontVector.Y * (Constants.DriverAcceleratingOnStraightRoadMultiplier / veh.FrontVector.Length());
             }
-            if(veh.VelocityVector.Length() > veh.MaximumVelocity)//to correct if we accelerated a bit too much
-                veh.VelocityVector.ChangeLenghtOfVector(veh.MaximumVelocity);
         }
 
         /// <summary>

@@ -43,7 +43,7 @@ namespace Traffic.Vehicles
         /// </summary>
         protected double DistanceHeld { get; private set; }
 
-        public double VehicleLenght { get; protected set; }
+        public double VehicleLength { get; protected set; }
 
         public double VehicleWidth { get; protected set; }
  
@@ -86,27 +86,27 @@ namespace Traffic.Vehicles
             Console.WriteLine("Zachowywana odleglosc: {0} m", DistanceHeld);
         }
 
-        protected void SetInitialPositionAndVelocityVector(EndPoint spawnPlace, double vehicleLenght, double vehicleWidth, double value = Constants.InitialVelocity)
+        protected void SetInitialPositionAndVelocityVector(EndPoint spawnPlace, double vehicleLength, double vehicleWidth, double value = Constants.InitialVelocity)
         {
             switch (spawnPlace.Orient)
             {
                 case Orientation.Top:
-                    this.Position = new Point(-Constants.StreetWidth / 4, vehicleLenght / 2);
+                    this.Position = new Point(-Constants.StreetWidth / 4, vehicleLength / 2);
                     this.VelocityVector = new Point(0, Constants.InitialVelocity);
                     this.FrontVector = new Point(0, 1);
                     break;
                 case Orientation.Right:
-                    this.Position = new Point(Constants.StreetLength - vehicleLenght / 2, - Constants.StreetWidth / 4);
+                    this.Position = new Point(Constants.StreetLength - vehicleLength / 2, - Constants.StreetWidth / 4);
                     this.VelocityVector = new Point(-Constants.InitialVelocity, 0);
                     this.FrontVector = new Point(-1, 0);
                     break;
                 case Orientation.Bottom:
-                    this.Position = new Point(Constants.StreetWidth / 4, Constants.StreetLength - vehicleLenght / 2);
+                    this.Position = new Point(Constants.StreetWidth / 4, Constants.StreetLength - vehicleLength / 2);
                     this.VelocityVector = new Point(0, -Constants.InitialVelocity);
                     this.FrontVector = new Point(0, -1);
                     break;
                 case Orientation.Left:
-                    this.Position = new Point(vehicleLenght / 2, Constants.StreetWidth / 4);
+                    this.Position = new Point(vehicleLength / 2, Constants.StreetWidth / 4);
                     this.VelocityVector = new Point(Constants.InitialVelocity, 0);
                     this.FrontVector = new Point(1, 0);
                     break;

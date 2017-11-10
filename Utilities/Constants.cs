@@ -43,7 +43,7 @@
         // how far (fraction of intersection size) from the intersection center should the driver start turning
         public const double TurnStartingPoint = 0.3;
 
-        // how far (fraction of street lenght) from the beginning of street should the driver start breaking
+        // how far (fraction of street length) from the beginning of street should the driver start breaking
         public const double BreakStartingPoint = 0.85;
     }
 }

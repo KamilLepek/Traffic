@@ -67,13 +67,13 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns vector with lenght adjusted to lenght param
+        /// Returns vector with length adjusted to length param
         /// </summary>
         /// <returns></returns>
-        public void ChangeLenghtOfVector(double lenght)
+        public void ChangeLengthOfVector(double length)
         {
-            this.X *= (lenght / this.Length());
-            this.Y *= (lenght / this.Length());
+            this.X *= (length / this.Length());
+            this.Y *= (length / this.Length());
         }
     }
 }
