@@ -9,9 +9,9 @@ namespace Traffic
 
         static void Main(string[] args)
         {
-            int verticalLines = 4;
-            int horizontalLines = 3;
-            int desiredNumberOfVehicles = 100;
+            int verticalLines = 5;
+            int horizontalLines = 5;
+            int desiredNumberOfVehicles = 1000;
 
             var simulationController = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
             simulationController.InitSimulation();

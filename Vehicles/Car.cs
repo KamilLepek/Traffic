@@ -13,7 +13,7 @@ namespace Traffic.Vehicles
         public Car(double v, double t, double dist, string n, EndPoint spawn, List<Decision> initialRoute, EndPoint finishPoint) : 
             base(v, t, dist, spawn, initialRoute, finishPoint)
         {
-            this.VehicleLenght = Constants.CarLength;
+            this.VehicleLength = Constants.CarLength;
             this.VehicleWidth = Constants.CarWidth;
             this.RegistrationNumber = n;
             this.SetInitialPositionAndVelocityVector(spawn, Constants.CarLength, Constants.CarWidth);

@@ -65,5 +65,15 @@ namespace Traffic.Utilities
             cos = cos < -1 ? -1 : cos;
             return Math.Acos(cos) * 180 / Math.PI;
         }
+
+        /// <summary>
+        /// Returns vector with length adjusted to length param
+        /// </summary>
+        /// <returns></returns>
+        public void ChangeLengthOfVector(double length)
+        {
+            this.X *= (length / this.Length());
+            this.Y *= (length / this.Length());
+        }
     }
 }
