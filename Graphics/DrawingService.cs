@@ -158,20 +158,32 @@ namespace Traffic.Graphics
                 return;
 
             double rotationAngle = vehicle.FrontVector.GetRotationAngle();
-
+            GL.Color4(Color.Transparent);//todo:Handle Alpha Transparency
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             GL.Translate(placeCoordinates.X + vehicle.Position.X, 0, placeCoordinates.Y + vehicle.Position.Y);
             GL.Rotate(rotationAngle, Vector3d.UnitY);
 
+            GL.Enable(EnableCap.Texture2D);
+
+            GL.BindTexture(TextureTarget.Texture2D, TextureLoader.TextureList[vehicle.TextureAssigned]);
+
             GL.Begin(PrimitiveType.Quads);
-            GL.Color3(Color.Red);
+
+            GL.TexCoord2(1, 0);
             GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
+
+            GL.TexCoord2(1, 1);
             GL.Vertex3(Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
-            GL.Color3(Color.Gold);
+
+            GL.TexCoord2(0, 1);
             GL.Vertex3(Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
+
+            GL.TexCoord2(0, 0);
             GL.Vertex3(-Constants.CarWidth / 2, 0.0f, Constants.CarLength / 2);
+
             GL.End();
+            GL.Disable(EnableCap.Texture2D);
 
             GL.PopMatrix();
         }

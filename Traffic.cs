@@ -4,19 +4,21 @@ using Traffic.Utilities;
 
 namespace Traffic
 {
-    class Traffic
+    internal class Traffic
     {
-
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             int verticalLines = 5;
             int horizontalLines = 5;
             int desiredNumberOfVehicles = 1000;
 
-            var simulationController = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
+
+            var simulationController =
+                new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
             simulationController.InitSimulation();
 
-            var graphicsController = new GraphicsController(simulationController.World, simulationController.PerformSimulationTick);
+            var graphicsController = new GraphicsController(simulationController.World,
+                simulationController.PerformSimulationTick);
             graphicsController.Run(Constants.TicksPerSecond);
         }
     }
