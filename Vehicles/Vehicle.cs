@@ -36,12 +36,12 @@ namespace Traffic.Vehicles
         /// <summary>
         /// reaction time in ms
         /// </summary>
-        protected double ReactionTime { get; private set; }
+        public double ReactionTime { get; private set; }
 
         /// <summary>
         /// minimum distance held in m
         /// </summary>
-        protected double DistanceHeld { get; private set; }
+        public double DistanceHeld { get; private set; }
 
         public double VehicleLength { get; protected set; }
 

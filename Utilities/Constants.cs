@@ -5,14 +5,18 @@
         public const double DoubleErrorTolerance = 0.0001;
 
         //Driver attribute constants
-        public const double MaximumVelocity = 120; // km/h
-        public const double MaximumReactionTime = 500; // ms
-        public const double MinimumDistanceHeld = 25; // m
-        public const double InitialVelocity = 30; //km/h
-        public const double BeforeEnteringIntersectionDesiredVelocity = 45; // km/h
-        public const double IntersectionDesiredVelocity = 25; //km/h
+        public const double MinimumMaximalVelocity = 40;
+        public const double MaximumVelocity = 120;
+        public const double MaximumReactionTime = 500;
+        public const double MinimumDistanceHeld = 5; //m
+        public const double DistanceHeldInterval = 10; //m
+        public const double InitialVelocity = 30;
+        public const double BeforeEnteringIntersectionDesiredVelocity = 45;
+        public const double IntersectionDesiredVelocity = 25;
         public const double DriverAcceleratingOnStraightRoadMultiplier = 15;
         public const double DriverDecelerationMultiplier = 80;
+        public const double DriverDecelerationForCollisionAvoidanceMultiplier = 160;
+        public const double VelocityDependentCaution = 10;
 
         //Map constants
         public const double StreetWidth = 5; //m

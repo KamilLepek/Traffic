@@ -8,6 +8,83 @@ namespace Traffic.Physics
 {
     internal class ManeuverService
     {
+        public bool CheckIfVehicleHasToAvoidCollisionOnStreet(Vehicle veh)
+        {
+            if (veh.Place is Street)
+            {
+                foreach (var opponentVehicle in veh.Place.Vehicles)
+                {
+                    double vehicleCentersDistance = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2; //Since we measure position of vehicle from its center
+                    double velocityDeceleratingFactor =
+                        veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length()
+                            ? veh.VelocityVector.Length() - opponentVehicle.VelocityVector.Length()
+                            : 1;
+                    double searchingRectangleLenght =
+                        vehicleCentersDistance + veh.DistanceHeld + veh.VelocityVector.Length() *
+                        ((Constants.VelocityDependentCaution + velocityDeceleratingFactor) * 1f /
+                         Constants.TicksPerSecond);
+                    if (((Street) veh.Place).IsVertical)
+                    {
+                        if (opponentVehicle.Position.X < veh.Position.X + veh.VehicleWidth / 2 && opponentVehicle.Position.X > veh.Position.X - veh.VehicleWidth / 2)
+                        {
+                            if (veh.FrontVector.Y > 0)
+                            {
+                                if (opponentVehicle.Position.Y < veh.Position.Y + searchingRectangleLenght && opponentVehicle.Position.Y > veh.Position.Y)
+                                {
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    {
+                                        veh.Maneuver = Maneuver.AvoidCollision;
+                                        return true;
+                                    }
+                                }
+                            }
+                            else if (veh.FrontVector.Y < 0)
+                            {
+                                if (opponentVehicle.Position.Y > veh.Position.Y - searchingRectangleLenght && opponentVehicle.Position.Y < veh.Position.Y)
+                                {
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    {
+                                        veh.Maneuver = Maneuver.AvoidCollision;
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (opponentVehicle.Position.Y < veh.Position.Y + veh.VehicleWidth / 2 && opponentVehicle.Position.Y > veh.Position.Y - veh.VehicleWidth / 2)
+                        {
+                            if (veh.FrontVector.X > 0)
+                            {
+                                if (opponentVehicle.Position.X < veh.Position.X + searchingRectangleLenght && opponentVehicle.Position.X > veh.Position.X)
+                                {
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    {
+                                        veh.Maneuver = Maneuver.AvoidCollision;
+                                        return true;
+                                    }
+                                }
+                            }
+                            else if (veh.FrontVector.X < 0)
+                            {
+                                if (opponentVehicle.Position.X > veh.Position.X - searchingRectangleLenght && opponentVehicle.Position.X < veh.Position.X)
+                                {
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    {
+                                        veh.Maneuver = Maneuver.AvoidCollision;
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                veh.Maneuver = Maneuver.Accelerate;
+            }
+            return false;
+        }
+
         public bool CheckIfVehicleIsApproachingEndOfStreet(Vehicle veh)
         {
             if (veh.Place is Street &&
@@ -44,7 +121,7 @@ namespace Traffic.Physics
             if (veh.Place is Intersection &&
                 veh.Position.DistanceFrom(new Point(0, 0)) >=
                 Constants.TurnStartingPoint * Constants.IntersectionSize &&
-                veh.Maneuver == Maneuver.DecelerateOnStreet)
+                (veh.Maneuver == Maneuver.DecelerateOnStreet || veh.Maneuver == Maneuver.AvoidCollision))
             {
                 veh.Maneuver = Maneuver.DecelerateOnIntersection;
                 return true;

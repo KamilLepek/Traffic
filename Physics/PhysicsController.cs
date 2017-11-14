@@ -113,9 +113,9 @@ namespace Traffic.Physics
         {
             int horizontal = 0, vertical = 0; //horizontal and vertical diffrence from actual place
             UnitConverter.OrientationToRowColumnDiffrence(or, ref horizontal, ref vertical);
-            ConsoleLogger.Log("R:" + veh.Place.RowNumber + " C:" + veh.Place.ColumnNumber);
             if (veh.Place is Street)
             {
+                veh.Place.Vehicles.Remove(veh);
                 veh.Place = this.world.Intersections.Find(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
                 if (veh.Place == null)
@@ -123,13 +123,16 @@ namespace Traffic.Physics
                     this.KillVehicle(veh);
                     return;
                 }
+                veh.Place.Vehicles.Add(veh);
 
                 this.SetPositionAfterEnteringIntersection(veh, or);
             }
             else if (veh.Place is Intersection)
             {
+                veh.Place.Vehicles.Remove(veh);
                 veh.Place = this.world.Streets.First(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
+                veh.Place.Vehicles.Add(veh);
                 this.SetPositionAfterEnteringStreet(veh, or);
             }
         }

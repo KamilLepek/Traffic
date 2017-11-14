@@ -29,6 +29,8 @@ namespace Traffic.Physics
 
         private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
+            if (maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
+                return;
             if (maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
                 return;
             if (maneuverService.CheckIfVehicleEnteredIntersection(veh))
@@ -48,6 +50,9 @@ namespace Traffic.Physics
         {
             switch (veh.Maneuver)
             {
+                case Maneuver.AvoidCollision:
+                    this.DecelerateToAvoidCollision(veh);
+                    break;
                 case Maneuver.DecelerateOnStreet:
                     this.ComputeDeceleration(veh, true);
                     break;
@@ -70,6 +75,15 @@ namespace Traffic.Physics
                 case Maneuver.CorrectAfterTurning:
                     this.ComputeCorrectionAcceleration(veh);
                     break;
+            }
+        }
+
+        private void DecelerateToAvoidCollision(Vehicle veh)
+        {
+            if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
+            {
+                veh.AccelerationVector.X = -veh.FrontVector.X * (Constants.DriverDecelerationForCollisionAvoidanceMultiplier / veh.FrontVector.Length());
+                veh.AccelerationVector.Y = -veh.FrontVector.Y * (Constants.DriverDecelerationForCollisionAvoidanceMultiplier / veh.FrontVector.Length());
             }
         }
 

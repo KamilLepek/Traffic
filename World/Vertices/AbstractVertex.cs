@@ -5,15 +5,12 @@
     /// </summary>
     public abstract class AbstractVertex : WorldObject
     {
-
-        public AbstractVertex()
+        protected AbstractVertex()
         {
-
         }
 
-        public AbstractVertex(int row, int column) : base (row, column)
+        protected AbstractVertex(int row, int column) : base (row, column)
         {
-
         }
     }
 }

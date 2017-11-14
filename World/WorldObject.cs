@@ -1,4 +1,7 @@
-﻿namespace Traffic.World
+﻿using System.Collections.Generic;
+using Traffic.Vehicles;
+
+namespace Traffic.World
 {
     /// <summary>
     /// Represents an object on the map (Edge or Vertex of our Graph)
@@ -11,15 +14,17 @@
         public int RowNumber { get; protected set; }
         public int ColumnNumber { get; protected set; }
 
-        public WorldObject()
-        {
+        public List<Vehicle> Vehicles { get; protected set; }
 
+        protected WorldObject()
+        {
         }
 
-        public WorldObject(int row, int column)
+        protected WorldObject(int row, int column)
         {
             this.RowNumber = row;
             this.ColumnNumber = column;
+            this.Vehicles = new List<Vehicle>();
         }
     }
 }
