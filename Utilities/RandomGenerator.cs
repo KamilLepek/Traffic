@@ -17,6 +17,14 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
+        /// Returns random integer from [min,max)
+        /// </summary>
+        public static int Int(int min, int max)
+        {
+            return rnd.Next(min, max);
+        }
+
+        /// <summary>
         /// Returns random velocity
         /// </summary>
         public static double Velocity()
