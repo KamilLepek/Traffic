@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Traffic.Utilities;
 using Traffic.World.Edges;
 
@@ -17,6 +16,7 @@ namespace Traffic.World.Vertices
 
         private int lightChangeInterval;
         private int lightChangeTimer;
+
         /// <summary>
         /// If it's true, while all the lights are red, then next green lights will be on horizontal road, else on vertical.
         /// </summary>
@@ -36,7 +36,7 @@ namespace Traffic.World.Vertices
 
         public void PerformTimerTick()
         {
-            this.lightChangeTimer = (this.lightChangeTimer + 1) % lightChangeInterval;
+            this.lightChangeTimer = (this.lightChangeTimer + 1) % this.lightChangeInterval;
             if (this.lightChangeTimer == 0)
             {
                 this.HorizontalTrafficLight = Light.Red;
