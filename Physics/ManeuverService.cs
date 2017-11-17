@@ -19,7 +19,7 @@ namespace Traffic.Physics
                         veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length()
                             ? veh.VelocityVector.Length() - opponentVehicle.VelocityVector.Length()
                             : 1;
-                    double searchingRectangleLenght =
+                    double searchingRectangleLength =
                         vehicleCentersDistance + veh.DistanceHeld + veh.VelocityVector.Length() *
                         ((Constants.VelocityDependentCaution + velocityDeceleratingFactor) * 1f /
                          Constants.TicksPerSecond);
@@ -29,7 +29,7 @@ namespace Traffic.Physics
                         {
                             if (veh.FrontVector.Y > 0)
                             {
-                                if (opponentVehicle.Position.Y < veh.Position.Y + searchingRectangleLenght && opponentVehicle.Position.Y > veh.Position.Y)
+                                if (opponentVehicle.Position.Y < veh.Position.Y + searchingRectangleLength && opponentVehicle.Position.Y > veh.Position.Y)
                                 {
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
@@ -40,7 +40,7 @@ namespace Traffic.Physics
                             }
                             else if (veh.FrontVector.Y < 0)
                             {
-                                if (opponentVehicle.Position.Y > veh.Position.Y - searchingRectangleLenght && opponentVehicle.Position.Y < veh.Position.Y)
+                                if (opponentVehicle.Position.Y > veh.Position.Y - searchingRectangleLength && opponentVehicle.Position.Y < veh.Position.Y)
                                 {
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
@@ -57,7 +57,7 @@ namespace Traffic.Physics
                         {
                             if (veh.FrontVector.X > 0)
                             {
-                                if (opponentVehicle.Position.X < veh.Position.X + searchingRectangleLenght && opponentVehicle.Position.X > veh.Position.X)
+                                if (opponentVehicle.Position.X < veh.Position.X + searchingRectangleLength && opponentVehicle.Position.X > veh.Position.X)
                                 {
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
@@ -68,7 +68,7 @@ namespace Traffic.Physics
                             }
                             else if (veh.FrontVector.X < 0)
                             {
-                                if (opponentVehicle.Position.X > veh.Position.X - searchingRectangleLenght && opponentVehicle.Position.X < veh.Position.X)
+                                if (opponentVehicle.Position.X > veh.Position.X - searchingRectangleLength && opponentVehicle.Position.X < veh.Position.X)
                                 {
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
