@@ -4,8 +4,8 @@ using System.Drawing;
 using Traffic.World.Edges;
 using Traffic.World.Vertices;
 using Traffic.Vehicles;
-using Traffic.Utilities;
 using System;
+using Traffic.Utilities;
 
 namespace Traffic.Graphics
 {
@@ -74,18 +74,75 @@ namespace Traffic.Graphics
 
             GL.Begin(PrimitiveType.Polygon);
             GL.Color3(Color.Gray);
-            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 2);
-            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 2);
-            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 6);
-            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 2);
-            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 6, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y - Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y - Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y + Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y + Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y + Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y + Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y + Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.IntersectionSize / 2, 0.0f, intersectionCoords.Y - Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y - Constants.StreetWidth / 2);
+            GL.Vertex3(intersectionCoords.X + Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 2);
+            GL.Vertex3(intersectionCoords.X - Constants.StreetWidth / 2, 0.0f, intersectionCoords.Y - Constants.IntersectionSize / 2);
+            GL.End();
+
+            this.DrawTrafficLights(intersectionCoords, intersection.VerticalTrafficLight, intersection.HorizontalTrafficLight);
+        }
+
+        private void DrawTrafficLights(Vector2 intersectionCoords, Light verticalLight, Light horizontalLight)
+        {
+            this.GlDrawTrafficLight(new Vector2((float)(intersectionCoords.X + Constants.StreetWidth + Constants.TrafficLightWidth / 2),
+                (float)(intersectionCoords.Y + Constants.StreetWidth + Constants.TrafficLightHeight / 2)), 0, verticalLight);
+            this.GlDrawTrafficLight(new Vector2((float)(intersectionCoords.X + Constants.StreetWidth + Constants.TrafficLightHeight / 2),
+                (float)(intersectionCoords.Y - Constants.StreetWidth - Constants.TrafficLightWidth / 2)), 90, horizontalLight);
+            this.GlDrawTrafficLight(new Vector2((float)(intersectionCoords.X - Constants.StreetWidth - Constants.TrafficLightWidth / 2),
+                (float)(intersectionCoords.Y - Constants.StreetWidth - Constants.TrafficLightHeight / 2)), 180, verticalLight);
+            this.GlDrawTrafficLight(new Vector2((float)(intersectionCoords.X - Constants.StreetWidth - Constants.TrafficLightHeight / 2),
+                (float)(intersectionCoords.Y + Constants.StreetWidth + Constants.TrafficLightWidth / 2)), 270, horizontalLight);
+        }
+
+        private void GlDrawTrafficLight(Vector2 center, double rotationAngle, Light light)
+        {
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.PushMatrix();
+            GL.Translate(center.X, 0, center.Y);
+            GL.Rotate(rotationAngle, Vector3d.UnitY);
+
+            GL.Begin(PrimitiveType.Polygon);
+            GL.Color3(Color.Gray);
+            GL.Vertex3(-Constants.TrafficLightWidth / 2, 0.0f, -Constants.TrafficLightHeight / 2);
+            GL.Vertex3(Constants.TrafficLightWidth / 2, 0.0f, -Constants.TrafficLightHeight / 2);
+            GL.Vertex3(Constants.TrafficLightWidth / 2, 0.0f, Constants.TrafficLightHeight / 2);
+            GL.Vertex3(-Constants.TrafficLightWidth / 2, 0.0f, Constants.TrafficLightHeight / 2);
+            GL.End();
+
+            var topLightColor = light == Light.Green ? Color.Black : Color.Red;
+            var bottomLightColor = light == Light.Green ? Color.Green : Color.Black;
+
+            GL.PushMatrix();
+            GL.Translate(0, 0, -Constants.TrafficLightHeight / 4);
+            this.GlDrawCircle(Constants.TrafficLightHeight / 6, topLightColor);
+            GL.PopMatrix();
+
+            GL.PushMatrix();
+            GL.Translate(0, 0, Constants.TrafficLightHeight / 4);
+            this.GlDrawCircle(Constants.TrafficLightHeight / 6, bottomLightColor);
+            GL.PopMatrix();
+
+            GL.PopMatrix();
+        }
+
+        private void GlDrawCircle(double radius, Color color)
+        {
+            GL.Begin(PrimitiveType.TriangleFan);
+            GL.Color3(color);
+            for (int i = 0; i < Constants.AmountOfLinesInCircle; i++)
+            {
+                var angle = 2 * Math.PI * i / Constants.AmountOfLinesInCircle;
+                GL.Vertex3(radius * Math.Cos(angle), 0, radius * Math.Sin(angle));
+            }
             GL.End();
         }
 
@@ -94,10 +151,10 @@ namespace Traffic.Graphics
             var placeCoordinates = new Vector2();
 
             if (vehicle.Place is Street)
-                placeCoordinates = this.GetStreetCoordinates((Street) vehicle.Place);
+                placeCoordinates = this.GetStreetCoordinates((Street)vehicle.Place);
             else if (vehicle.Place is Intersection)
                 placeCoordinates = this.GetIntersectionCoordinates((Intersection)vehicle.Place);
-            else 
+            else
                 return;
 
             double rotationAngle = vehicle.FrontVector.GetRotationAngle();
@@ -106,7 +163,7 @@ namespace Traffic.Graphics
             GL.PushMatrix();
             GL.Translate(placeCoordinates.X + vehicle.Position.X, 0, placeCoordinates.Y + vehicle.Position.Y);
             GL.Rotate(rotationAngle, Vector3d.UnitY);
-                
+
             GL.Begin(PrimitiveType.Quads);
             GL.Color3(Color.Red);
             GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);

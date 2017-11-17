@@ -18,9 +18,15 @@
         public const double StreetWidth = 5; //m
         public const double StreetLength = 500; //m
         public const double IntersectionSize = 75; //m width/height
+        public const double TrafficLightWidth = 3; //m
+        public const double TrafficLightHeight = 7; //m
 
         //Time interval in which we spawn new vehicles if there is a need
         public const int TimeSpawnInterval = 1000; //ms
+
+        public const int MinLightChangeInterval = 20; // s
+        public const int MaxLightChangeInterval = 60; // s
+        public const int AllLightsRedTime = 3; //s
 
         public const int TicksPerSecond = 120;
 
@@ -37,11 +43,12 @@
         public const double CameraMouseMovementSpeed = 0.003;
         public const double CameraZoomSpeed = 40.0;
         public const double InitialCameraDistance = -300.0;
+        public const int AmountOfLinesInCircle = 50;
 
         // Maneuver constants
 
         // how far (fraction of intersection size) from the intersection center should the driver start turning
-        public const double TurnStartingPoint = 0.3;
+        public const double TurnStartingPoint = 0.07;
 
         // how far (fraction of street length) from the beginning of street should the driver start breaking
         public const double BreakStartingPoint = 0.85;

@@ -28,6 +28,11 @@ namespace Traffic.Physics
                 this.UpdateVelocity(this.world.Vehicles[i]);
                 this.MoveVehicle(this.world.Vehicles[i]);
             }
+
+            foreach (var intersection in this.world.Intersections)
+            {
+                intersection.PerformTimerTick();
+            }
         }
 
         /// <summary>
