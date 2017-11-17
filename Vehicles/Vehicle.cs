@@ -81,9 +81,9 @@ namespace Traffic.Vehicles
         public virtual void PrintStatistics()
         {
             Console.WriteLine("------------------------");
-            Console.WriteLine("Predkosc maksymalna: {0} km/h", MaximumVelocity);
-            Console.WriteLine("Czas reakcji: {0} ms", ReactionTime);
-            Console.WriteLine("Zachowywana odleglosc: {0} m", DistanceHeld);
+            Console.WriteLine("Predkosc maksymalna: {0} km/h", this.MaximumVelocity);
+            Console.WriteLine("Czas reakcji: {0} ms", this.ReactionTime);
+            Console.WriteLine("Zachowywana odleglosc: {0} m", this.DistanceHeld);
         }
 
         protected void SetInitialPositionAndVelocityVector(EndPoint spawnPlace, double vehicleLength, double vehicleWidth, double value = Constants.InitialVelocity)
