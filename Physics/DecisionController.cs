@@ -29,7 +29,7 @@ namespace Traffic.Physics
 
         private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
-            if (maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
+            if (this.maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
                 return;
             if (this.maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
                 return;
@@ -179,8 +179,8 @@ namespace Traffic.Physics
             var speed = veh.VelocityVector.Length();
             veh.VelocityVector.X = desiredDirection.X * speed;
             veh.VelocityVector.Y = desiredDirection.Y * speed;
-            veh.FrontVector.X = veh.VelocityVector.X;
-            veh.FrontVector.Y = veh.VelocityVector.Y;
+            veh.FrontVector.X = veh.VelocityVector.X / veh.VelocityVector.Length();
+            veh.FrontVector.Y = veh.VelocityVector.Y / veh.VelocityVector.Length();
             veh.AccelerationVector.X = 0;
             veh.AccelerationVector.Y = 0;
         }

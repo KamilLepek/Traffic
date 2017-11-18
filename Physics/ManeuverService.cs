@@ -34,6 +34,7 @@ namespace Traffic.Physics
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
+                                        veh.VehicleInFrontOfUs = opponentVehicle;
                                         return true;
                                     }
                                 }
@@ -45,6 +46,7 @@ namespace Traffic.Physics
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
+                                        veh.VehicleInFrontOfUs = opponentVehicle;
                                         return true;
                                     }
                                 }
@@ -62,6 +64,7 @@ namespace Traffic.Physics
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
+                                        veh.VehicleInFrontOfUs = opponentVehicle;
                                         return true;
                                     }
                                 }
@@ -73,6 +76,7 @@ namespace Traffic.Physics
                                     if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
+                                        veh.VehicleInFrontOfUs = opponentVehicle;
                                         return true;
                                     }
                                 }
@@ -81,6 +85,7 @@ namespace Traffic.Physics
                     }
                 }
                 veh.Maneuver = Maneuver.Accelerate;
+                veh.VehicleInFrontOfUs = null;
             }
             return false;
         }

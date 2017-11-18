@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
@@ -47,8 +48,8 @@ namespace Traffic.Physics
             // Don't update frontVector if velocity is zero - vehicle has stopped
             if (Math.Abs(veh.VelocityVector.X) > Constants.DoubleErrorTolerance || Math.Abs(veh.VelocityVector.Y) > Constants.DoubleErrorTolerance)
             {
-                veh.FrontVector.X = veh.VelocityVector.X;
-                veh.FrontVector.Y = veh.VelocityVector.Y;
+                veh.FrontVector.X = veh.VelocityVector.X / veh.VelocityVector.Length();
+                veh.FrontVector.Y = veh.VelocityVector.Y / veh.VelocityVector.Length();
             }
         }
 
