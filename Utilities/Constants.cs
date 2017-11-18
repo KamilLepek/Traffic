@@ -52,5 +52,7 @@
 
         // how far (fraction of street length) from the beginning of street should the driver start breaking
         public const double BreakStartingPoint = 0.85;
+
+        public const int NumberOfTextures = 5;
     }
 }

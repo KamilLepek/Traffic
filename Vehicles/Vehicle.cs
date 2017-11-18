@@ -65,7 +65,9 @@ namespace Traffic.Vehicles
 
         public Point InitialTurningDirection { get; set; }
 
-        protected Vehicle(double v, double t, double dist, EndPoint spawnPlace, List<Decision> initialRoute, EndPoint finishPoint)
+        public int TextureAssigned { get; private set; }
+
+        protected Vehicle(double v, double t, double dist, EndPoint spawnPlace, List<Decision> initialRoute, EndPoint finishPoint, int textureAssigned)
         {
             this.Place = spawnPlace;
             spawnPlace.IsOccupied = true;
@@ -76,6 +78,7 @@ namespace Traffic.Vehicles
             this.Route = initialRoute;
             this.AccelerationVector = new Point(0,0);
             this.Maneuver = Maneuver.Accelerate;
+            this.TextureAssigned = textureAssigned;
         }
 
         public virtual void PrintStatistics()

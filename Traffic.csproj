@@ -57,6 +57,7 @@
     <Compile Include="Physics\ManeuverService.cs" />
     <Compile Include="Physics\PhysicsController.cs" />
     <Compile Include="Physics\SimulationController.cs" />
+    <Compile Include="Graphics\TexturesLoader.cs" />
     <Compile Include="Traffic.cs" />
     <Compile Include="Utilities\ConsoleLogger.cs" />
     <Compile Include="Utilities\Constants.cs" />
@@ -79,6 +80,13 @@
     <None Include="App.config" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Textures\Car1.png" />
+    <Content Include="Textures\Car2.png" />
+    <Content Include="Textures\Car3.png" />
+    <Content Include="Textures\Car4.png" />
+    <Content Include="Textures\Car5.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

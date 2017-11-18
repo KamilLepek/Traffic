@@ -33,8 +33,8 @@ namespace Traffic.Utilities
 
                 //w domyśle tutaj można jeszcze losować typ obiektu jaki będziemy dodawać do listy, np Car/Bicycle/BattlElephant
                 vehicles.Add(new Car(RandomGenerator.Velocity(), RandomGenerator.ReactionTime(),
-                        RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(), 
-                        spawnPoint, initialRoute, finishPoint));
+                        RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(),
+                        spawnPoint, initialRoute, finishPoint, RandomGenerator.Int(Constants.NumberOfTextures)));
                 foreach (var decision in initialRoute)
                 {
                     ConsoleLogger.Log(decision.ToString());

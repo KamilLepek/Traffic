@@ -25,6 +25,7 @@ namespace Traffic.Graphics
             this.updateWorldHandler = updateWorldHandler;
             this.drawingService = new DrawingService();
             this.cameraService = new CameraService();
+            TexturesLoader.InitTextures();
         }
 
         /// <summary>
