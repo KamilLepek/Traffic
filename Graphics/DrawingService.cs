@@ -166,7 +166,7 @@ namespace Traffic.Graphics
 
             GL.Enable(EnableCap.Texture2D);
 
-            GL.BindTexture(TextureTarget.Texture2D, TextureLoader.TextureList[vehicle.TextureAssigned]);
+            GL.BindTexture(TextureTarget.Texture2D, TexturesLoader.TexturesList[vehicle.TextureAssigned]);
 
             GL.Begin(PrimitiveType.Quads);
 
@@ -184,6 +184,7 @@ namespace Traffic.Graphics
 
             GL.End();
             GL.Disable(EnableCap.Texture2D);
+           
 
             GL.PopMatrix();
         }

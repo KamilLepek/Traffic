@@ -7,24 +7,27 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Traffic.Graphics
 {
-    internal static class TextureLoader
+    internal static class TexturesLoader
     {
-        public static List<int> TextureList { get; private set; }
+        /// <summary>
+        /// List of unique id of textures
+        /// </summary>
+        public static List<int> TexturesList { get; private set; }
 
         public static int LoadTexture(string path)
         {
-            int id = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, id);
+            int textureId = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, textureId);
             string pathToFile = @"../../Textures/" + path;
-            var bmp = new Bitmap(pathToFile);
-            var data = bmp.LockBits(
-                new Rectangle(0, 0, bmp.Width, bmp.Height),
+            var bitmap = new Bitmap(pathToFile);
+            var bitmapDataLockedMemory = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
                 ImageLockMode.ReadOnly,
                 PixelFormat.Format32bppArgb);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height,
-                0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapDataLockedMemory.Width, bitmapDataLockedMemory.Height,
+                0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapDataLockedMemory.Scan0);
 
-            bmp.UnlockBits(data);
+            bitmap.UnlockBits(bitmapDataLockedMemory);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
                 (int) TextureWrapMode.Clamp);
@@ -38,14 +41,14 @@ namespace Traffic.Graphics
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
                 (int) TextureMagFilter.Linear);
 
-            return id;
+            return textureId;
         }
 
-        public static void TextureInit()
+        public static void InitTextures()
         {
-            TextureList = new List<int>();
+            TexturesList = new List<int>();
             for (int i = 0; i < Constants.NumberOfTextures; i++)
-                TextureList.Add(LoadTexture(string.Format("Car{0}.png", i + 1)));
+                TexturesList.Add(LoadTexture(string.Format("Car{0}.png", i + 1)));
         }
     }
 }

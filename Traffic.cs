@@ -12,7 +12,6 @@ namespace Traffic
             int horizontalLines = 5;
             int desiredNumberOfVehicles = 1000;
 
-
             var simulationController =
                 new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
             simulationController.InitSimulation();
