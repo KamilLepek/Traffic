@@ -62,7 +62,7 @@ namespace Traffic.World
             }
 
             //dodajemy endopinty
-            foreach(var street in Streets)
+            foreach(var street in this.Streets)
             {
                 bool IsTopOrBottomEnd = (street.ColumnNumber % 2 == 0 && (street.RowNumber == 1 || street.RowNumber == 2 * (a + 1) - 1));
                 bool IsLeftOrRightEnd = (street.RowNumber % 2 == 0 && (street.ColumnNumber == 1 || street.ColumnNumber == 2 * (b + 1) - 1));
@@ -82,7 +82,7 @@ namespace Traffic.World
                 {
                     var intersection = new Intersection(2 * (i + 1), 2 * (j + 1));
                     this.Intersections.Add(intersection);
-                    foreach(var street in Streets)
+                    foreach(var street in this.Streets)
                     {
                         if (Math.Abs(street.ColumnNumber - intersection.ColumnNumber) + Math.Abs(street.RowNumber - intersection.RowNumber) == 1)
                         {

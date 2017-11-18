@@ -49,7 +49,7 @@ namespace Traffic.Graphics
         public void Move(Key keyboardKey)
         {
             Vector3 translationVector;
-            var movementSpeed = (float)(Constants.CameraKeysMovementSpeed * cameraDistance);
+            var movementSpeed = (float)(Constants.CameraKeysMovementSpeed * this.cameraDistance);
             switch (keyboardKey)
             {
                 case Key.Up:
@@ -77,8 +77,8 @@ namespace Traffic.Graphics
         public void Move(MouseMoveEventArgs eventArgs)
         {
             GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(-eventArgs.XDelta * Constants.CameraMouseMovementSpeed * cameraDistance,
-                0.0f, -eventArgs.YDelta * Constants.CameraMouseMovementSpeed * cameraDistance);
+            GL.Translate(-eventArgs.XDelta * Constants.CameraMouseMovementSpeed * this.cameraDistance,
+                0.0f, -eventArgs.YDelta * Constants.CameraMouseMovementSpeed * this.cameraDistance);
         }
     }
 }

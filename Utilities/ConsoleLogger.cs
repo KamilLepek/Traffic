@@ -11,7 +11,7 @@ namespace Traffic.Utilities
         public static void Log(string message)
         {
             //ConsoleLogger.LogOnConsole(message);//nie chce mi się tego ustawiać względem ekranu więc wolę logi w pliku, ale zostawiam, wystarczy odkomentować
-            ConsoleLogger.LogToFile(message);
+            LogToFile(message);
         }
 
         private static void LogOnConsole(string message)
@@ -23,8 +23,7 @@ namespace Traffic.Utilities
 
         private static void LogToFile(string message)
         {
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(Constants.LogFile, true))//prawilnie
+            using (var file = new StreamWriter(Constants.LogFile, true))//prawilnie
             {
                 file.WriteLine(message);
             }
