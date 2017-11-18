@@ -29,15 +29,15 @@ namespace Traffic.Physics
 
         private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
-            if (maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
+            if (this.maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
                 return;
-            if (maneuverService.CheckIfVehicleEnteredIntersection(veh))
+            if (this.maneuverService.CheckIfVehicleEnteredIntersection(veh))
                 return;
-            if (maneuverService.CheckIfVehicleEnteredMiddleOfIntersection(veh))
+            if (this.maneuverService.CheckIfVehicleEnteredMiddleOfIntersection(veh))
                 return;
-            if (maneuverService.CheckIfVehicleLeftIntersection(veh))
+            if (this.maneuverService.CheckIfVehicleLeftIntersection(veh))
                 return;
-            maneuverService.CheckIfVehicleLeftMiddleOfIntersection(veh);
+            this.maneuverService.CheckIfVehicleLeftMiddleOfIntersection(veh);
         }
 
         /// <summary>

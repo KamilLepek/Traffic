@@ -35,9 +35,9 @@ namespace Traffic.Graphics
         {
             base.OnLoad(e);
 
-            Title = "Traffic Simulation";
+            this.Title = "Traffic Simulation";
             GL.ClearColor(Color.CornflowerBlue);
-            cameraService.InitCamera();
+            this.cameraService.InitCamera();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Traffic.Graphics
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            updateWorldHandler();
+            this.updateWorldHandler();
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Traffic.Graphics
 
             GL.MatrixMode(MatrixMode.Modelview);
 
-            drawingService.GlDrawAxes();
+            this.drawingService.GlDrawAxes();
 
             foreach (var street in this.gameWorld.Streets)
                 this.drawingService.GlDrawStreet(street);
@@ -71,7 +71,7 @@ namespace Traffic.Graphics
             foreach (var vehicle in this.gameWorld.Vehicles)
                 this.drawingService.GlDrawVehicle(vehicle);
 
-            SwapBuffers();
+            this.SwapBuffers();
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace Traffic.Graphics
         {
             base.OnResize(e);
 
-            GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
+            GL.Viewport(this.ClientRectangle.X, this.ClientRectangle.Y, this.ClientRectangle.Width, this.ClientRectangle.Height);
 
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 1.0f, 6400.0f);
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, this.Width / (float) this.Height, 1.0f, 6400.0f);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
         }
@@ -94,7 +94,7 @@ namespace Traffic.Graphics
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             base.OnKeyDown(e);
-            cameraService.Move(e.Key);
+            this.cameraService.Move(e.Key);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Traffic.Graphics
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
-            cameraService.Zoom(e.Delta > 0);
+            this.cameraService.Zoom(e.Delta > 0);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Traffic.Graphics
         {
             base.OnMouseMove(e);
             if (this.mousePressed)
-                cameraService.Move(e);
+                this.cameraService.Move(e);
         }
     }
 }
