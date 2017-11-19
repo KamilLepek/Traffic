@@ -11,12 +11,14 @@
         public const double MinimumDistanceHeld = 5; //m
         public const double DistanceHeldInterval = 10; //m
         public const double InitialVelocity = 30;
-        public const double BeforeEnteringIntersectionDesiredVelocity = 45;
+        public const double BeforeEnteringIntersectionDesiredVelocity = 40;
         public const double IntersectionDesiredVelocity = 25;
         public const double DriverAcceleratingOnStraightRoadMultiplier = 15;
-        public const double DriverDecelerationMultiplier = 80;
-        public const double DriverDecelerationForCollisionAvoidanceMultiplier = 160;
+        public const double VelocityDeceleratingFactorOnStreet = 0.8;
+        public const double VelocityDeceleratingFactorOnIntersection = 1.2;
         public const double VelocityDependentCaution = 10;
+        public const double VelocityDifferenceDeceleratingFactor = 10;
+        public const double DistanceDifferenceDeceleratingFactor = 10;
 
         //Map constants
         public const double StreetWidth = 5; //m

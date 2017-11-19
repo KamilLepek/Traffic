@@ -82,8 +82,14 @@ namespace Traffic.Physics
         {
             if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
             {
-                veh.AccelerationVector.X = -veh.FrontVector.X * (Constants.DriverDecelerationForCollisionAvoidanceMultiplier / veh.FrontVector.Length());
-                veh.AccelerationVector.Y = -veh.FrontVector.Y * (Constants.DriverDecelerationForCollisionAvoidanceMultiplier / veh.FrontVector.Length());
+                double velocityDifference = veh.VelocityVector.Length() - veh.VehicleInFrontOfUs.VelocityVector.Length();
+                if (velocityDifference < 0)
+                    velocityDifference = 1;
+                double distanceBetween = new Point(veh.Position.X - veh.VehicleInFrontOfUs.Position.X, veh.Position.Y - veh.VehicleInFrontOfUs.Position.Y).Length();
+                double multiplyingFactor = velocityDifference * Constants.VelocityDifferenceDeceleratingFactor +
+                                            distanceBetween * Constants.DistanceDifferenceDeceleratingFactor;
+                veh.AccelerationVector.X = -veh.FrontVector.X * multiplyingFactor;
+                veh.AccelerationVector.Y = -veh.FrontVector.Y * multiplyingFactor;
             }
         }
 
@@ -93,9 +99,18 @@ namespace Traffic.Physics
         /// <param name="isStreet">true if we are decelerating on street, false if on intersection</param>
         private void ComputeDeceleration(Vehicle veh, bool isStreet)
         {
-            double desiredVelocity = isStreet
-                ? Constants.BeforeEnteringIntersectionDesiredVelocity
-                : Constants.IntersectionDesiredVelocity;
+            double desiredVelocity, driverDecelerationMultiplier;
+            if (isStreet)
+            {
+                desiredVelocity = Constants.BeforeEnteringIntersectionDesiredVelocity;
+                driverDecelerationMultiplier = veh.VelocityVector.Length() * Constants.VelocityDeceleratingFactorOnStreet;
+            }
+            else
+            {
+                desiredVelocity = Constants.IntersectionDesiredVelocity;
+                driverDecelerationMultiplier = veh.VelocityVector.Length() * Constants.VelocityDeceleratingFactorOnIntersection;
+            }
+
             if (veh.VelocityVector.Length() <= desiredVelocity)
             {
                 veh.AccelerationVector.X = 0;
@@ -103,8 +118,8 @@ namespace Traffic.Physics
             }
             else
             {
-                veh.AccelerationVector.X = -veh.FrontVector.X * (Constants.DriverDecelerationMultiplier / veh.FrontVector.Length());
-                veh.AccelerationVector.Y = -veh.FrontVector.Y * (Constants.DriverDecelerationMultiplier / veh.FrontVector.Length());
+                veh.AccelerationVector.X = -veh.FrontVector.X * driverDecelerationMultiplier;
+                veh.AccelerationVector.Y = -veh.FrontVector.Y * driverDecelerationMultiplier;
             }
         }
 
@@ -120,8 +135,8 @@ namespace Traffic.Physics
             }
             else if (veh.VelocityVector.Length() < veh.MaximumVelocity)
             {
-                veh.AccelerationVector.X = veh.FrontVector.X * (Constants.DriverAcceleratingOnStraightRoadMultiplier / veh.FrontVector.Length());
-                veh.AccelerationVector.Y = veh.FrontVector.Y * (Constants.DriverAcceleratingOnStraightRoadMultiplier / veh.FrontVector.Length());
+                veh.AccelerationVector.X = veh.FrontVector.X * Constants.DriverAcceleratingOnStraightRoadMultiplier;
+                veh.AccelerationVector.Y = veh.FrontVector.Y * Constants.DriverAcceleratingOnStraightRoadMultiplier;
             }
         }
 
