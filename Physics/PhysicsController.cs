@@ -44,7 +44,9 @@ namespace Traffic.Physics
             veh.VelocityVector.X += veh.AccelerationVector.X * (1f / Constants.TicksPerSecond);
             veh.VelocityVector.Y += veh.AccelerationVector.Y * (1f / Constants.TicksPerSecond);
 
-            //Handle situation when we had decelerated that much that we changed our direction to opposite (moving backwards)
+            //Handle situation when we have decelerated so much that we changed our direction to opposite (moving backwards)
+            //TODO:niby zmienia się o 180, ale na skrzyżowaniach może być lekko mniej, bo przyspieszenie nie musi być styczne do wektora prędkości, 
+            //TODO:tak więc dałem 150 do reuse, ale zrobisz z tym co uważasz np dać stałą, albo jakoś to wyliczyć jeśli chcesz tego używać na skrzyżowaniach
             if (veh.VelocityVector.AngleFrom(veh.FrontVector) > 150)
             {
                 veh.VelocityVector.X = 0;
