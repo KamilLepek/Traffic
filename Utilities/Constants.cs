@@ -8,17 +8,20 @@
         public const double MinimumMaximalVelocity = 40;
         public const double MaximumVelocity = 120;
         public const double MaximumReactionTime = 500;
-        public const double MinimumDistanceHeld = 5; //m
-        public const double DistanceHeldInterval = 10; //m
+        public const double MinimumDistanceHeld = 3; //m
+        public const double DistanceHeldInterval = 5; //m
         public const double InitialVelocity = 30;
         public const double BeforeEnteringIntersectionDesiredVelocity = 40;
         public const double IntersectionDesiredVelocity = 25;
         public const double DriverAcceleratingOnStraightRoadMultiplier = 15;
         public const double VelocityDeceleratingFactorOnStreet = 0.8;
         public const double VelocityDeceleratingFactorOnIntersection = 1.2;
-        public const double VelocityDependentCaution = 10;
-        public const double VelocityDifferenceDeceleratingFactor = 10;
-        public const double DistanceDifferenceDeceleratingFactor = 10;
+        public const double VelocityDependentCaution = 5;
+        public const double VelocityDifferenceDependentCaution = 20;
+        public const double VelocityDifferenceDeceleratingFactor = 2;
+        public const double DistanceDifferenceDeceleratingFactor = 1;
+        public const double DistanceToOmmitDistanceDifferenceDeceleratingFactor = 100;
+        public const double DesiredVelocityMargin = 5;
 
         //Map constants
         public const double StreetWidth = 5; //m

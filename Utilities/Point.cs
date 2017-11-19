@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Traffic.Utilities
 {
@@ -74,6 +76,22 @@ namespace Traffic.Utilities
         {
             this.X *= (length / this.Length());
             this.Y *= (length / this.Length());
+        }
+
+        /// <summary>
+        /// Returns the closest in terms of angle horizontal or vertical direction
+        /// </summary>
+        public Point GetDesiredDirection()
+        {
+            var acceptedDirections = new List<Point>()
+            {
+                new Point(1,0),
+                new Point(-1,0),
+                new Point(0,1),
+                new Point(0,-1)
+            };
+            return acceptedDirections.First(d =>
+                d.AngleFrom(this) == acceptedDirections.Min(p => p.AngleFrom(this)));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
@@ -44,6 +43,13 @@ namespace Traffic.Physics
         {
             veh.VelocityVector.X += veh.AccelerationVector.X * (1f / Constants.TicksPerSecond);
             veh.VelocityVector.Y += veh.AccelerationVector.Y * (1f / Constants.TicksPerSecond);
+
+            //Handle situation when we had decelerated that much that we changed our direction to opposite (moving backwards)
+            if (veh.VelocityVector.AngleFrom(veh.FrontVector) > 150)
+            {
+                veh.VelocityVector.X = 0;
+                veh.VelocityVector.Y = 0;
+            }
 
             // Don't update frontVector if velocity is zero - vehicle has stopped
             if (Math.Abs(veh.VelocityVector.X) > Constants.DoubleErrorTolerance || Math.Abs(veh.VelocityVector.Y) > Constants.DoubleErrorTolerance)

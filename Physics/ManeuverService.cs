@@ -14,15 +14,23 @@ namespace Traffic.Physics
             {
                 foreach (var opponentVehicle in veh.Place.Vehicles)
                 {
-                    double vehicleCentersDistance = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2; //Since we measure position of vehicle from its center
+                    //Since we measure position of vehicle from its center this is the sum of half vehicle lengths
+                    double vehiclesLength = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2; 
+
+                    //Diffrence of velocities or 1 if its negative
                     double velocityDeceleratingFactor =
                         veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length()
                             ? veh.VelocityVector.Length() - opponentVehicle.VelocityVector.Length()
                             : 1;
+
+                    //Lenght of rectangle we look for the opponent vehicle, it scales with the velocityDeceleratingFactor and our velocity
                     double searchingRectangleLength =
-                        vehicleCentersDistance + veh.DistanceHeld + veh.VelocityVector.Length() *
-                        ((Constants.VelocityDependentCaution + velocityDeceleratingFactor) * 1f /
-                         Constants.TicksPerSecond);
+                        vehiclesLength + veh.DistanceHeld + veh.VelocityVector.Length() * Constants.VelocityDependentCaution / Constants.TicksPerSecond +
+                        velocityDeceleratingFactor * Constants.VelocityDifferenceDependentCaution / Constants.TicksPerSecond;
+
+                    double actualDistanceBetweenVehicles = new Point(veh.Position.X - opponentVehicle.Position.X,
+                        veh.Position.Y - opponentVehicle.Position.Y).Length() - vehiclesLength;
+
                     if (((Street) veh.Place).IsVertical)
                     {
                         if (opponentVehicle.Position.X < veh.Position.X + veh.VehicleWidth / 2 && opponentVehicle.Position.X > veh.Position.X - veh.VehicleWidth / 2)
@@ -31,7 +39,7 @@ namespace Traffic.Physics
                             {
                                 if (opponentVehicle.Position.Y < veh.Position.Y + searchingRectangleLength && opponentVehicle.Position.Y > veh.Position.Y)
                                 {
-                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length() || actualDistanceBetweenVehicles < veh.DistanceHeld)
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
                                         veh.VehicleInFrontOfUs = opponentVehicle;
@@ -43,7 +51,7 @@ namespace Traffic.Physics
                             {
                                 if (opponentVehicle.Position.Y > veh.Position.Y - searchingRectangleLength && opponentVehicle.Position.Y < veh.Position.Y)
                                 {
-                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length() || actualDistanceBetweenVehicles < veh.DistanceHeld)
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
                                         veh.VehicleInFrontOfUs = opponentVehicle;
@@ -61,7 +69,7 @@ namespace Traffic.Physics
                             {
                                 if (opponentVehicle.Position.X < veh.Position.X + searchingRectangleLength && opponentVehicle.Position.X > veh.Position.X)
                                 {
-                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length() || actualDistanceBetweenVehicles < veh.DistanceHeld)
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
                                         veh.VehicleInFrontOfUs = opponentVehicle;
@@ -73,7 +81,7 @@ namespace Traffic.Physics
                             {
                                 if (opponentVehicle.Position.X > veh.Position.X - searchingRectangleLength && opponentVehicle.Position.X < veh.Position.X)
                                 {
-                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length())
+                                    if (veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length() || actualDistanceBetweenVehicles < veh.DistanceHeld)
                                     {
                                         veh.Maneuver = Maneuver.AvoidCollision;
                                         veh.VehicleInFrontOfUs = opponentVehicle;

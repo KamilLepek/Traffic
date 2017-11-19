@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
@@ -85,9 +83,18 @@ namespace Traffic.Physics
                 double velocityDifference = veh.VelocityVector.Length() - veh.VehicleInFrontOfUs.VelocityVector.Length();
                 if (velocityDifference < 0)
                     velocityDifference = 1;
-                double distanceBetween = new Point(veh.Position.X - veh.VehicleInFrontOfUs.Position.X, veh.Position.Y - veh.VehicleInFrontOfUs.Position.Y).Length();
+                double distanceBetween =
+                    new Point(veh.Position.X - veh.VehicleInFrontOfUs.Position.X,
+                        veh.Position.Y - veh.VehicleInFrontOfUs.Position.Y).Length() - veh.VehicleLength / 2 -
+                    veh.VehicleInFrontOfUs.VehicleLength / 2;
+
+                //We should decelerate more if we are closer to collision thats why we "invert"the distance
+                double invertedDistance =
+                    Constants.DistanceToOmmitDistanceDifferenceDeceleratingFactor - distanceBetween;
+                invertedDistance = invertedDistance > 0 ? invertedDistance : 0;
+
                 double multiplyingFactor = velocityDifference * Constants.VelocityDifferenceDeceleratingFactor +
-                                            distanceBetween * Constants.DistanceDifferenceDeceleratingFactor;
+                                            invertedDistance * Constants.DistanceDifferenceDeceleratingFactor;
                 veh.AccelerationVector.X = -veh.FrontVector.X * multiplyingFactor;
                 veh.AccelerationVector.Y = -veh.FrontVector.Y * multiplyingFactor;
             }
@@ -111,15 +118,23 @@ namespace Traffic.Physics
                 driverDecelerationMultiplier = veh.VelocityVector.Length() * Constants.VelocityDeceleratingFactorOnIntersection;
             }
 
-            if (veh.VelocityVector.Length() <= desiredVelocity)
+            if (veh.VelocityVector.Length() <= desiredVelocity && veh.VelocityVector.Length() >= desiredVelocity - Constants.DesiredVelocityMargin)
             {
+                //do not change your velocity
                 veh.AccelerationVector.X = 0;
                 veh.AccelerationVector.Y = 0;
             }
-            else
+            else if(veh.VelocityVector.Length() > desiredVelocity)
             {
+                //decelerate
                 veh.AccelerationVector.X = -veh.FrontVector.X * driverDecelerationMultiplier;
                 veh.AccelerationVector.Y = -veh.FrontVector.Y * driverDecelerationMultiplier;
+            }
+            else
+            {
+                //acelerate if you are by whatever reasons driving too slow!
+                veh.AccelerationVector.X = veh.FrontVector.X * desiredVelocity;
+                veh.AccelerationVector.Y = veh.FrontVector.Y * desiredVelocity;  
             }
         }
 
@@ -190,7 +205,7 @@ namespace Traffic.Physics
         /// </summary>
         private void ComputeCorrectionAcceleration(Vehicle veh)
         {
-            var desiredDirection = this.GetDesiredDirection(veh.FrontVector);
+            var desiredDirection = veh.FrontVector.GetDesiredDirection();
             var speed = veh.VelocityVector.Length();
             veh.VelocityVector.X = desiredDirection.X * speed;
             veh.VelocityVector.Y = desiredDirection.Y * speed;
@@ -198,22 +213,6 @@ namespace Traffic.Physics
             veh.FrontVector.Y = veh.VelocityVector.Y / veh.VelocityVector.Length();
             veh.AccelerationVector.X = 0;
             veh.AccelerationVector.Y = 0;
-        }
-
-        /// <summary>
-        /// Returns the closest in terms of angle horizontal or vertical direction
-        /// </summary>
-        private Point GetDesiredDirection(Point realDirection)
-        {
-            var acceptedDirections = new List<Point>()
-            {
-                new Point(1,0),
-                new Point(-1,0),
-                new Point(0,1),
-                new Point(0,-1)
-            };
-            return acceptedDirections.First(d =>
-                d.AngleFrom(realDirection) == acceptedDirections.Min(p => p.AngleFrom(realDirection)));
         }
     }
 }
