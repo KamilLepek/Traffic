@@ -1,4 +1,5 @@
-﻿using Traffic.World;
+﻿using System.Linq;
+using Traffic.World;
 using Traffic.World.Vertices;
 using Traffic.Vehicles;
 using Traffic.Utilities;
@@ -80,13 +81,12 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Moves vehicle from spawn point to street
+        /// Moves vehicle from spawn point to street and add them to vehicles list
         /// </summary>
         private void MoveToStreetFromSpawn(Vehicle vehicle)
         {
-            ConsoleLogger.Log("Moved vehicle from r:" + vehicle.Place.RowNumber + " c:" + vehicle.Place.ColumnNumber +
-                " to r:" + ((EndPoint)vehicle.Place).Street.RowNumber + " c:" + ((EndPoint)vehicle.Place).Street.ColumnNumber);
             vehicle.Place = ((EndPoint)vehicle.Place).Street;
+            vehicle.Place.Vehicles.Add(vehicle);
         }
     }
 }

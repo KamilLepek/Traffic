@@ -44,11 +44,20 @@ namespace Traffic.Physics
             veh.VelocityVector.X += veh.AccelerationVector.X * (1f / Constants.TicksPerSecond);
             veh.VelocityVector.Y += veh.AccelerationVector.Y * (1f / Constants.TicksPerSecond);
 
+            //Handle situation when we have decelerated so much that we changed our direction to opposite (moving backwards)
+            //TODO:niby zmienia się o 180, ale na skrzyżowaniach może być lekko mniej, bo przyspieszenie nie musi być styczne do wektora prędkości, 
+            //TODO:tak więc dałem 150 do reuse, ale zrobisz z tym co uważasz np dać stałą, albo jakoś to wyliczyć jeśli chcesz tego używać na skrzyżowaniach
+            if (veh.VelocityVector.AngleFrom(veh.FrontVector) > 150)
+            {
+                veh.VelocityVector.X = 0;
+                veh.VelocityVector.Y = 0;
+            }
+
             // Don't update frontVector if velocity is zero - vehicle has stopped
             if (Math.Abs(veh.VelocityVector.X) > Constants.DoubleErrorTolerance || Math.Abs(veh.VelocityVector.Y) > Constants.DoubleErrorTolerance)
             {
-                veh.FrontVector.X = veh.VelocityVector.X;
-                veh.FrontVector.Y = veh.VelocityVector.Y;
+                veh.FrontVector.X = veh.VelocityVector.X / veh.VelocityVector.Length();
+                veh.FrontVector.Y = veh.VelocityVector.Y / veh.VelocityVector.Length();
             }
         }
 
@@ -113,9 +122,9 @@ namespace Traffic.Physics
         {
             int horizontal = 0, vertical = 0; //horizontal and vertical diffrence from actual place
             UnitConverter.OrientationToRowColumnDiffrence(or, ref horizontal, ref vertical);
-            ConsoleLogger.Log("R:" + veh.Place.RowNumber + " C:" + veh.Place.ColumnNumber);
             if (veh.Place is Street)
             {
+                veh.Place.Vehicles.Remove(veh);
                 veh.Place = this.world.Intersections.Find(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
                 if (veh.Place == null)
@@ -123,13 +132,16 @@ namespace Traffic.Physics
                     this.KillVehicle(veh);
                     return;
                 }
+                veh.Place.Vehicles.Add(veh);
 
                 this.SetPositionAfterEnteringIntersection(veh, or);
             }
             else if (veh.Place is Intersection)
             {
+                veh.Place.Vehicles.Remove(veh);
                 veh.Place = this.world.Streets.First(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
+                veh.Place.Vehicles.Add(veh);
                 this.SetPositionAfterEnteringStreet(veh, or);
             }
         }

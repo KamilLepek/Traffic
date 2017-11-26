@@ -29,8 +29,8 @@ namespace Traffic.Utilities
         /// </summary>
         public static double Velocity()
         {
-            // to preserve that maximum velocity is not lower than initial velocity
-            return (rnd.NextDouble()) * (Constants.MaximumVelocity - Constants.InitialVelocity) + Constants.InitialVelocity;
+            // to preserve that maximum velocity is not lower than minimal maximum velocity velocity
+            return (rnd.NextDouble()) * (Constants.MaximumVelocity - Constants.MinimumMaximalVelocity) + Constants.MinimumMaximalVelocity;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Traffic.Utilities
         /// </summary>
         public static double DistanceHeld()
         {
-            return (rnd.NextDouble()) * Constants.MinimumDistanceHeld;
+            return (rnd.NextDouble()) * Constants.DistanceHeldInterval + Constants.MinimumDistanceHeld;
         }
 
         /// <summary>

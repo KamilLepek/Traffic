@@ -35,12 +35,6 @@ namespace Traffic.Utilities
                 vehicles.Add(new Car(RandomGenerator.Velocity(), RandomGenerator.ReactionTime(),
                         RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(),
                         spawnPoint, initialRoute, finishPoint, RandomGenerator.Int(Constants.NumberOfTextures)));
-                foreach (var decision in initialRoute)
-                {
-                    ConsoleLogger.Log(decision.ToString());
-                }
-                ConsoleLogger.Log("finish r:" + finishPoint.RowNumber + " c:" + finishPoint.ColumnNumber);
-                ConsoleLogger.Log("-------------------------");
             }
         }
 
@@ -67,9 +61,6 @@ namespace Traffic.Utilities
             if (notOccupied.Count == 0)
                 throw new NoUnoccupiedSpawnException("There are no unoccupied spawn points");
             var startingPoint = notOccupied[RandomGenerator.Int(notOccupied.Count)];
-
-            ConsoleLogger.Log("Respawn r:" + startingPoint.RowNumber + " c:" + startingPoint.ColumnNumber);
-
             startingPoint.IsOccupied = true;
             return startingPoint;
         }
