@@ -127,7 +127,6 @@ namespace Traffic.Vehicles
         /// If the vehicle is on the street it returns reference to the next intersection the vehicle will enter. If such intersection doesn't exist, return value is null
         /// If the vehicle is on endpoint, return value is null
         /// </summary>
-        /// <returns></returns>
         public Intersection GetNextIntersection()
         {
             if (this.Place is Intersection)
@@ -145,7 +144,6 @@ namespace Traffic.Vehicles
         /// <summary>
         /// Returns distance in meters which car has to drive to get to the end of the street
         /// </summary>
-        /// <returns></returns>
         public double GetDistanceToEndOfStreet()
         {
             var orientation = UnitConverter.IdealFrontVectorToOrentation(this.FrontVector.GetDesiredDirection());
@@ -153,13 +151,13 @@ namespace Traffic.Vehicles
             switch (orientation)
             {
                 case Orientation.Bottom:
-                    return Constants.StreetLength - this.Position.Y - Constants.CarLength / 2;
+                    return Constants.StreetLength - this.Position.Y - this.VehicleLength / 2;
                 case Orientation.Top:
-                    return this.Position.Y - Constants.CarLength / 2;
+                    return this.Position.Y - this.VehicleLength / 2;
                 case Orientation.Right:
-                    return Constants.StreetLength - this.Position.X - Constants.CarLength / 2;
+                    return Constants.StreetLength - this.Position.X - this.VehicleLength / 2;
                 case Orientation.Left:
-                    return this.Position.X - Constants.CarLength / 2;
+                    return this.Position.X - this.VehicleLength / 2;
             }
             throw new InvalidOperationException();
         }

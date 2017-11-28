@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World.Edges;
@@ -201,7 +200,7 @@ namespace Traffic.Physics
             if (nextIntersection.GetTrafficLight(
                     UnitConverter.IdealFrontVectorToOrentation(veh.FrontVector.GetDesiredDirection())) == Light.Red)
             {
-                var velocity = veh.VelocityVector.Length();
+                double velocity = veh.VelocityVector.Length();
                 if (veh.GetDistanceToEndOfStreet() < 1.5 * velocity * velocity / Constants.TrafficLightsDeceleration)
                 {
                     veh.Maneuver = Maneuver.StopOnLights;
