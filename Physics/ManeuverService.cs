@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World.Edges;
@@ -15,7 +16,7 @@ namespace Traffic.Physics
                 foreach (var opponentVehicle in veh.Place.Vehicles)
                 {
                     //Since we measure position of vehicle from its center this is the sum of half vehicle lengths
-                    double vehiclesLength = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2; 
+                    double vehiclesLength = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2;
 
                     //Diffrence of velocities or 1 if its negative
                     double velocityDeceleratingFactor =
@@ -31,7 +32,7 @@ namespace Traffic.Physics
                     double actualDistanceBetweenVehicles = new Point(veh.Position.X - opponentVehicle.Position.X,
                         veh.Position.Y - opponentVehicle.Position.Y).Length() - vehiclesLength;
 
-                    if (((Street) veh.Place).IsVertical)
+                    if (((Street)veh.Place).IsVertical)
                     {
                         if (opponentVehicle.Position.X < veh.Position.X + veh.VehicleWidth / 2 && opponentVehicle.Position.X > veh.Position.X - veh.VehicleWidth / 2)
                         {
@@ -103,7 +104,7 @@ namespace Traffic.Physics
             if (veh.Place is Street &&
                 veh.Maneuver == Maneuver.Accelerate)
             {
-                if (((Street) veh.Place).IsVertical)
+                if (((Street)veh.Place).IsVertical)
                 {
                     if ((veh.FrontVector.Y > 0 &&
                          veh.Position.Y > Constants.StreetLength * Constants.BreakStartingPoint) ||
@@ -184,6 +185,28 @@ namespace Traffic.Physics
                 veh.TurningArcRadius = 0;
                 veh.InitialTurningDirection = null;
                 return true;
+            }
+            return false;
+        }
+
+        public bool CheckIfVehicleHasToStopOnLights(Vehicle veh)
+        {
+            if (veh.Place is Intersection)
+                return false;
+
+            var nextIntersection = veh.GetNextIntersection();
+            if (nextIntersection == null)
+                return false;
+
+            if (nextIntersection.GetTrafficLight(
+                    UnitConverter.IdealFrontVectorToOrentation(veh.FrontVector.GetDesiredDirection())) == Light.Red)
+            {
+                var velocity = veh.VelocityVector.Length();
+                if (veh.GetDistanceToEndOfStreet() < 1.5 * velocity * velocity / Constants.TrafficLightsDeceleration)
+                {
+                    veh.Maneuver = Maneuver.StopOnLights;
+                    return true;
+                }
             }
             return false;
         }

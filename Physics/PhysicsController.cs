@@ -125,9 +125,9 @@ namespace Traffic.Physics
             if (veh.Place is Street)
             {
                 veh.Place.Vehicles.Remove(veh);
-                veh.Place = this.world.Intersections.Find(item => (item.RowNumber == veh.Place.RowNumber + vertical)
+                veh.Place = ((Street)veh.Place).Edges.Find(item => (item.RowNumber == veh.Place.RowNumber + vertical)
                                                               && (item.ColumnNumber == veh.Place.ColumnNumber + horizontal));
-                if (veh.Place == null)
+                if (veh.Place is EndPoint)
                 {
                     this.KillVehicle(veh);
                     return;

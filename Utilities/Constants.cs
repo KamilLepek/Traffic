@@ -20,6 +20,8 @@ namespace Traffic.Utilities
 
         public const double VelocityDeceleratingFactorOnIntersection = 1.2;
 
+        public const double TrafficLightsDeceleration = 160;
+
         /// <summary>
         /// Parameter which determines how important is our velocity when computing search area in front of us for potential collision detection
         /// </summary>
@@ -29,7 +31,7 @@ namespace Traffic.Utilities
         /// Parameter which determines how important is velocity difference between 2 vehicles when computing 
         /// search area in front of us for potential collision detection
         /// </summary>
-        public const double VelocityDifferenceDependentCaution = 20;
+        public const double VelocityDifferenceDependentCaution = 40;
 
         /// <summary>
         /// Parameter which determines how important is velocity difference between 2 vehicles when computing
@@ -91,12 +93,12 @@ namespace Traffic.Utilities
         /// <summary>
         /// Minimum value that is acceptable for distance held from the vehicle in front
         /// </summary>
-        public const double MinimumDistanceHeld = 3;
+        public const double MinimumDistanceHeld = 0.5;
 
         /// <summary>
         /// Maximum value that is acceptable for distance held from the vehicle in front of us is <see cref="MinimumDistanceHeld"/> + <see cref="DistanceHeldInterval"/>
         /// </summary>
-        public const double DistanceHeldInterval = 5;
+        public const double DistanceHeldInterval = 4;
 
         #endregion
 

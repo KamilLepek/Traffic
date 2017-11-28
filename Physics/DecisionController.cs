@@ -29,6 +29,8 @@ namespace Traffic.Physics
         {
             if (this.maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
                 return;
+            if (this.maneuverService.CheckIfVehicleHasToStopOnLights(veh))
+                return;
             if (this.maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
                 return;
             if (this.maneuverService.CheckIfVehicleEnteredIntersection(veh))
@@ -73,6 +75,19 @@ namespace Traffic.Physics
                 case Maneuver.CorrectAfterTurning:
                     this.ComputeCorrectionAcceleration(veh);
                     break;
+                case Maneuver.StopOnLights:
+                    this.DecelerateToStopOnLights(veh);
+                    break;
+            }
+        }
+
+        private void DecelerateToStopOnLights(Vehicle veh)
+        {
+            if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
+            {
+                var velocity = veh.VelocityVector.Length();
+                veh.AccelerationVector.X = -veh.FrontVector.X * Constants.TrafficLightsDeceleration;
+                veh.AccelerationVector.Y = -veh.FrontVector.Y * Constants.TrafficLightsDeceleration;
             }
         }
 
