@@ -20,7 +20,9 @@ namespace Traffic.Utilities
 
         public const double VelocityDeceleratingFactorOnIntersection = 1.2;
 
-        public const double TrafficLightsDeceleration = 160;
+        public const double MinTrafficLightsDeceleration = 160;
+
+        public const double MaxTrafficLightsDeceleration = 320;
 
         /// <summary>
         /// Parameter which determines how important is our velocity when computing search area in front of us for potential collision detection

@@ -93,5 +93,21 @@ namespace Traffic.Utilities
             return acceptedDirections.First(d =>
                 d.AngleFrom(this) == acceptedDirections.Min(p => p.AngleFrom(this)));
         }
+
+        /// <summary>
+        /// Returns sum of this vector and vector p
+        /// </summary>
+        public Point Add(Point p)
+        {
+            return new Point(this.X + p.X, this.Y + p.Y);
+        }
+
+        /// <summary>
+        /// Returns difference of this vector and vector p
+        /// </summary>
+        public Point Subtract(Point p)
+        {
+            return new Point(this.X - p.X, this.Y - p.Y);
+        }
     }
 }

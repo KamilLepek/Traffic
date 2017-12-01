@@ -37,9 +37,9 @@ namespace Traffic.Physics
                 return;
             if (this.maneuverService.CheckIfVehicleEnteredMiddleOfIntersection(veh))
                 return;
-            if (this.maneuverService.CheckIfVehicleLeftIntersection(veh))
+            if (this.maneuverService.CheckIfVehicleLeftMiddleOfIntersection(veh))
                 return;
-            this.maneuverService.CheckIfVehicleLeftMiddleOfIntersection(veh);
+            veh.Maneuver = Maneuver.Accelerate;
         }
 
         /// <summary>
@@ -85,9 +85,13 @@ namespace Traffic.Physics
         {
             if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
             {
-                var velocity = veh.VelocityVector.Length();
-                veh.AccelerationVector.X = -veh.FrontVector.X * Constants.TrafficLightsDeceleration;
-                veh.AccelerationVector.Y = -veh.FrontVector.Y * Constants.TrafficLightsDeceleration;
+                double velocity = veh.VelocityVector.Length();
+                double distanceToLine = veh.GetDistanceToEndOfStreet();
+                if (Math.Abs(distanceToLine) < Constants.DoubleErrorTolerance)
+                    return;
+                double deceleration = 1.5 * velocity * velocity / distanceToLine;
+                veh.AccelerationVector.X = -veh.FrontVector.X * deceleration;
+                veh.AccelerationVector.Y = -veh.FrontVector.Y * deceleration;
             }
         }
 
