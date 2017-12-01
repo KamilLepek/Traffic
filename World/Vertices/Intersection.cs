@@ -53,5 +53,13 @@ namespace Traffic.World.Vertices
                 }
             }
         }
+
+        public Light GetTrafficLight(Orientation or)
+        {
+            if (or == Orientation.Bottom || or == Orientation.Top)
+                return this.VerticalTrafficLight;
+            else
+                return this.HorizontalTrafficLight;
+        }
     }
 }

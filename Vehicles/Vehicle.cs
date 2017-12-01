@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Traffic.Utilities;
 using Traffic.World;
+using Traffic.World.Edges;
 using Traffic.World.Vertices;
 
 namespace Traffic.Vehicles
@@ -119,6 +120,46 @@ namespace Traffic.Vehicles
                 default:
                     break;
             }
+        }
+
+        /// <summary>
+        /// If vehicle is on intersection, method returns current intersection.
+        /// If the vehicle is on the street it returns reference to the next intersection the vehicle will enter. If such intersection doesn't exist, return value is null
+        /// If the vehicle is on endpoint, return value is null
+        /// </summary>
+        public Intersection GetNextIntersection()
+        {
+            if (this.Place is Intersection)
+                return (Intersection) this.Place;
+
+            if (this.Place is EndPoint)
+                return null;
+
+            var idealFrontVector = this.FrontVector.GetDesiredDirection();
+            var nextVertex = ((Street)this.Place).Edges.Find(item => (item.RowNumber == this.Place.RowNumber + (int)idealFrontVector.Y)
+                                                                     && (item.ColumnNumber == this.Place.ColumnNumber + (int)idealFrontVector.X));
+            return nextVertex as Intersection;
+        }
+
+        /// <summary>
+        /// Returns distance in meters which car has to drive to get to the end of the street
+        /// </summary>
+        public double GetDistanceToEndOfStreet()
+        {
+            var orientation = UnitConverter.IdealFrontVectorToOrentation(this.FrontVector.GetDesiredDirection());
+
+            switch (orientation)
+            {
+                case Orientation.Bottom:
+                    return Constants.StreetLength - this.Position.Y - this.VehicleLength / 2;
+                case Orientation.Top:
+                    return this.Position.Y - this.VehicleLength / 2;
+                case Orientation.Right:
+                    return Constants.StreetLength - this.Position.X - this.VehicleLength / 2;
+                case Orientation.Left:
+                    return this.Position.X - this.VehicleLength / 2;
+            }
+            throw new InvalidOperationException();
         }
     }
 }

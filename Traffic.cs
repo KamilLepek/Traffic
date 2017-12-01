@@ -10,7 +10,7 @@ namespace Traffic
         {
             int verticalLines = 3;
             int horizontalLines = 3;
-            int desiredNumberOfVehicles = 1000;
+            int desiredNumberOfVehicles = 100;
 
             var simulationController =
                 new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);

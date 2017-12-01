@@ -31,6 +31,20 @@ namespace Traffic.Utilities
             }
         }
 
+        public static Orientation IdealFrontVectorToOrentation(Point frontVector)
+        {
+            if (frontVector.X == 1 && frontVector.Y == 0)
+                return Orientation.Right;
+            if (frontVector.X == 0 && frontVector.Y == 1)
+                return Orientation.Bottom;
+            if (frontVector.X == -1 && frontVector.Y == 0)
+                return Orientation.Left;
+            if (frontVector.X == 0 && frontVector.Y == -1)
+                return Orientation.Top;
+
+            throw new ArgumentOutOfRangeException();
+        }
+
         public static Maneuver DecisionToManeuver(Decision decision)
         {
             switch (decision)

@@ -29,15 +29,17 @@ namespace Traffic.Physics
         {
             if (this.maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
                 return;
+            if (this.maneuverService.CheckIfVehicleHasToStopOnLights(veh))
+                return;
             if (this.maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
                 return;
             if (this.maneuverService.CheckIfVehicleEnteredIntersection(veh))
                 return;
             if (this.maneuverService.CheckIfVehicleEnteredMiddleOfIntersection(veh))
                 return;
-            if (this.maneuverService.CheckIfVehicleLeftIntersection(veh))
+            if (this.maneuverService.CheckIfVehicleLeftMiddleOfIntersection(veh))
                 return;
-            this.maneuverService.CheckIfVehicleLeftMiddleOfIntersection(veh);
+            veh.Maneuver = Maneuver.Accelerate;
         }
 
         /// <summary>
@@ -73,6 +75,23 @@ namespace Traffic.Physics
                 case Maneuver.CorrectAfterTurning:
                     this.ComputeCorrectionAcceleration(veh);
                     break;
+                case Maneuver.StopOnLights:
+                    this.DecelerateToStopOnLights(veh);
+                    break;
+            }
+        }
+
+        private void DecelerateToStopOnLights(Vehicle veh)
+        {
+            if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
+            {
+                double velocity = veh.VelocityVector.Length();
+                double distanceToLine = veh.GetDistanceToEndOfStreet();
+                if (Math.Abs(distanceToLine) < Constants.DoubleErrorTolerance)
+                    return;
+                double deceleration = 1.5 * velocity * velocity / distanceToLine;
+                veh.AccelerationVector.X = -veh.FrontVector.X * deceleration;
+                veh.AccelerationVector.Y = -veh.FrontVector.Y * deceleration;
             }
         }
 

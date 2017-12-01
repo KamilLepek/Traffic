@@ -15,7 +15,7 @@ namespace Traffic.Physics
                 foreach (var opponentVehicle in veh.Place.Vehicles)
                 {
                     //Since we measure position of vehicle from its center this is the sum of half vehicle lengths
-                    double vehiclesLength = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2; 
+                    double vehiclesLength = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2;
 
                     //Diffrence of velocities or 1 if its negative
                     double velocityDeceleratingFactor =
@@ -31,7 +31,7 @@ namespace Traffic.Physics
                     double actualDistanceBetweenVehicles = new Point(veh.Position.X - opponentVehicle.Position.X,
                         veh.Position.Y - opponentVehicle.Position.Y).Length() - vehiclesLength;
 
-                    if (((Street) veh.Place).IsVertical)
+                    if (((Street)veh.Place).IsVertical)
                     {
                         if (opponentVehicle.Position.X < veh.Position.X + veh.VehicleWidth / 2 && opponentVehicle.Position.X > veh.Position.X - veh.VehicleWidth / 2)
                         {
@@ -92,7 +92,6 @@ namespace Traffic.Physics
                         }
                     }
                 }
-                veh.Maneuver = Maneuver.Accelerate;
                 veh.VehicleInFrontOfUs = null;
             }
             return false;
@@ -100,10 +99,9 @@ namespace Traffic.Physics
 
         public bool CheckIfVehicleIsApproachingEndOfStreet(Vehicle veh)
         {
-            if (veh.Place is Street &&
-                veh.Maneuver == Maneuver.Accelerate)
+            if (veh.Place is Street)
             {
-                if (((Street) veh.Place).IsVertical)
+                if (((Street)veh.Place).IsVertical)
                 {
                     if ((veh.FrontVector.Y > 0 &&
                          veh.Position.Y > Constants.StreetLength * Constants.BreakStartingPoint) ||
@@ -131,59 +129,92 @@ namespace Traffic.Physics
 
         public bool CheckIfVehicleEnteredIntersection(Vehicle veh)
         {
-            if (veh.Place is Intersection &&
-                veh.Position.DistanceFrom(new Point(0, 0)) >=
-                Constants.TurnStartingPoint * Constants.IntersectionSize &&
-                (veh.Maneuver == Maneuver.DecelerateOnStreet || veh.Maneuver == Maneuver.AvoidCollision))
+            if (veh.Place is Intersection)
             {
-                veh.Maneuver = Maneuver.DecelerateOnIntersection;
-                return true;
+                bool facesTowardsTheMiddle = (new Point(0, 0)).DistanceFrom(veh.Position.Add(veh.FrontVector))
+                                             < (new Point(0, 0)).DistanceFrom(veh.Position.Subtract(veh.FrontVector));
+                bool isNotInTheMiddleOfIntersection = veh.Position.DistanceFrom(new Point(0, 0)) >=
+                                                      Constants.TurnStartingPoint * Constants.IntersectionSize;
+                if (isNotInTheMiddleOfIntersection && facesTowardsTheMiddle)
+                {
+                    veh.Maneuver = Maneuver.DecelerateOnIntersection;
+                    return true;
+                }
             }
             return false;
         }
 
         public bool CheckIfVehicleEnteredMiddleOfIntersection(Vehicle veh)
         {
-            if (veh.Place is Intersection &&
-                veh.Position.DistanceFrom(new Point(0, 0)) < Constants.TurnStartingPoint * Constants.IntersectionSize &&
-                veh.Maneuver != Maneuver.ForwardOnIntersect && veh.Maneuver != Maneuver.TurnLeft &&
-                 veh.Maneuver != Maneuver.TurnRight)
+            if (veh.Place is Intersection)
             {
-                var decision = veh.Route.FirstOrDefault();
-                veh.Maneuver = UnitConverter.DecisionToManeuver(decision);
-                if (decision == Decision.Left || decision == Decision.Right)
+                if (veh.Position.DistanceFrom(new Point(0, 0)) <
+                    Constants.TurnStartingPoint * Constants.IntersectionSize)
                 {
-                    veh.InitialTurningDirection = new Point(veh.FrontVector.X, veh.FrontVector.Y);
+                    if (veh.Maneuver == Maneuver.ForwardOnIntersect || veh.Maneuver ==
+                        Maneuver.TurnLeft || veh.Maneuver == Maneuver.TurnRight)
+                        return true;
+                    var decision = veh.Route.FirstOrDefault();
+                    veh.Maneuver = UnitConverter.DecisionToManeuver(decision);
+                    if (decision == Decision.Left || decision == Decision.Right)
+                    {
+                        veh.InitialTurningDirection = new Point(veh.FrontVector.X, veh.FrontVector.Y);
+                    }
+                    veh.Route.Remove(decision);
+                    return true;
                 }
-                veh.Route.Remove(decision);
-                return true;
-            }
-            return false;
-        }
-
-        public bool CheckIfVehicleLeftIntersection(Vehicle veh)
-        {
-            if (!(veh.Place is Intersection) &&
-                (veh.Maneuver == Maneuver.ForwardOnIntersect || veh.Maneuver == Maneuver.CorrectAfterTurning))
-            {
-                veh.Maneuver = Maneuver.Accelerate;
-                return true;
             }
             return false;
         }
 
         public bool CheckIfVehicleLeftMiddleOfIntersection(Vehicle veh)
         {
-            if (veh.Place is Intersection &&
-                veh.Position.DistanceFrom(new Point(0, 0)) >=
-                Constants.TurnStartingPoint * Constants.IntersectionSize &&
-                (veh.Maneuver == Maneuver.TurnLeft ||
-                 veh.Maneuver == Maneuver.TurnRight))
+            if (veh.Place is Intersection)
             {
-                veh.Maneuver = Maneuver.CorrectAfterTurning;
-                veh.TurningArcRadius = 0;
-                veh.InitialTurningDirection = null;
-                return true;
+                bool doesntFaceTowardsTheMiddle = (new Point(0, 0)).DistanceFrom(veh.Position.Add(veh.FrontVector))
+                                             > (new Point(0, 0)).DistanceFrom(veh.Position.Subtract(veh.FrontVector));
+                bool isNotInTheMiddleOfIntersection = veh.Position.DistanceFrom(new Point(0, 0)) >=
+                                                      Constants.TurnStartingPoint * Constants.IntersectionSize;
+                if (doesntFaceTowardsTheMiddle && isNotInTheMiddleOfIntersection)
+                {
+                    if (veh.Maneuver == Maneuver.CorrectAfterTurning)
+                    {
+                        veh.Maneuver = Maneuver.Accelerate;
+                        return true;
+                    }
+
+                    veh.Maneuver = Maneuver.CorrectAfterTurning;
+                    veh.TurningArcRadius = 0;
+                    veh.InitialTurningDirection = null;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool CheckIfVehicleHasToStopOnLights(Vehicle veh)
+        {
+            if (veh.Place is Intersection)
+                return false;
+                
+
+            var nextIntersection = veh.GetNextIntersection();
+            if (nextIntersection == null)
+                return false;
+
+            if (nextIntersection.GetTrafficLight(
+                    UnitConverter.IdealFrontVectorToOrentation(veh.FrontVector.GetDesiredDirection())) == Light.Red)
+            {
+                if (veh.Maneuver == Maneuver.StopOnLights)
+                    return true;
+
+                double velocity = veh.VelocityVector.Length();
+                if (veh.GetDistanceToEndOfStreet() <= 1.5 * velocity * velocity / Constants.MinTrafficLightsDeceleration &&
+                    veh.GetDistanceToEndOfStreet() >= 1.5 * velocity * velocity / Constants.MaxTrafficLightsDeceleration)
+                {
+                    veh.Maneuver = Maneuver.StopOnLights;
+                    return true;
+                }
             }
             return false;
         }
