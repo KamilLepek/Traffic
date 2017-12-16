@@ -8,6 +8,9 @@ using Traffic.World.Vertices;
 
 namespace Traffic.Physics
 {
+    /// <summary>
+    /// Handles velocity and position updates based on acceleration
+    /// </summary>
     public class PhysicsController
     {
         private readonly Map world;

@@ -4,6 +4,9 @@ using Traffic.World.Edges;
 
 namespace Traffic.World.Vertices
 {
+    /// <summary>
+    /// Represents intersections in our simulation
+    /// </summary>
     public class Intersection : AbstractVertex
     {
 
@@ -34,6 +37,9 @@ namespace Traffic.World.Vertices
                 Constants.TicksPerSecond;
         }
 
+        /// <summary>
+        /// Traffic lights changing method
+        /// </summary>
         public void PerformTimerTick()
         {
             this.lightChangeTimer = (this.lightChangeTimer + 1) % this.lightChangeInterval;
@@ -54,6 +60,11 @@ namespace Traffic.World.Vertices
             }
         }
 
+        /// <summary>
+        /// Gets traffic light color
+        /// </summary>
+        /// <param name="or">Orientation of the traffic light</param>
+        /// <returns>Traffic light color</returns>
         public Light GetTrafficLight(Orientation or)
         {
             if (or == Orientation.Bottom || or == Orientation.Top)

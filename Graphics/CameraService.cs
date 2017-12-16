@@ -10,6 +10,9 @@ namespace Traffic.Graphics
     /// </summary>
     internal class CameraService
     {
+        /// <summary>
+        /// Distance between camera and map
+        /// </summary>
         private double cameraDistance;
 
         public CameraService()

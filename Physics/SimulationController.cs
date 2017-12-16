@@ -1,11 +1,13 @@
-﻿using System.Linq;
-using Traffic.World;
+﻿using Traffic.World;
 using Traffic.World.Vertices;
 using Traffic.Vehicles;
 using Traffic.Utilities;
 
 namespace Traffic.Physics
 {
+    /// <summary>
+    /// Main class controlling the simulation
+    /// </summary>
     public class SimulationController
     {
 

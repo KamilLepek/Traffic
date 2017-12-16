@@ -4,7 +4,7 @@ using Traffic.Utilities;
 namespace Traffic.World.Vertices
 {
     /// <summary>
-    ///     Spawn/End Point
+    /// Represents Spawn/End Point
     /// </summary>
     public class EndPoint : AbstractVertex
     {
@@ -25,6 +25,10 @@ namespace Traffic.World.Vertices
             this.SetRowAndColumn(street);
         }
 
+        /// <summary>
+        /// Sets row and column number based on nearby street
+        /// </summary>
+        /// <param name="street">nearby street</param>
         private void SetRowAndColumn (Street street)
         {
             if (street.IsVertical)

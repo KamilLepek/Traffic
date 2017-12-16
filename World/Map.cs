@@ -8,6 +8,9 @@ using System.Diagnostics;
 
 namespace Traffic.World
 {
+    /// <summary>
+    /// Representation of our simulation space
+    /// </summary>
     public class Map
     {
         public List<Vehicle> Vehicles { get; set; }
@@ -22,12 +25,6 @@ namespace Traffic.World
 
         public Stopwatch sw { get; private set; }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="a">rows</param>
-        /// <param name="b">collumns</param>
-        /// <param name="des">desired amount of vehicles</param>
         public Map(int a, int b, int des)
         {
             this.sw = new Stopwatch();
