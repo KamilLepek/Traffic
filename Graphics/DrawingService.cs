@@ -196,14 +196,50 @@ namespace Traffic.Graphics
         {
 
             GL.Begin(PrimitiveType.Lines);
+            GL.Color3(Color.White);
             GL.Vertex3(0.0f, 0.0f, 0.0f);
             GL.Vertex3(1.0f, 0.0f, 0.0f);
             GL.End();
 
             GL.Begin(PrimitiveType.Lines);
+            GL.Color3(Color.White);
             GL.Vertex3(0.0f, 0.0f, 0.0f);
             GL.Vertex3(0.0f, 0.0f, 1.0f);
             GL.End();
         }
+        /// <summary>
+        /// Draws point used durring test of selecting cars by mouse click
+        /// </summary>
+        /// todo:make nice cursor texture with transparency
+        public void GlDrawCursor(double x,double y,double cameraDistance)
+        {
+     
+            GL.MatrixMode(MatrixMode.Modelview);
+            
+            GL.PushMatrix();
+
+            GL.Enable(EnableCap.Texture2D);
+            GL.BindTexture(TextureTarget.Texture2D, TexturesLoader.TexturesList[5]);
+ 
+            GL.Begin(PrimitiveType.Quads);
+
+            GL.TexCoord2(0, 0);
+            GL.Vertex3(x, 0, y);
+
+            GL.TexCoord2(1, 0);
+            GL.Vertex3(x + Constants.CursorSize * Math.Abs(cameraDistance) / 130, 0.0f, y);
+
+            GL.TexCoord2(1, 1);
+            GL.Vertex3(x + Constants.CursorSize * Math.Abs(cameraDistance) / 130, 0.0f, y + Constants.CursorSize * Math.Abs(cameraDistance) / 100);
+
+            GL.TexCoord2(0, 1);
+            GL.Vertex3(x, 0.0f, y + Constants.CursorSize * Math.Abs(cameraDistance) / 100);
+
+            GL.End();
+            GL.Disable(EnableCap.Texture2D);
+
+            GL.PopMatrix();
+        }
+
     }
 }

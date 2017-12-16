@@ -4,6 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using OpenTK.Input;
+using Traffic.Utilities;
 
 namespace Traffic.Graphics
 {
@@ -18,13 +19,19 @@ namespace Traffic.Graphics
         private readonly DrawingService drawingService;
         private readonly CameraService cameraService;
         private bool mousePressed;
+        private bool isSingleClick;
+        public VehicleFinder vehicleFinder;
+        
 
         public GraphicsController(Map world, Action updateWorldHandler)
         {
+            this.CursorVisible = false;
+            this.isSingleClick = true;
+            this.vehicleFinder = new VehicleFinder(world.Vehicles);
             this.gameWorld = world;
             this.updateWorldHandler = updateWorldHandler;
             this.drawingService = new DrawingService();
-            this.cameraService = new CameraService();
+            this.cameraService = new CameraService(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
             TexturesLoader.InitTextures();
         }
 
@@ -47,6 +54,16 @@ namespace Traffic.Graphics
         {
             base.OnUpdateFrame(e);
             this.updateWorldHandler();
+
+            if (this.mousePressed == false && this.Focused == true)
+            {
+                Vector2 cameraTranslationVector =
+                    new Vector2((float)(this.cameraService.deltaMousePos.X * Constants.CursorMovementSpeed * this.cameraService.cameraDistance), (float)(this.cameraService.deltaMousePos.Y * Constants.CursorMovementSpeed * this.cameraService.cameraDistance));
+                this.cameraService.cameraPosition += cameraTranslationVector;
+                this.cameraService.ResetCursor(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
+            }
+            this.cameraService.UpdateLastMousePosition();
+            
         }
 
         /// <summary>
@@ -60,7 +77,10 @@ namespace Traffic.Graphics
 
             GL.MatrixMode(MatrixMode.Modelview);
 
+            
             this.drawingService.GlDrawAxes();
+
+            
 
             foreach (var street in this.gameWorld.Streets)
                 this.drawingService.GlDrawStreet(street);
@@ -70,7 +90,10 @@ namespace Traffic.Graphics
 
             foreach (var vehicle in this.gameWorld.Vehicles)
                 this.drawingService.GlDrawVehicle(vehicle);
-
+            
+            this.drawingService.GlDrawCursor(this.cameraService.cameraPosition.X , this.cameraService.cameraPosition.Y , this.cameraService.cameraDistance);
+            
+            
             this.SwapBuffers();
         }
 
@@ -95,6 +118,14 @@ namespace Traffic.Graphics
         {
             base.OnKeyDown(e);
             this.cameraService.Move(e.Key);
+            if (e.Key == Key.Escape)
+            {
+                this.Exit();
+            }
+            if (e.Alt && e.Key == Key.Enter)
+            {
+                this.WindowState = WindowState.Fullscreen;
+            }
         }
 
         /// <summary>
@@ -114,6 +145,13 @@ namespace Traffic.Graphics
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
                 this.mousePressed = true;
+
+            if (this.isSingleClick == true)
+            {
+                this.vehicleFinder.CheckIfClickedOnVehicle(this.cameraService.cameraPosition);
+            }
+
+            this.isSingleClick = false;
         }
 
         /// <summary>
@@ -123,7 +161,11 @@ namespace Traffic.Graphics
         {
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
+            {
                 this.mousePressed = false;
+            }
+
+            this.isSingleClick = true;
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
@@ -132,5 +174,6 @@ namespace Traffic.Graphics
             if (this.mousePressed)
                 this.cameraService.Move(e);
         }
+
     }
 }

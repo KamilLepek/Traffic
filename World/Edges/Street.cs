@@ -18,5 +18,10 @@ namespace Traffic.World.Edges
             this.IsVertical = type;
             this.Edges = new List<AbstractVertex>();
         }
+
+        public Street()
+        {
+            this.IsVertical = true;
+        }
     }
 }

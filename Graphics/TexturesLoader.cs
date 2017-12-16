@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Traffic.Utilities;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -49,6 +50,7 @@ namespace Traffic.Graphics
             TexturesList = new List<int>();
             for (int i = 0; i < Constants.NumberOfTextures; i++)
                 TexturesList.Add(LoadTexture(string.Format("Car{0}.png", i + 1)));
+            TexturesList.Add(LoadTexture("Cursor.png"));
         }
     }
 }
