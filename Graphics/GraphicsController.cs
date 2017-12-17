@@ -21,6 +21,7 @@ namespace Traffic.Graphics
         private bool mousePressed;
         private bool isSingleClick;
         public VehicleFinder vehicleFinder;
+        private readonly int cursorNumber;
         
 
         public GraphicsController(Map world, Action updateWorldHandler)
@@ -31,7 +32,8 @@ namespace Traffic.Graphics
             this.gameWorld = world;
             this.updateWorldHandler = updateWorldHandler;
             this.drawingService = new DrawingService();
-            this.cameraService = new CameraService(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
+            this.cameraService = new CameraService();
+            this.cursorNumber = cursorNumber;
             TexturesLoader.InitTextures();
         }
 
@@ -59,10 +61,19 @@ namespace Traffic.Graphics
             {
                 Vector2 cameraTranslationVector =
                     new Vector2((float)(this.cameraService.deltaMousePos.X * Constants.CursorMovementSpeed * this.cameraService.cameraDistance), (float)(this.cameraService.deltaMousePos.Y * Constants.CursorMovementSpeed * this.cameraService.cameraDistance));
-                this.cameraService.cameraPosition += cameraTranslationVector;
+                if (this.cameraService.WillCursorBeInBoundsAfterTranslating(this.cameraService.cameraPosition,
+                    cameraTranslationVector, this.cameraService.cursorPosition, this.Bounds.Width, this.Bounds.Height, this.cameraService.cameraDistance))
+                {
+                    this.cameraService.cursorPosition += cameraTranslationVector;
+                }              
                 this.cameraService.ResetCursor(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
             }
             this.cameraService.UpdateLastMousePosition();
+            if (this.vehicleFinder.isVehicleClicked)
+            {
+                this.vehicleFinder.GetVehicleCoordinates(this.vehicleFinder.selectedVehicleId);
+                this.cameraService.CenterCameraOnVehicle(this.vehicleFinder.selectedVehicleCoordinates);
+            }
             
         }
 
@@ -87,11 +98,13 @@ namespace Traffic.Graphics
 
             foreach (var intersection in this.gameWorld.Intersections)
                 this.drawingService.GlDrawIntersection(intersection);
-
-            foreach (var vehicle in this.gameWorld.Vehicles)
-                this.drawingService.GlDrawVehicle(vehicle);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             
-            this.drawingService.GlDrawCursor(this.cameraService.cameraPosition.X , this.cameraService.cameraPosition.Y , this.cameraService.cameraDistance);
+            foreach (var vehicle in this.gameWorld.Vehicles)
+                this.drawingService.GlDrawVehicle(vehicle,this. vehicleFinder.isVehicleClicked, this.vehicleFinder.selectedVehicleId);
+            
+            this.drawingService.GlDrawCursor(this.cameraService.cursorPosition.X , this.cameraService.cursorPosition.Y , this.cameraService.cameraDistance);
             
             
             this.SwapBuffers();
@@ -148,7 +161,7 @@ namespace Traffic.Graphics
 
             if (this.isSingleClick == true)
             {
-                this.vehicleFinder.CheckIfClickedOnVehicle(this.cameraService.cameraPosition);
+                this.vehicleFinder.CheckIfClickedOnVehicle(this.cameraService.cursorPosition);
             }
 
             this.isSingleClick = false;
@@ -172,7 +185,16 @@ namespace Traffic.Graphics
         {
             base.OnMouseMove(e);
             if (this.mousePressed)
-                this.cameraService.Move(e);
+            {
+                Vector2 cameraTranslationVector = new Vector2((float)(-e.XDelta * Constants.CameraMouseMovementSpeed * this.cameraService.cameraDistance), (float)(-e.YDelta * Constants.CameraMouseMovementSpeed * this.cameraService.cameraDistance));
+                if (this.cameraService.WillCursorBeInBoundsAfterTranslating(this.cameraService.cameraPosition,
+                    cameraTranslationVector, this.cameraService.cursorPosition, this.Bounds.Width, this.Bounds.Height, this.cameraService.cameraDistance))
+                {
+                    this.cameraService.Move(e);
+                }
+                
+            }
+                
         }
 
     }

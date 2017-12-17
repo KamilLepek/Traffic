@@ -8,9 +8,9 @@ namespace Traffic
     {
         private static void Main(string[] args)
         {
-            int verticalLines = 1;
-            int horizontalLines = 1;
-            int desiredNumberOfVehicles = 100;
+            int verticalLines = 4;
+            int horizontalLines = 4;
+            int desiredNumberOfVehicles = 300;
 
             var simulationController =
                 new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);

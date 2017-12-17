@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using OpenTK;
@@ -15,17 +16,22 @@ namespace Traffic.Graphics
     {
         public bool isVehicleClicked;
         public List<Vehicle> vehicleList;
+        public Vector2 selectedVehicleCoordinates;
+        public uint selectedVehicleId;
 
         public VehicleFinder(List<Vehicle> listOfVehicles)
         {
             this.isVehicleClicked = false;
             this.vehicleList = listOfVehicles;
         }
-
+        /// <summary>
+        /// Checks if click was on a vehicle
+        /// </summary>
+        /// <param name="CursorPosition"></param>
         public void CheckIfClickedOnVehicle(Vector2 CursorPosition)
         {
             this.isVehicleClicked = false;
-            foreach (var vehicle in this.vehicleList)
+            foreach(var vehicle in this.vehicleList)
             {
                 bool isVehicleStreetVertical = false;
                 Street street = new Street();
@@ -53,6 +59,7 @@ namespace Traffic.Graphics
                         CursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarLength / 2)
                     {
                         this.isVehicleClicked = true;
+                        this.selectedVehicleId = vehicle.VehicleID;
                     }
                 }
                 else
@@ -63,10 +70,41 @@ namespace Traffic.Graphics
                         CursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarWidth / 2)
                     {
                         this.isVehicleClicked = true;
+                        this.selectedVehicleId = vehicle.VehicleID;
                     }
                 }
 
             }
+        }
+        /// <summary>
+        /// Gets the world coordinates of given vehicle
+        /// </summary>
+        /// <param name="selectedVehicleIndex"></param>
+        /// <returns></returns>
+        public void GetVehicleCoordinates(uint selectedVehicleId)
+        {
+            int numberOfMatchedVehicles = 0;
+            var placeCoordinates = new Vector2();
+
+            foreach (var vehicle in this.vehicleList)
+            {
+                if(vehicle.VehicleID == this.selectedVehicleId)
+                {
+                    if (vehicle.Place is Street)
+                        placeCoordinates = this.GetStreetCoordinates((Street)vehicle.Place);
+                    else if (vehicle.Place is Intersection)
+                        placeCoordinates = this.GetIntersectionCoordinates((Intersection)vehicle.Place);
+
+                    this.selectedVehicleCoordinates = new Vector2((float)(placeCoordinates.X + vehicle.Position.X), (float)(placeCoordinates.Y + vehicle.Position.Y));
+                    numberOfMatchedVehicles += 1;
+                }
+            }
+
+            if (numberOfMatchedVehicles == 0)
+            {
+                this.isVehicleClicked = false;
+            }
+
         }
 
         private Vector2 GetStreetCoordinates(Street street)

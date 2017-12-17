@@ -168,13 +168,13 @@ namespace Traffic.Utilities
 
         public const int AmountOfLinesInCircle = 50;
 
-        public const double InitialTestingPointCoordinateX = 0;
-
-        public const double InitialTestingPointCoordinateY = 0;
-
         public const double CursorSize = 3;
 
         public const double CursorMovementSpeed = 0.002;
+
+        public const float CameraTrackingSmoothness = 0.12f;
+
+        public const CursorType Cursor = CursorType.GlCursor;
 
         #endregion
 

@@ -146,7 +146,7 @@ namespace Traffic.Graphics
             GL.End();
         }
 
-        public void GlDrawVehicle(Vehicle vehicle)
+        public void GlDrawVehicle(Vehicle vehicle, bool isVehicleClicked, uint selectedVehicleId)
         {
             var placeCoordinates = new Vector2();
 
@@ -158,7 +158,8 @@ namespace Traffic.Graphics
                 return;
 
             double rotationAngle = vehicle.FrontVector.GetRotationAngle();
-            GL.Color4(Color.Transparent);//todo:Handle Alpha Transparency
+           //todo:Handle Alpha Transparency
+            
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             GL.Translate(placeCoordinates.X + vehicle.Position.X, 0, placeCoordinates.Y + vehicle.Position.Y);
@@ -169,7 +170,15 @@ namespace Traffic.Graphics
             GL.BindTexture(TextureTarget.Texture2D, TexturesLoader.TexturesList[vehicle.TextureAssigned]);
 
             GL.Begin(PrimitiveType.Quads);
-
+            if (isVehicleClicked && vehicle.VehicleID == selectedVehicleId)
+            {
+                GL.Color4(Color.LightSalmon);
+            }
+            else
+            {
+                GL.Color3(Color.White);
+            }
+            
             GL.TexCoord2(1, 0);
             GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
 
@@ -210,36 +219,75 @@ namespace Traffic.Graphics
         /// <summary>
         /// Draws point used durring test of selecting cars by mouse click
         /// </summary>
-        /// todo:make nice cursor texture with transparency
         public void GlDrawCursor(double x,double y,double cameraDistance)
         {
-     
-            GL.MatrixMode(MatrixMode.Modelview);
-            
-            GL.PushMatrix();
+            if (Constants.Cursor == CursorType.TextureCursor)
+            {
 
-            GL.Enable(EnableCap.Texture2D);
-            GL.BindTexture(TextureTarget.Texture2D, TexturesLoader.TexturesList[5]);
- 
-            GL.Begin(PrimitiveType.Quads);
+                GL.MatrixMode(MatrixMode.Modelview);
 
-            GL.TexCoord2(0, 0);
-            GL.Vertex3(x, 0, y);
+                GL.PushMatrix();
 
-            GL.TexCoord2(1, 0);
-            GL.Vertex3(x + Constants.CursorSize * Math.Abs(cameraDistance) / 130, 0.0f, y);
+                GL.Enable(EnableCap.Texture2D);
+                GL.BindTexture(TextureTarget.Texture2D, TexturesLoader.TexturesList[5]);
 
-            GL.TexCoord2(1, 1);
-            GL.Vertex3(x + Constants.CursorSize * Math.Abs(cameraDistance) / 130, 0.0f, y + Constants.CursorSize * Math.Abs(cameraDistance) / 100);
+                GL.Begin(PrimitiveType.Quads);
 
-            GL.TexCoord2(0, 1);
-            GL.Vertex3(x, 0.0f, y + Constants.CursorSize * Math.Abs(cameraDistance) / 100);
+                GL.TexCoord2(0, 0);
+                GL.Vertex3(x, 0, y);
 
-            GL.End();
-            GL.Disable(EnableCap.Texture2D);
+                GL.TexCoord2(1, 0);
+                GL.Vertex3(x + Constants.CursorSize * Math.Abs(cameraDistance) / 130, 0.0f, y);
 
-            GL.PopMatrix();
+                GL.TexCoord2(1, 1);
+                GL.Vertex3(x + Constants.CursorSize * Math.Abs(cameraDistance) / 130, 0.0f,
+                    y + Constants.CursorSize * Math.Abs(cameraDistance) / 100);
+
+                GL.TexCoord2(0, 1);
+                GL.Vertex3(x, 0.0f, y + Constants.CursorSize * Math.Abs(cameraDistance) / 100);
+
+                GL.End();
+                GL.Disable(EnableCap.Texture2D);
+
+                GL.PopMatrix();
+            }
+
+            if (Constants.Cursor == CursorType.GlCursor)
+            {
+                GL.PushMatrix();
+
+                GL.Begin(PrimitiveType.Triangles);
+                GL.Color3(Color.White);
+                GL.Vertex3(x, 0.0f, y);
+                GL.Vertex3(x, 0.0f, y + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.Vertex3(x + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260, 0,
+                    y + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.End();
+
+                GL.Begin(PrimitiveType.Triangles);
+                GL.Color3(Color.White);
+                GL.Vertex3(x, 0.0f, y + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.Vertex3(x + 0.9 * Constants.CursorSize * Math.Abs(cameraDistance) / 260, 0,
+                    y + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.Vertex3(x, 0.0f, y + 2.8 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.End();
+
+                GL.LineWidth((float) 1.3);
+                GL.Begin(PrimitiveType.LineLoop);
+                GL.Color3(Color.Black);
+
+                GL.Vertex3(x, 0.0f, y);
+                GL.Vertex3(x, 0.0f, y + 2.8 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.Vertex3(x + 0.9 * Constants.CursorSize * Math.Abs(cameraDistance) / 260, 0,
+                    y + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.Vertex3(x + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260, 0,
+                    y + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
+                GL.End();
+                GL.PopMatrix();
+            }
+
         }
+
 
     }
 }
