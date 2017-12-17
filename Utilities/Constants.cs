@@ -59,7 +59,7 @@ namespace Traffic.Utilities
         /// <summary>
         /// We neither have to decelerate nor accelerate if our velicity is in [desiredVelocity - this, desiredVelocity]
         /// </summary>
-        public const double DesiredVelocityMargin = 5;
+        public const double DesiredVelocityMargin = 2;
 
         /// <summary>
         /// This is the minimum value that a vehicle can have as maximum reachable velocity
@@ -73,9 +73,9 @@ namespace Traffic.Utilities
 
         public const double InitialVelocity = 30;
 
-        public const double BeforeEnteringIntersectionDesiredVelocity = 40;
+        public const double BeforeEnteringIntersectionDesiredVelocity = 20;
 
-        public const double IntersectionDesiredVelocity = 30;
+        public const double IntersectionDesiredVelocity = 20;
 
         #endregion
 
@@ -95,12 +95,17 @@ namespace Traffic.Utilities
         /// <summary>
         /// Minimum value that is acceptable for distance held from the vehicle in front
         /// </summary>
-        public const double MinimumDistanceHeld = 0.5;
+        public const double MinimumDistanceHeld = 1.5;
 
         /// <summary>
         /// Maximum value that is acceptable for distance held from the vehicle in front of us is <see cref="MinimumDistanceHeld"/> + <see cref="DistanceHeldInterval"/>
         /// </summary>
         public const double DistanceHeldInterval = 4;
+
+        /// <summary>
+        /// Constant which determines how long is the factor depending on VehicleLength which is used to compute searching rectangle length
+        /// </summary>
+        public const double VehicleLengthSearchingDependantFactor = 3;
 
         #endregion
 
@@ -112,7 +117,7 @@ namespace Traffic.Utilities
 
         public const double StreetLength = 500;
 
-        public const double IntersectionSize = 75; //both for width and height
+        public const double IntersectionSize = 25; //both for width and height
 
         public const double TrafficLightWidth = 3;
 
@@ -121,12 +126,12 @@ namespace Traffic.Utilities
         /// <summary>
         /// How far (fraction of intersection size) from the intersection center should the driver start turning
         /// </summary>
-        public const double TurnStartingPoint = 0.07;
+        public const double TurnStartingPoint = 0.25;
 
         /// <summary>
         /// How far (fraction of street length) from the beginning of street should the driver start breaking
         /// </summary>
-        public const double BreakStartingPoint = 0.85;
+        public const double BreakStartingPoint = 0.8;
 
         #endregion
 

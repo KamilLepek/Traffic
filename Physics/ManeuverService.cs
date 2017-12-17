@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World.Edges;
@@ -23,7 +24,7 @@ namespace Traffic.Physics
                             ? veh.VelocityVector.Length() - opponentVehicle.VelocityVector.Length()
                             : 1;
 
-                    //Lenght of rectangle we look for the opponent vehicle, it scales with the velocityDeceleratingFactor and our velocity
+                    //Length of rectangle we look for the opponent vehicle, it scales with the velocityDeceleratingFactor and our velocity
                     double searchingRectangleLength =
                         vehiclesLength + veh.DistanceHeld + veh.VelocityVector.Length() * Constants.VelocityDependentCaution / Constants.TicksPerSecond +
                         velocityDeceleratingFactor * Constants.VelocityDifferenceDependentCaution / Constants.TicksPerSecond;
@@ -217,6 +218,73 @@ namespace Traffic.Physics
                 }
             }
             return false;
+        }
+
+        public bool CheckIfVehicleHasToWaitOnIntersectionEntrance(Vehicle veh)
+        {
+            if (veh.Place is Street && veh.Route.Any())
+            {
+                if (veh.Route.First() == Decision.Left)
+                {
+                    var nextIntersection = veh.GetNextIntersection();
+                    if (nextIntersection == null)
+                        return false;
+
+                    if (nextIntersection.GetTrafficLight(
+                            UnitConverter.IdealFrontVectorToOrentation(veh.FrontVector.GetDesiredDirection())) == Light.Green)
+                    {
+                        double rectangleLength = veh.VehicleLength * Constants.VehicleLengthSearchingDependantFactor + Constants.IntersectionSize;
+
+                        if (rectangleLength > veh.GetDistanceToEndOfStreet() + Constants.IntersectionSize) // Does the rectangle catches next street at all?
+                        {
+                            var idealFrontVector = veh.FrontVector.GetDesiredDirection();
+
+                            var oppositeStreet = nextIntersection.IntersectingStreets.Find(item =>
+                                (item.RowNumber == (nextIntersection.RowNumber + idealFrontVector.Y)) &&
+                                (item.ColumnNumber == (nextIntersection.ColumnNumber + idealFrontVector.X)));
+
+                            var oppositeOrientationThanVeh = UnitConverter.OppositeOrientation(
+                                UnitConverter.IdealFrontVectorToOrentation(veh.FrontVector.GetDesiredDirection()));
+
+                            if (!oppositeStreet.Vehicles.Any())
+                                return false;
+
+                            var oppositeVehicles = oppositeStreet.Vehicles.FindAll(item =>
+                                UnitConverter.IdealFrontVectorToOrentation(item.FrontVector.GetDesiredDirection()) ==
+                                oppositeOrientationThanVeh);
+
+                            if (!oppositeVehicles.Any())
+                                return false;
+
+                            //Handle situation when the opposite vehicle is already waiting to enter intersection
+                            //but the vehicle behind him is going right so that we are forced to wait anyway
+                            //In order to avoid eternal freeze:
+                            var oppositeVehiclesSorted = oppositeVehicles.OrderBy(item => item.GetDistanceToEndOfStreet()).ToList();
+                            if (oppositeVehiclesSorted.First().Maneuver == Maneuver.WaitToEnterIntersection)
+                                return false;
+
+                            //check first 3 vehicles on opposite street
+                            int amountOfVehicles = Math.Min(3, oppositeVehiclesSorted.Count);
+                            for (int i = 0; i < amountOfVehicles; i++)
+                            {
+                                if (oppositeVehiclesSorted[i].Route.First() != Decision.Left
+                                ) // Does he drive forward or right at all?
+                                {
+                                    if (oppositeVehiclesSorted[i].GetDistanceToEndOfStreet() < rectangleLength -
+                                        Constants.IntersectionSize -
+                                        veh.GetDistanceToEndOfStreet()) // Is he inside the rectangle?
+                                    {
+                                        veh.Maneuver = Maneuver.WaitToEnterIntersection;
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+
         }
     }
 }

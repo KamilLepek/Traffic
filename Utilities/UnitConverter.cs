@@ -58,5 +58,21 @@ namespace Traffic.Utilities
             }
             throw new ArgumentOutOfRangeException();
         }
+
+        public static Orientation OppositeOrientation(Orientation orientation)
+        {
+            switch (orientation)
+            {
+                case Orientation.Bottom:
+                    return Orientation.Top;
+                case Orientation.Top:
+                    return Orientation.Bottom;
+                case Orientation.Left:
+                    return Orientation.Right;
+                case Orientation.Right:
+                    return Orientation.Left;
+            }
+            throw new ArgumentOutOfRangeException();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
@@ -30,6 +31,8 @@ namespace Traffic.Physics
             if (this.maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
                 return;
             if (this.maneuverService.CheckIfVehicleHasToStopOnLights(veh))
+                return;
+            if (this.maneuverService.CheckIfVehicleHasToWaitOnIntersectionEntrance(veh))
                 return;
             if (this.maneuverService.CheckIfVehicleIsApproachingEndOfStreet(veh))
                 return;
@@ -76,18 +79,19 @@ namespace Traffic.Physics
                     this.ComputeCorrectionAcceleration(veh);
                     break;
                 case Maneuver.StopOnLights:
-                    this.DecelerateToStopOnLights(veh);
+                case Maneuver.WaitToEnterIntersection:
+                    this.DecelerateToStopBeforeEnteringIntersection(veh);
                     break;
             }
         }
 
-        private void DecelerateToStopOnLights(Vehicle veh)
+        private void DecelerateToStopBeforeEnteringIntersection(Vehicle veh)
         {
             if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
             {
                 double velocity = veh.VelocityVector.Length();
                 double distanceToLine = veh.GetDistanceToEndOfStreet();
-                if (Math.Abs(distanceToLine) < Constants.DoubleErrorTolerance)
+                if (distanceToLine < Constants.DoubleErrorTolerance)
                     return;
                 double deceleration = 1.5 * velocity * velocity / distanceToLine;
                 veh.AccelerationVector.X = -veh.FrontVector.X * deceleration;
