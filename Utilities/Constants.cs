@@ -103,9 +103,9 @@ namespace Traffic.Utilities
         public const double DistanceHeldInterval = 4;
 
         /// <summary>
-        /// Constant which determines how long is the factor depending on VehicleLenght which is used to compute searching rectangle lenght
+        /// Constant which determines how long is the factor depending on VehicleLength which is used to compute searching rectangle length
         /// </summary>
-        public const double VehicleLenghtSearchingDependantFactor = 3;
+        public const double VehicleLengthSearchingDependantFactor = 3;
 
         #endregion
 

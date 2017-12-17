@@ -24,7 +24,7 @@ namespace Traffic.Physics
                             ? veh.VelocityVector.Length() - opponentVehicle.VelocityVector.Length()
                             : 1;
 
-                    //Lenght of rectangle we look for the opponent vehicle, it scales with the velocityDeceleratingFactor and our velocity
+                    //Length of rectangle we look for the opponent vehicle, it scales with the velocityDeceleratingFactor and our velocity
                     double searchingRectangleLength =
                         vehiclesLength + veh.DistanceHeld + veh.VelocityVector.Length() * Constants.VelocityDependentCaution / Constants.TicksPerSecond +
                         velocityDeceleratingFactor * Constants.VelocityDifferenceDependentCaution / Constants.TicksPerSecond;
@@ -233,17 +233,17 @@ namespace Traffic.Physics
                     if (nextIntersection.GetTrafficLight(
                             UnitConverter.IdealFrontVectorToOrentation(veh.FrontVector.GetDesiredDirection())) == Light.Green)
                     {
-                        double rectangleLenght = veh.VehicleLength * Constants.VehicleLenghtSearchingDependantFactor + Constants.IntersectionSize;
+                        double rectangleLength = veh.VehicleLength * Constants.VehicleLengthSearchingDependantFactor + Constants.IntersectionSize;
 
-                        if (rectangleLenght > veh.GetDistanceToEndOfStreet() + Constants.IntersectionSize) // Does the rectangle catches next street at all?
+                        if (rectangleLength > veh.GetDistanceToEndOfStreet() + Constants.IntersectionSize) // Does the rectangle catches next street at all?
                         {
-                            Point idealFrontVector = veh.FrontVector.GetDesiredDirection();
+                            var idealFrontVector = veh.FrontVector.GetDesiredDirection();
 
                             var oppositeStreet = nextIntersection.IntersectingStreets.Find(item =>
                                 (item.RowNumber == (nextIntersection.RowNumber + idealFrontVector.Y)) &&
                                 (item.ColumnNumber == (nextIntersection.ColumnNumber + idealFrontVector.X)));
 
-                            Orientation oppositeOrientationThanVeh = UnitConverter.OppositeOrientation(
+                            var oppositeOrientationThanVeh = UnitConverter.OppositeOrientation(
                                 UnitConverter.IdealFrontVectorToOrentation(veh.FrontVector.GetDesiredDirection()));
 
                             if (!oppositeStreet.Vehicles.Any())
@@ -270,7 +270,7 @@ namespace Traffic.Physics
                                 if (oppositeVehiclesSorted[i].Route.First() != Decision.Left
                                 ) // Does he drive forward or right at all?
                                 {
-                                    if (oppositeVehiclesSorted[i].GetDistanceToEndOfStreet() < rectangleLenght -
+                                    if (oppositeVehiclesSorted[i].GetDistanceToEndOfStreet() < rectangleLength -
                                         Constants.IntersectionSize -
                                         veh.GetDistanceToEndOfStreet()) // Is he inside the rectangle?
                                     {
