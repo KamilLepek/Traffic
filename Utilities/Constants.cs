@@ -158,11 +158,23 @@ namespace Traffic.Utilities
 
         public const double CameraMouseMovementSpeed = 0.003;
 
-        public const double CameraZoomSpeed = 40.0;
+        public const double CameraZoomSpeed = 60.0;
 
         public const double InitialCameraDistance = -300.0;
 
+        public const double MinimalCameraDistanceFromSurface = -10;
+
+        public const double MaximalCameraDistanceFromSurface = -2000;
+
         public const int AmountOfLinesInCircle = 50;
+
+        public const double CursorSize = 3;
+
+        public const double CursorMovementSpeed = 0.002;
+
+        public const float CameraTrackingSmoothness = 0.12f;
+
+        public const CursorType Cursor = CursorType.GlCursor;
 
         #endregion
 

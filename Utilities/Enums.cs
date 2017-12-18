@@ -5,4 +5,6 @@
     public enum Maneuver { Accelerate, DecelerateOnStreet, DecelerateOnIntersection, ForwardOnIntersect, TurnLeft, 
         TurnRight, CorrectAfterTurning, AvoidCollision, StopOnLights, WaitToEnterIntersection}
     public enum Light { Red, Green }
+
+    public enum CursorType { TextureCursor, GlCursor }
 }

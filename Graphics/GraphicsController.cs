@@ -4,6 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using OpenTK.Input;
+using Traffic.Utilities;
 
 namespace Traffic.Graphics
 {
@@ -18,13 +19,21 @@ namespace Traffic.Graphics
         private readonly DrawingService drawingService;
         private readonly CameraService cameraService;
         private bool mousePressed;
+        private bool isSingleClick;
+        public VehicleFinder vehicleFinder;
+        private readonly int cursorNumber;
+        
 
         public GraphicsController(Map world, Action updateWorldHandler)
         {
+            this.CursorVisible = false;
+            this.isSingleClick = true;
+            this.vehicleFinder = new VehicleFinder(world.Vehicles);
             this.gameWorld = world;
             this.updateWorldHandler = updateWorldHandler;
             this.drawingService = new DrawingService();
             this.cameraService = new CameraService();
+            this.cursorNumber = cursorNumber;
             TexturesLoader.InitTextures();
         }
 
@@ -47,6 +56,25 @@ namespace Traffic.Graphics
         {
             base.OnUpdateFrame(e);
             this.updateWorldHandler();
+
+            if (this.mousePressed == false && this.Focused == true)
+            {
+                Vector2 cameraTranslationVector =
+                    new Vector2((float)(this.cameraService.deltaMousePos.X * Constants.CursorMovementSpeed * this.cameraService.cameraDistance), (float)(this.cameraService.deltaMousePos.Y * Constants.CursorMovementSpeed * this.cameraService.cameraDistance));
+                if (this.cameraService.WillCursorBeInBoundsAfterTranslating(this.cameraService.cameraPosition,
+                    cameraTranslationVector, this.cameraService.cursorPosition, this.Bounds.Width, this.Bounds.Height, this.cameraService.cameraDistance))
+                {
+                    this.cameraService.cursorPosition += cameraTranslationVector;
+                }              
+                this.cameraService.ResetCursor(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
+            }
+            this.cameraService.UpdateLastMousePosition();
+            if (this.vehicleFinder.isVehicleClicked)
+            {
+                this.vehicleFinder.GetVehicleCoordinates(this.vehicleFinder.selectedVehicleId);
+                this.cameraService.CenterCameraOnVehicle(this.vehicleFinder.selectedVehicleCoordinates);
+            }
+            
         }
 
         /// <summary>
@@ -60,17 +88,25 @@ namespace Traffic.Graphics
 
             GL.MatrixMode(MatrixMode.Modelview);
 
+            
             this.drawingService.GlDrawAxes();
+
+            
 
             foreach (var street in this.gameWorld.Streets)
                 this.drawingService.GlDrawStreet(street);
 
             foreach (var intersection in this.gameWorld.Intersections)
                 this.drawingService.GlDrawIntersection(intersection);
-
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            
             foreach (var vehicle in this.gameWorld.Vehicles)
-                this.drawingService.GlDrawVehicle(vehicle);
-
+                this.drawingService.GlDrawVehicle(vehicle,this. vehicleFinder.isVehicleClicked, this.vehicleFinder.selectedVehicleId);
+            
+            this.drawingService.GlDrawCursor(this.cameraService.cursorPosition.X , this.cameraService.cursorPosition.Y , this.cameraService.cameraDistance);
+            
+            
             this.SwapBuffers();
         }
 
@@ -95,6 +131,14 @@ namespace Traffic.Graphics
         {
             base.OnKeyDown(e);
             this.cameraService.Move(e.Key);
+            if (e.Key == Key.Escape)
+            {
+                this.Exit();
+            }
+            if (e.Alt && e.Key == Key.Enter)
+            {
+                this.WindowState = WindowState.Fullscreen;
+            }
         }
 
         /// <summary>
@@ -114,6 +158,13 @@ namespace Traffic.Graphics
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
                 this.mousePressed = true;
+
+            if (this.isSingleClick == true)
+            {
+                this.vehicleFinder.CheckIfClickedOnVehicle(this.cameraService.cursorPosition);
+            }
+
+            this.isSingleClick = false;
         }
 
         /// <summary>
@@ -123,14 +174,28 @@ namespace Traffic.Graphics
         {
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
+            {
                 this.mousePressed = false;
+            }
+
+            this.isSingleClick = true;
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
             if (this.mousePressed)
-                this.cameraService.Move(e);
+            {
+                Vector2 cameraTranslationVector = new Vector2((float)(-e.XDelta * Constants.CameraMouseMovementSpeed * this.cameraService.cameraDistance), (float)(-e.YDelta * Constants.CameraMouseMovementSpeed * this.cameraService.cameraDistance));
+                if (this.cameraService.WillCursorBeInBoundsAfterTranslating(this.cameraService.cameraPosition,
+                    cameraTranslationVector, this.cameraService.cursorPosition, this.Bounds.Width, this.Bounds.Height, this.cameraService.cameraDistance))
+                {
+                    this.cameraService.Move(e);
+                }
+                
+            }
+                
         }
+
     }
 }

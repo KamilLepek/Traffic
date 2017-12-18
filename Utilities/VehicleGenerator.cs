@@ -12,10 +12,12 @@ namespace Traffic.Utilities
     {
 
         public Map Map { get; private set; }
+        public uint VehicleId;
 
         public VehicleGenerator(Map m)
         {
             this.Map = m;
+            this.VehicleId = 0;
         }
 
         /// <summary>
@@ -34,7 +36,8 @@ namespace Traffic.Utilities
                 //w domyśle tutaj można jeszcze losować typ obiektu jaki będziemy dodawać do listy, np Car/Bicycle/BattlElephant
                 vehicles.Add(new Car(RandomGenerator.Velocity(), RandomGenerator.ReactionTime(),
                         RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(),
-                        spawnPoint, initialRoute, finishPoint, RandomGenerator.Int(Constants.NumberOfTextures)));
+                        spawnPoint, initialRoute, finishPoint, RandomGenerator.Int(Constants.NumberOfTextures),VehicleId));
+                this.VehicleId = (this.VehicleId + 1) % 1000000000; //prevent going out of range durring extremely long simulations
             }
         }
 

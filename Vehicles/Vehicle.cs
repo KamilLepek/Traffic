@@ -70,7 +70,9 @@ namespace Traffic.Vehicles
 
         public int TextureAssigned { get; private set; }
 
-        protected Vehicle(double v, double t, double dist, EndPoint spawnPlace, List<Decision> initialRoute, EndPoint finishPoint, int textureAssigned)
+        public uint VehicleID;
+
+        protected Vehicle(double v, double t, double dist, EndPoint spawnPlace, List<Decision> initialRoute, EndPoint finishPoint, int textureAssigned, uint vehicleId)
         {
             this.Place = spawnPlace;
             spawnPlace.IsOccupied = true;
@@ -83,6 +85,7 @@ namespace Traffic.Vehicles
             this.Maneuver = Maneuver.Accelerate;
             this.TextureAssigned = textureAssigned;
             this.VehicleInFrontOfUs = null;
+            this.VehicleID = vehicleId;
         }
 
         public virtual void PrintStatistics()
