@@ -5,7 +5,7 @@ using System.Linq;
 namespace Traffic.Utilities
 {
     /// <summary>
-    /// Class representing 2-dimensional point
+    ///     Class representing 2-dimensional point
     /// </summary>
     public class Point
     {
@@ -20,9 +20,9 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns the angle in degrees by which the direction vector is rotated over vertical axis (Z axis)
+        ///     Returns the angle in degrees by which the direction vector is rotated over vertical axis (Z axis)
         /// </summary>
-        /// <returns>Angle in degrees</returns>
+        /// <returns> Angle in degrees </returns>
         public double GetRotationAngle()
         {
             if (this.Y == 0) // we can't compute atan, it's either 90 or 270 degrees
@@ -43,7 +43,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns distance between this point and point p
+        ///     Returns distance between this point and point p
         /// </summary>
         public double DistanceFrom(Point p)
         {
@@ -51,16 +51,15 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns length of this vector
+        ///     Returns length of this vector
         /// </summary>
-        /// <returns></returns>
         public double Length()
         {
             return Math.Sqrt(this.X * this.X + this.Y * this.Y);
         }
 
         /// <summary>
-        /// Returns angle in degrees between this vector and vector p
+        ///     Returns angle in degrees between this vector and vector p
         /// </summary>
         public double AngleFrom(Point p)
         {
@@ -72,9 +71,8 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns vector with length adjusted to length param
+        ///     Returns vector with length adjusted to length param
         /// </summary>
-        /// <returns></returns>
         public void ChangeLengthOfVector(double length)
         {
             this.X *= (length / this.Length());
@@ -82,7 +80,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns the closest in terms of angle horizontal or vertical direction
+        ///     Returns the closest in terms of angle horizontal or vertical direction
         /// </summary>
         public Point GetDesiredDirection()
         {
@@ -98,7 +96,16 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns sum of this vector and vector p
+        ///     Determines wether point is closer to being vertical or horizontal
+        /// </summary>
+        /// <returns> true if point is closer to vertical, false otherwise </returns>
+        public bool IsMoreOfVerticalThanHorizontal()
+        {
+            return this.GetDesiredDirection().Y != 0;
+        }
+
+        /// <summary>
+        ///     Returns sum of this vector and vector p
         /// </summary>
         public Point Add(Point p)
         {
@@ -106,7 +113,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns difference of this vector and vector p
+        ///     Returns difference of this vector and vector p
         /// </summary>
         public Point Subtract(Point p)
         {

@@ -12,7 +12,7 @@ namespace Traffic.Utilities
 
 
         /// <summary>
-        /// Returns random integer up to max-1
+        ///     Returns random positive integer up to max-1
         /// </summary>
         public static int Int(int max)
         {
@@ -20,7 +20,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random integer from [min,max)
+        ///     Returns random integer from [min,max)
         /// </summary>
         public static int Int(int min, int max)
         {
@@ -28,7 +28,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random velocity
+        ///     Returns random velocity
         /// </summary>
         public static double Velocity()
         {
@@ -37,7 +37,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random reaction time
+        ///     Returns random reaction time
         /// </summary>
         public static double ReactionTime()
         {
@@ -45,7 +45,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random distance held
+        ///     Returns random distance held
         /// </summary>
         public static double DistanceHeld()
         {
@@ -53,7 +53,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random registration number
+        ///     Returns random registration number
         /// </summary>
         public static string RegistrationNumber()
         {

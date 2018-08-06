@@ -34,8 +34,6 @@ namespace Traffic.World
             this.Intersections = new List<Intersection>();
             this.Vehicles = new List<Vehicle>();
 
-            this.MapHeight = (a + 1) * Constants.StreetLength + a * Constants.IntersectionSize;
-            this.MapWidth = (b + 1) * Constants.StreetLength + b * Constants.IntersectionSize;
             //liczba ulic będzie a*(b+1)+b*(a+1)
             //skrzyżowań a*b
             //endpointów 2*(a+b)
