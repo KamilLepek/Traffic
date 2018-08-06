@@ -7,6 +7,9 @@ using Traffic.World.Vertices;
 
 namespace Traffic.Vehicles
 {
+    /// <summary>
+    /// Class which determines abstract vehicle that all implemented vehicles inherits from
+    /// </summary>
     public abstract class Vehicle
     {
         /// <summary>
@@ -57,6 +60,9 @@ namespace Traffic.Vehicles
         /// </summary>
         public List<Decision> Route { get; protected set; }
 
+        /// <summary>
+        /// Current Maneuver to execute
+        /// </summary>
         public Maneuver Maneuver { get; set; }
 
         public Vehicle VehicleInFrontOfUs { get; set; }
@@ -66,8 +72,14 @@ namespace Traffic.Vehicles
         /// </summary>
         public double TurningArcRadius { get; set; }
 
+        /// <summary>
+        /// Vector determining turning direction when entering turning maneuver
+        /// </summary>
         public Point InitialTurningDirection { get; set; }
 
+        /// <summary>
+        /// Visual representation of the vehicle
+        /// </summary>
         public int TextureAssigned { get; private set; }
 
         protected Vehicle(double v, double t, double dist, EndPoint spawnPlace, List<Decision> initialRoute, EndPoint finishPoint, int textureAssigned)
@@ -85,6 +97,9 @@ namespace Traffic.Vehicles
             this.VehicleInFrontOfUs = null;
         }
 
+        /// <summary>
+        /// Prints statistics of the vehicle
+        /// </summary>
         public virtual void PrintStatistics()
         {
             Console.WriteLine("------------------------");
@@ -93,6 +108,13 @@ namespace Traffic.Vehicles
             Console.WriteLine("Zachowywana odleglosc: {0} m", this.DistanceHeld);
         }
 
+        /// <summary>
+        /// Sets initial position and velocity vector of given vehicle
+        /// </summary>
+        /// <param name="spawnPlace">Place the vehicle spawns on</param>
+        /// <param name="vehicleLength">Length of the vehicle</param>
+        /// <param name="vehicleWidth">Width of the vehicle</param>
+        /// <param name="value">Initial velocity of the vehicle</param>
         protected void SetInitialPositionAndVelocityVector(EndPoint spawnPlace, double vehicleLength, double vehicleWidth, double value = Constants.InitialVelocity)
         {
             switch (spawnPlace.Orient)

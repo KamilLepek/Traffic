@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Linq;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
 
 namespace Traffic.Physics
 {
+    /// <summary>
+    /// Handles decisions of vehicles
+    /// </summary>
     public class DecisionController
     {
         private readonly Map world;
@@ -17,6 +19,9 @@ namespace Traffic.Physics
             this.maneuverService = new ManeuverService();
         }
 
+        /// <summary>
+        /// Updates maneuvers and then computes acceleration for every vehicle
+        /// </summary>
         public void HandleDecisions()
         {
             foreach (var vehicle in this.world.Vehicles)
@@ -26,6 +31,10 @@ namespace Traffic.Physics
             }
         }
 
+        /// <summary>
+        /// Updates maneuvers property of given vehicle
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
             if (this.maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
@@ -85,6 +94,10 @@ namespace Traffic.Physics
             }
         }
 
+        /// <summary>
+        /// Computes deceleration to stop before entering intersection for given vehicle
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         private void DecelerateToStopBeforeEnteringIntersection(Vehicle veh)
         {
             if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
@@ -99,6 +112,10 @@ namespace Traffic.Physics
             }
         }
 
+        /// <summary>
+        /// Computes deceleration to avoid collision for given vehicle
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         private void DecelerateToAvoidCollision(Vehicle veh)
         {
             if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)

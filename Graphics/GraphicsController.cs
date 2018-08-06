@@ -126,6 +126,9 @@ namespace Traffic.Graphics
                 this.mousePressed = false;
         }
 
+        /// <summary>
+        /// Handles camera movement on mouse click and move
+        /// </summary>
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);

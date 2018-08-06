@@ -7,8 +7,15 @@ using Traffic.World.Vertices;
 
 namespace Traffic.Physics
 {
+    /// <summary>
+    /// Handles maneuvers updates
+    /// </summary>
     internal class ManeuverService
     {
+        /// <summary>
+        /// Checks if given vehicle has to avoid collision on street
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         public bool CheckIfVehicleHasToAvoidCollisionOnStreet(Vehicle veh)
         {
             if (veh.Place is Street)
@@ -98,6 +105,10 @@ namespace Traffic.Physics
             return false;
         }
 
+        /// <summary>
+        /// Checks if given vehicle is approaching the end of street
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         public bool CheckIfVehicleIsApproachingEndOfStreet(Vehicle veh)
         {
             if (veh.Place is Street)
@@ -128,6 +139,10 @@ namespace Traffic.Physics
             return false;
         }
 
+        /// <summary>
+        /// Checks if given vehicle has entered intersection
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         public bool CheckIfVehicleEnteredIntersection(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -145,6 +160,10 @@ namespace Traffic.Physics
             return false;
         }
 
+        /// <summary>
+        /// Checks if given vehicle should execute decision on intersection
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         public bool CheckIfVehicleEnteredMiddleOfIntersection(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -168,6 +187,10 @@ namespace Traffic.Physics
             return false;
         }
 
+        /// <summary>
+        /// Checks if given vehicle is leaving middle of intersection
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         public bool CheckIfVehicleLeftMiddleOfIntersection(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -193,6 +216,10 @@ namespace Traffic.Physics
             return false;
         }
 
+        /// <summary>
+        /// Checks if given vehicle has to stop on lights
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         public bool CheckIfVehicleHasToStopOnLights(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -220,6 +247,10 @@ namespace Traffic.Physics
             return false;
         }
 
+        /// <summary>
+        /// Checks if given vehicle has to wait on intersection entrance
+        /// </summary>
+        /// <param name="veh">given vehicle</param>
         public bool CheckIfVehicleHasToWaitOnIntersectionEntrance(Vehicle veh)
         {
             if (veh.Place is Street && veh.Route.Any())

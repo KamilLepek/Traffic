@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Traffic.Utilities
 {
+    /// <summary>
+    /// Class representing 2-dimensional point
+    /// </summary>
     public class Point
     {
 

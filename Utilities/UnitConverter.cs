@@ -2,8 +2,17 @@
 
 namespace Traffic.Utilities
 {
+    /// <summary>
+    /// Class determining unit conversions in simulation
+    /// </summary>
     public static class UnitConverter
     {
+        /// <summary>
+        /// Converts orientation we're facing to diffrence in rows and columns to the next game object (the one that we're facing)
+        /// </summary>
+        /// <param name="or">Orientation that the driver is facing</param>
+        /// <param name="horizontal">Horizontal diffrence with the game object that the dirver is facing</param>
+        /// <param name="vertical">Vertical diffrence with the game object that the dirver is facing</param>
         public static void OrientationToRowColumnDiffrence(Orientation or, ref int horizontal, ref int vertical)
         {
             switch (or)
@@ -31,6 +40,11 @@ namespace Traffic.Utilities
             }
         }
 
+        /// <summary>
+        /// Converts front vector to orientation that it faces
+        /// </summary>
+        /// <param name="frontVector">Front vector to approximate</param>
+        /// <returns>Orientation the front vector is facing</returns>
         public static Orientation IdealFrontVectorToOrentation(Point frontVector)
         {
             if (frontVector.X == 1 && frontVector.Y == 0)
@@ -45,6 +59,11 @@ namespace Traffic.Utilities
             throw new ArgumentOutOfRangeException();
         }
 
+        /// <summary>
+        /// Converts decision on the next intersection to proper maneuver
+        /// </summary>
+        /// <param name="decision">Decision on next intersection</param>
+        /// <returns>Maneuver to execute</returns>
         public static Maneuver DecisionToManeuver(Decision decision)
         {
             switch (decision)
@@ -59,6 +78,11 @@ namespace Traffic.Utilities
             throw new ArgumentOutOfRangeException();
         }
 
+        /// <summary>
+        /// Returns opposite orientation for given orientation
+        /// </summary>
+        /// <param name="orientation">Given orientation</param>
+        /// <returns>Opposite orientation</returns>
         public static Orientation OppositeOrientation(Orientation orientation)
         {
             switch (orientation)

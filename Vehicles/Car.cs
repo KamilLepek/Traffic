@@ -5,6 +5,9 @@ using Traffic.World.Vertices;
 
 namespace Traffic.Vehicles
 {
+    /// <summary>
+    /// Implementation of specified Vehicle: Car
+    /// </summary>
     public class Car : Vehicle
     {
 
@@ -19,6 +22,9 @@ namespace Traffic.Vehicles
             this.SetInitialPositionAndVelocityVector(spawn, Constants.CarLength, Constants.CarWidth);
         }
 
+        /// <summary>
+        /// Prints Car Statistics
+        /// </summary>
         public override void PrintStatistics()
         {
             base.PrintStatistics();

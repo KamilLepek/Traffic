@@ -7,6 +7,9 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Traffic.Graphics
 {
+    /// <summary>
+    /// Handles loading textures
+    /// </summary>
     internal static class TexturesLoader
     {
         /// <summary>
@@ -14,6 +17,11 @@ namespace Traffic.Graphics
         /// </summary>
         public static List<int> TexturesList { get; private set; }
 
+        /// <summary>
+        /// Loads textures from given path
+        /// </summary>
+        /// <param name="path">given path</param>
+        /// <returns>unique ID in texture loading context</returns>
         public static int LoadTexture(string path)
         {
             int textureId = GL.GenTexture();
@@ -44,6 +52,9 @@ namespace Traffic.Graphics
             return textureId;
         }
 
+        /// <summary>
+        /// Initializes textures
+        /// </summary>
         public static void InitTextures()
         {
             TexturesList = new List<int>();

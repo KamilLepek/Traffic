@@ -4,6 +4,9 @@ using Traffic.Utilities;
 
 namespace Traffic
 {
+    /// <summary>
+    /// Entry Point of our simulation
+    /// </summary>
     internal class Traffic
     {
         private static void Main(string[] args)

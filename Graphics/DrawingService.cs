@@ -9,8 +9,16 @@ using Traffic.Utilities;
 
 namespace Traffic.Graphics
 {
+    /// <summary>
+    /// Handles drawing map and vehicles.
+    /// </summary>
     internal class DrawingService
     {
+        /// <summary>
+        /// Returns coordinates of a given street
+        /// </summary>
+        /// <param name="street">Given street</param>
+        /// <returns>Coordinates of given street</returns>
         private Vector2 GetStreetCoordinates(Street street)
         {
             var coordinates = new Vector2();
@@ -31,6 +39,11 @@ namespace Traffic.Graphics
             return coordinates;
         }
 
+        /// <summary>
+        /// Returns coordinates of a given intersection
+        /// </summary>
+        /// <param name="intersection">Given intersection</param>
+        /// <returns>Coordinates of given intersection</returns>
         private Vector2 GetIntersectionCoordinates(Intersection intersection)
         {
             var coordinates = new Vector2();
@@ -46,6 +59,10 @@ namespace Traffic.Graphics
             return coordinates;
         }
 
+        /// <summary>
+        /// Draws street on map with respect to its coordinates
+        /// </summary>
+        /// <param name="street">Street to draw</param>
         public void GlDrawStreet(Street street)
         {
             Vector2 streetCoordinates = this.GetStreetCoordinates(street);
@@ -68,6 +85,10 @@ namespace Traffic.Graphics
             GL.End();
         }
 
+        /// <summary>
+        /// Draws intersection on map with respect to its coordinates
+        /// </summary>
+        /// <param name="intersection">Intersection to draw</param>
         public void GlDrawIntersection(Intersection intersection)
         {
             var intersectionCoords = this.GetIntersectionCoordinates(intersection);
@@ -91,6 +112,12 @@ namespace Traffic.Graphics
             this.DrawTrafficLights(intersectionCoords, intersection.VerticalTrafficLight, intersection.HorizontalTrafficLight);
         }
 
+        /// <summary>
+        /// Draws traffic lights
+        /// </summary>
+        /// <param name="intersectionCoords">Coordinates of the intersection on which the traffic lights are</param>
+        /// <param name="verticalLight">Colour of the vertical lights</param>
+        /// <param name="horizontalLight">Colour of the horizontal lights</param>
         private void DrawTrafficLights(Vector2 intersectionCoords, Light verticalLight, Light horizontalLight)
         {
             this.GlDrawTrafficLight(new Vector2((float)(intersectionCoords.X + Constants.StreetWidth + Constants.TrafficLightWidth / 2),
@@ -103,6 +130,12 @@ namespace Traffic.Graphics
                 (float)(intersectionCoords.Y + Constants.StreetWidth + Constants.TrafficLightWidth / 2)), 270, horizontalLight);
         }
 
+        /// <summary>
+        /// Draws traffic light with specified colour, center and angle
+        /// </summary>
+        /// <param name="center">Center of the traffic light</param>
+        /// <param name="rotationAngle">Rotation of the traffic light</param>
+        /// <param name="light">Colour of the traffic light</param>
         private void GlDrawTrafficLight(Vector2 center, double rotationAngle, Light light)
         {
             GL.MatrixMode(MatrixMode.Modelview);
@@ -134,6 +167,11 @@ namespace Traffic.Graphics
             GL.PopMatrix();
         }
 
+        /// <summary>
+        /// Draws circle
+        /// </summary>
+        /// <param name="radius">Radius of the circle</param>
+        /// <param name="color">Color of the circle</param>
         private void GlDrawCircle(double radius, Color color)
         {
             GL.Begin(PrimitiveType.TriangleFan);
@@ -146,6 +184,10 @@ namespace Traffic.Graphics
             GL.End();
         }
 
+        /// <summary>
+        /// Draws vehicle on the map
+        /// </summary>
+        /// <param name="vehicle">Vehicle to draw</param>
         public void GlDrawVehicle(Vehicle vehicle)
         {
             var placeCoordinates = new Vector2();

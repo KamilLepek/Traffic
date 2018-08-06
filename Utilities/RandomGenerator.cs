@@ -2,6 +2,9 @@
 
 namespace Traffic.Utilities
 {
+    /// <summary>
+    /// Class which handles setting variety of parameters to pseudo-random according to normal distribution or uniform distribution
+    /// </summary>
     public static class RandomGenerator
     {
 

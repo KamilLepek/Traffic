@@ -8,6 +8,9 @@ using Traffic.Exceptions;
 
 namespace Traffic.Utilities
 {
+    /// <summary>
+    /// Class which handles vehicles generation
+    /// </summary>
     public class VehicleGenerator
     {
 
@@ -111,6 +114,10 @@ namespace Traffic.Utilities
             return list;
         }
 
+        /// <summary>
+        /// Determines whether 2 EndPoints have opposite orientation
+        /// </summary>
+        /// <returns>True if both endpoints have opposite orientation, flase otherwise.</returns>
         private bool AreOpposite(EndPoint spawnPoint, EndPoint finishPoint)
         {
             if (spawnPoint.Orient == Orientation.Top && finishPoint.Orient == Orientation.Bottom ||
