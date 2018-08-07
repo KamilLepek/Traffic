@@ -7,28 +7,20 @@ using Traffic.World.Vertices;
 
 namespace Traffic.Physics
 {
-    public class VehicleFinder
+    public static class VehicleFinder
     {
-
-        private readonly List<Vehicle> vehicleList;
-
-        public VehicleFinder(List<Vehicle> listOfVehicles)
-        {
-            this.vehicleList = listOfVehicles;
-        }
-
-        public Vector2 SelectedVehicleCoordinates { get; private set; }
-        public Vehicle VehicleWeClickedOn { get; private set; }
+        public static Vehicle VehicleWeClickedOn { get; set; }
 
         /// <summary>
         ///     Checks if click was on a vehicle, sets VehicleWeClickedOn to that vehicle, otherwise sets it to null
         /// </summary>
         /// <param name="cursorPosition"> position of the cursor </param>
-        public void CheckIfClickedOnVehicle(Vector2 cursorPosition)
+        /// <param name="vehiclesList"> list of vehicles that we search on </param>
+        public static void CheckIfClickedOnVehicle(Vector2 cursorPosition, List<Vehicle> vehiclesList)
         {
-            this.VehicleWeClickedOn = null;
+            VehicleWeClickedOn = null;
 
-            foreach (var vehicle in this.vehicleList)
+            foreach (var vehicle in vehiclesList)
             {
                 Vector2 placeCoordinates;
                 if (vehicle.Place is Street)
@@ -41,7 +33,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarLength / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarLength / 2)
                         {
-                            this.VehicleWeClickedOn = vehicle;
+                            VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }
@@ -52,7 +44,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarWidth / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarWidth / 2)
                         {
-                            this.VehicleWeClickedOn = vehicle;
+                            VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }
@@ -67,7 +59,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarLength / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarLength / 2)
                         {
-                            this.VehicleWeClickedOn = vehicle;
+                            VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }
@@ -78,7 +70,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarWidth / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarWidth / 2)
                         {
-                            this.VehicleWeClickedOn = vehicle;
+                            VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }
