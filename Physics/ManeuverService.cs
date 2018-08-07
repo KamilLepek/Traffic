@@ -8,30 +8,30 @@ using Traffic.World.Vertices;
 namespace Traffic.Physics
 {
     /// <summary>
-    /// Handles maneuvers updates
+    ///     Handles maneuvers updates
     /// </summary>
     internal class ManeuverService
     {
         /// <summary>
-        /// Checks if given vehicle has to avoid collision on street
+        ///     Checks if given vehicle has to avoid collision on street
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         public bool CheckIfVehicleHasToAvoidCollisionOnStreet(Vehicle veh)
         {
             if (veh.Place is Street)
             {
                 foreach (var opponentVehicle in veh.Place.Vehicles)
                 {
-                    //Since we measure position of vehicle from its center this is the sum of half vehicle lengths
+                    // Since we measure position of vehicle from its center this is the sum of half vehicle lengths
                     double vehiclesLength = veh.VehicleLength / 2 + opponentVehicle.VehicleLength / 2;
 
-                    //Diffrence of velocities or 1 if its negative
+                    // Diffrence of velocities or 1 if its negative
                     double velocityDeceleratingFactor =
                         veh.VelocityVector.Length() > opponentVehicle.VelocityVector.Length()
                             ? veh.VelocityVector.Length() - opponentVehicle.VelocityVector.Length()
                             : 1;
 
-                    //Length of rectangle we look for the opponent vehicle, it scales with the velocityDeceleratingFactor and our velocity
+                    // Length of rectangle we look for the opponent vehicle, it scales with the velocityDeceleratingFactor and our velocity
                     double searchingRectangleLength =
                         vehiclesLength + veh.DistanceHeld + veh.VelocityVector.Length() * Constants.VelocityDependentCaution / Constants.TicksPerSecond +
                         velocityDeceleratingFactor * Constants.VelocityDifferenceDependentCaution / Constants.TicksPerSecond;
@@ -106,9 +106,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Checks if given vehicle is approaching the end of street
+        ///     Checks if given vehicle is approaching the end of street
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         public bool CheckIfVehicleIsApproachingEndOfStreet(Vehicle veh)
         {
             if (veh.Place is Street)
@@ -140,9 +140,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Checks if given vehicle has entered intersection
+        ///     Checks if given vehicle has entered intersection
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         public bool CheckIfVehicleEnteredIntersection(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -161,9 +161,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Checks if given vehicle should execute decision on intersection
+        ///     Checks if given vehicle should execute decision on intersection
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         public bool CheckIfVehicleEnteredMiddleOfIntersection(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -188,9 +188,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Checks if given vehicle is leaving middle of intersection
+        ///     Checks if given vehicle is leaving middle of intersection
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         public bool CheckIfVehicleLeftMiddleOfIntersection(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -217,9 +217,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Checks if given vehicle has to stop on lights
+        ///     Checks if given vehicle has to stop on lights
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         public bool CheckIfVehicleHasToStopOnLights(Vehicle veh)
         {
             if (veh.Place is Intersection)
@@ -248,9 +248,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Checks if given vehicle has to wait on intersection entrance
+        ///     Checks if given vehicle has to wait on intersection entrance
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         public bool CheckIfVehicleHasToWaitOnIntersectionEntrance(Vehicle veh)
         {
             if (veh.Place is Street && veh.Route.Any())
@@ -287,14 +287,14 @@ namespace Traffic.Physics
                             if (!oppositeVehicles.Any())
                                 return false;
 
-                            //Handle situation when the opposite vehicle is already waiting to enter intersection
-                            //but the vehicle behind him is going right so that we are forced to wait anyway
-                            //In order to avoid eternal freeze:
+                            // Handle situation when the opposite vehicle is already waiting to enter intersection
+                            // but the vehicle behind him is going right so that we are forced to wait anyway
+                            // In order to avoid eternal freeze:
                             var oppositeVehiclesSorted = oppositeVehicles.OrderBy(item => item.GetDistanceToEndOfStreet()).ToList();
                             if (oppositeVehiclesSorted.First().Maneuver == Maneuver.WaitToEnterIntersection)
                                 return false;
 
-                            //check first 3 vehicles on opposite street
+                            // check first 3 vehicles on opposite street
                             int amountOfVehicles = Math.Min(3, oppositeVehiclesSorted.Count);
                             for (int i = 0; i < amountOfVehicles; i++)
                             {
@@ -315,7 +315,6 @@ namespace Traffic.Physics
                 }
             }
             return false;
-
         }
     }
 }

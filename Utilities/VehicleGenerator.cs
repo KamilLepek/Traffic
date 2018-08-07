@@ -9,12 +9,12 @@ using Traffic.Exceptions;
 namespace Traffic.Utilities
 {
     /// <summary>
-    /// Class which handles vehicles generation
+    ///     Class which handles vehicles generation
     /// </summary>
     public class VehicleGenerator
     {
 
-        public Map Map { get; private set; }
+        public Map Map { get; }
 
         public VehicleGenerator(Map m)
         {
@@ -24,8 +24,8 @@ namespace Traffic.Utilities
         /// <summary>
         ///     Adds randomly generated vehicles to list
         /// </summary>
-        /// <param name="vehicles">List that we add to</param>
-        /// <param name="amount">amount of cars to generate</param>
+        /// <param name="vehicles"> List that we add to </param>
+        /// <param name="amount"> amount of cars to generate </param>
         public void GenerateRandomVehicles(List<Vehicle> vehicles, int amount)
         {
             for (int i = 0; i < amount; i++)
@@ -34,7 +34,7 @@ namespace Traffic.Utilities
                 EndPoint finishPoint = this.GenerateRandomFinish(spawnPoint);
                 List<Decision> initialRoute = this.GenerateInitialRoute(spawnPoint, finishPoint);
 
-                //w domyśle tutaj można jeszcze losować typ obiektu jaki będziemy dodawać do listy, np Car/Bicycle/BattlElephant
+                //TODO: if vehicles different than cars will be implemented then we will randomize it here as well
                 vehicles.Add(new Car(RandomGenerator.Velocity(), RandomGenerator.ReactionTime(),
                         RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(),
                         spawnPoint, initialRoute, finishPoint, RandomGenerator.Int(Constants.NumberOfTextures)));
@@ -49,10 +49,7 @@ namespace Traffic.Utilities
             if (vehicles.Count == desiredAmountOfVehicles)
                 return;
             int missing = desiredAmountOfVehicles - vehicles.Count;
-            if (missing > spawnPointsAmount)
-                this.GenerateRandomVehicles(vehicles, spawnPointsAmount);
-            else
-                this.GenerateRandomVehicles(vehicles, missing);
+            this.GenerateRandomVehicles(vehicles, missing > spawnPointsAmount ? spawnPointsAmount : missing);
         }
 
         /// <summary>
@@ -87,7 +84,7 @@ namespace Traffic.Utilities
         /// <summary>
         ///     Generates initial route for spawn point to finish point
         /// </summary>
-        /// <returns>List of decisions</returns>
+        /// <returns> List of decisions </returns>
         private List<Decision> GenerateInitialRoute(EndPoint spawnPoint, EndPoint finishPoint)
         {
             var list = new List<Decision>();
@@ -106,7 +103,7 @@ namespace Traffic.Utilities
                 else if (this.ForwardRightXorLeft(spawnPoint, finishPoint) == Orientation.Left) // Case in which we go forward left and forward
                     this.AddForwardRightXorLeftForward(spawnPoint.Orient, columnDistance, rowDistance, list, Decision.Left);
             }
-            //Here we will need to double turn as we start and finnish at the same side of the map
+            // Here we will need to double turn as we start and finnish at the same side of the map
             else
                 this.DoubleTurn(spawnPoint, finishPoint, list);
             if (!list.Any())
@@ -115,9 +112,9 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Determines whether 2 EndPoints have opposite orientation
+        ///     Determines whether 2 EndPoints have opposite orientation
         /// </summary>
-        /// <returns>True if both endpoints have opposite orientation, flase otherwise.</returns>
+        /// <returns> True if both endpoints have opposite orientation, flase otherwise </returns>
         private bool AreOpposite(EndPoint spawnPoint, EndPoint finishPoint)
         {
             if (spawnPoint.Orient == Orientation.Top && finishPoint.Orient == Orientation.Bottom ||
@@ -162,11 +159,11 @@ namespace Traffic.Utilities
         /// <summary>
         ///     Adds list of decisions in case we need to move forward, then turn and move forward again
         /// </summary>
-        /// <param name="or">orientation of spawn point</param>
-        /// <param name="columnDistance">distance in columns between spawn and finish point</param>
-        /// <param name="rowDistance">distance in rows between spawn and finish point</param>
-        /// <param name="list">list to add to</param>
-        /// <param name="rightOrLeft">determines if the turn is right or left</param>
+        /// <param name="or"> orientation of spawn point </param>
+        /// <param name="columnDistance"> distance in columns between spawn and finish point </param>
+        /// <param name="rowDistance"> distance in rows between spawn and finish point </param>
+        /// <param name="list"> list to add to </param>
+        /// <param name="rightOrLeft"> determines if the turn is right or left </param>
         private void AddForwardRightXorLeftForward(Orientation or, int columnDistance, int rowDistance, List<Decision> list, Decision rightOrLeft)
         {
             switch (or)

@@ -3,13 +3,12 @@
 namespace Traffic.Utilities
 {
     /// <summary>
-    /// Class which handles setting variety of parameters to pseudo-random according to normal distribution or uniform distribution
+    ///     Class which handles setting variety of parameters to pseudo-random according to normal distribution or uniform distribution
     /// </summary>
     public static class RandomGenerator
     {
 
-        private static Random rnd = new Random();
-
+        private static readonly Random rnd = new Random();
 
         /// <summary>
         ///     Returns random positive integer up to max-1
@@ -57,6 +56,8 @@ namespace Traffic.Utilities
         /// </summary>
         public static string RegistrationNumber()
         {
+            //TODO: make it more random and in according to polish registration plates :)
+
             int voivodeship = rnd.Next(1, 17);
             string registration = string.Empty;
             switch (voivodeship)
