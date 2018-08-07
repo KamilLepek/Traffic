@@ -130,7 +130,7 @@ namespace Traffic.Graphics
         ///     Determines whether the cursor will be in bounds after translation
         /// </summary>
         /// <param name="translationVector"> vector we translate with </param>
-        /// <param name="boundsWidth"> window width  </param>
+        /// <param name="boundsWidth"> window width </param>
         /// <param name="boundsHeight"> window height </param>
         /// <returns></returns>
         public bool WillCursorBeInBoundsAfterTranslating(Vector2 translationVector,
@@ -142,8 +142,6 @@ namespace Traffic.Graphics
                    Math.Abs(this.CursorPosition.Y + translationVector.Y - this.CameraPosition.Y) <
                    boundsHeight * Math.Abs(this.CameraDistance) / Constants.WindowModeHeightBoundaryDivider;
         }
-
-        #region CursorRelatedMethods
 
         /// <summary>
         ///     Updates last mouse position between updating frames
@@ -162,6 +160,5 @@ namespace Traffic.Graphics
             Mouse.SetPosition(boundsLeft + boundsWidth / 2, boundsTop + boundsHeight / 2);
         }
 
-        #endregion
     }
 }

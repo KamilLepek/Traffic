@@ -6,7 +6,7 @@ using Traffic.World;
 namespace Traffic.Physics
 {
     /// <summary>
-    /// Handles decisions of vehicles
+    ///     Handles decisions of vehicles
     /// </summary>
     public class DecisionController
     {
@@ -20,7 +20,7 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Updates maneuvers and then computes acceleration for every vehicle
+        ///     Updates maneuvers and then computes acceleration for every vehicle
         /// </summary>
         public void HandleDecisions()
         {
@@ -32,9 +32,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Updates maneuvers property of given vehicle
+        ///     Updates maneuvers property of given vehicle
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         private void UpdateManeuverIfNeccessary(Vehicle veh)
         {
             if (this.maneuverService.CheckIfVehicleHasToAvoidCollisionOnStreet(veh))
@@ -55,8 +55,8 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Computes and sets the part of acceleration which is tangent to velocity, and is responsible for the velocity's direction change.
-        /// Bases mainly on vehicle's Maneuver
+        ///     Computes and sets the part of acceleration which is tangent to velocity, and is responsible for the velocity's direction change.
+        ///     Bases mainly on vehicle's Maneuver
         /// </summary>
         private void ComputeAcceleration(Vehicle veh)
         {
@@ -95,9 +95,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Computes deceleration to stop before entering intersection for given vehicle
+        ///     Computes deceleration to stop before entering intersection for given vehicle
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         private void DecelerateToStopBeforeEnteringIntersection(Vehicle veh)
         {
             if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
@@ -113,9 +113,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Computes deceleration to avoid collision for given vehicle
+        ///     Computes deceleration to avoid collision for given vehicle
         /// </summary>
-        /// <param name="veh">given vehicle</param>
+        /// <param name="veh"> given vehicle </param>
         private void DecelerateToAvoidCollision(Vehicle veh)
         {
             if (veh.VelocityVector.Length() > Constants.DoubleErrorTolerance)
@@ -128,7 +128,7 @@ namespace Traffic.Physics
                         veh.Position.Y - veh.VehicleInFrontOfUs.Position.Y).Length() - veh.VehicleLength / 2 -
                     veh.VehicleInFrontOfUs.VehicleLength / 2;
 
-                //We should decelerate more if we are closer to collision thats why we "invert"the distance
+                // We should decelerate more if we are closer to collision thats why we "invert"the distance
                 double invertedDistance =
                     Constants.DistanceToOmmitDistanceDifferenceDeceleratingFactor - distanceBetween;
                 invertedDistance = invertedDistance > 0 ? invertedDistance : 0;
@@ -141,9 +141,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Vehicles tries to decelerate in order to achieve desired velocity
+        ///     Vehicles tries to decelerate in order to achieve desired velocity
         /// </summary>
-        /// <param name="isStreet">true if we are decelerating on street, false if on intersection</param>
+        /// <param name="isStreet"> true if we are decelerating on street, false if on intersection </param>
         private void ComputeDeceleration(Vehicle veh, bool isStreet)
         {
             double desiredVelocity, driverDecelerationMultiplier;
@@ -160,26 +160,26 @@ namespace Traffic.Physics
 
             if (veh.VelocityVector.Length() <= desiredVelocity && veh.VelocityVector.Length() >= desiredVelocity - Constants.DesiredVelocityMargin)
             {
-                //do not change your velocity
+                // do not change your velocity
                 veh.AccelerationVector.X = 0;
                 veh.AccelerationVector.Y = 0;
             }
             else if(veh.VelocityVector.Length() > desiredVelocity)
             {
-                //decelerate
+                // decelerate
                 veh.AccelerationVector.X = -veh.FrontVector.X * driverDecelerationMultiplier;
                 veh.AccelerationVector.Y = -veh.FrontVector.Y * driverDecelerationMultiplier;
             }
             else
             {
-                //acelerate if you are by whatever reasons driving too slow!
+                // accelerate if you are by whatever reasons driving too slow!
                 veh.AccelerationVector.X = veh.FrontVector.X * desiredVelocity;
                 veh.AccelerationVector.Y = veh.FrontVector.Y * desiredVelocity;  
             }
         }
 
         /// <summary>
-        /// Vehicle tries to accelerate in order to achieve maximum velocity while on a straight road
+        ///     Vehicle tries to accelerate in order to achieve maximum velocity while on a straight road
         /// </summary>
         private void ComputeAccelerationOnStraightRoad(Vehicle veh)
         {
@@ -196,9 +196,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Computes and sets centripetal acceleration of a vehicle which is turning left
+        ///     Computes and sets centripetal acceleration of a vehicle which is turning left
         /// </summary>
-        /// <param name="left">True if car is turning left, false if right</param>
+        /// <param name="left"> True if car is turning left, false if right </param>
         private void ComputeTurnAcceleration(Vehicle veh, bool left)
         {
             var turnedAngle = veh.FrontVector.AngleFrom(veh.InitialTurningDirection);
@@ -228,9 +228,9 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Returns radius of an arc the car is supposed to ride on.
+        ///     Returns radius of an arc the car is supposed to ride on.
         /// </summary>
-        /// <param name="left">True if car is turning left, false if right</param>
+        /// <param name="left"> True if car is turning left, false if right </param>
         private double ComputeTurningArcRadius(Vehicle veh, bool left)
         {
             if (left)
@@ -240,13 +240,13 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Computes and sets acceleration of a vehicle which is correcting its angle after turning
-        /// Actually cheats by setting velocity to desired velocity
+        ///     Computes and sets acceleration of a vehicle which is correcting its angle after turning
+        ///     Actually cheats by setting velocity to desired velocity
         /// </summary>
         private void ComputeCorrectionAcceleration(Vehicle veh)
         {
             var desiredDirection = veh.FrontVector.GetDesiredDirection();
-            var speed = veh.VelocityVector.Length();
+            double speed = veh.VelocityVector.Length();
             veh.VelocityVector.X = desiredDirection.X * speed;
             veh.VelocityVector.Y = desiredDirection.Y * speed;
             veh.FrontVector.X = veh.VelocityVector.X / veh.VelocityVector.Length();

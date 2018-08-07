@@ -14,6 +14,13 @@ namespace Traffic.Utilities
 
         #region Acceleration and deceleration constants
 
+        /// <summary>
+        ///     If velocity vector angle differs from front vector angle of the vehicle more than this value then we set its velocity and acceleration to 0 because
+        ///     we expect that it started going backward. Value is less than 180 because on intersection acceleration vector is not tangent to front vector so it might 
+        ///     differ a bit when decelerating.
+        /// </summary>
+        public const int RadiusMarginForGoingBackward = 150;
+
         public const double DriverAcceleratingOnStraightRoadMultiplier = 15;
 
         public const double VelocityDeceleratingFactorOnStreet = 0.8;
@@ -25,30 +32,30 @@ namespace Traffic.Utilities
         public const double MaxTrafficLightsDeceleration = 320;
 
         /// <summary>
-        /// Parameter which determines how important is our velocity when computing search area in front of us for potential collision detection
+        ///     Parameter which determines how important is our velocity when computing search area in front of us for potential collision detection
         /// </summary>
         public const double VelocityDependentCaution = 5;
 
         /// <summary>
-        /// Parameter which determines how important is velocity difference between 2 vehicles when computing 
-        /// search area in front of us for potential collision detection
+        ///     Parameter which determines how important is velocity difference between 2 vehicles when computing 
+        ///     search area in front of us for potential collision detection
         /// </summary>
         public const double VelocityDifferenceDependentCaution = 40;
 
         /// <summary>
-        /// Parameter which determines how important is velocity difference between 2 vehicles when computing
-        /// deceleration to avoid collision
+        ///     Parameter which determines how important is velocity difference between 2 vehicles when computing
+        ///     deceleration to avoid collision
         /// </summary>
         public const double VelocityDifferenceDeceleratingFactor = 2;
 
         /// <summary>
-        /// Parameter which determines how important is distance difference between 2 vehicles when computing
-        /// deceleration to avoid collision
+        ///     Parameter which determines how important is distance difference between 2 vehicles when computing
+        ///     deceleration to avoid collision
         /// </summary>
         public const double DistanceDifferenceDeceleratingFactor = 1;
 
         /// <summary>
-        /// If distance between 2 vehicles is higher than this then we ommit <see cref="DistanceDifferenceDeceleratingFactor"/>
+        ///     If distance between 2 vehicles is higher than this then we ommit <see cref="DistanceDifferenceDeceleratingFactor"/>
         /// </summary>
         public const double DistanceToOmmitDistanceDifferenceDeceleratingFactor = 100;
 
@@ -57,17 +64,17 @@ namespace Traffic.Utilities
         #region Velocity constants
 
         /// <summary>
-        /// We neither have to decelerate nor accelerate if our velicity is in [desiredVelocity - this, desiredVelocity]
+        ///     We neither have to decelerate nor accelerate if our velicity is in [desiredVelocity - this, desiredVelocity]
         /// </summary>
         public const double DesiredVelocityMargin = 2;
 
         /// <summary>
-        /// This is the minimum value that a vehicle can have as maximum reachable velocity
+        ///     This is the minimum value that a vehicle can have as maximum reachable velocity
         /// </summary>
         public const double MinimumMaximalVelocity = 40;
 
         /// <summary>
-        /// This is the maximum value that a vehicle can have as maximum reachable velocity
+        ///     This is the maximum value that a vehicle can have as maximum reachable velocity
         /// </summary>
         public const double MaximumVelocity = 120;
 
@@ -93,17 +100,17 @@ namespace Traffic.Utilities
         public const double MaximumReactionTime = 500;
 
         /// <summary>
-        /// Minimum value that is acceptable for distance held from the vehicle in front
+        ///     Minimum value that is acceptable for distance held from the vehicle in front
         /// </summary>
         public const double MinimumDistanceHeld = 1.5;
 
         /// <summary>
-        /// Maximum value that is acceptable for distance held from the vehicle in front of us is <see cref="MinimumDistanceHeld"/> + <see cref="DistanceHeldInterval"/>
+        ///     Maximum value that is acceptable for distance held from the vehicle in front of us is <see cref="MinimumDistanceHeld"/> + <see cref="DistanceHeldInterval"/>
         /// </summary>
         public const double DistanceHeldInterval = 4;
 
         /// <summary>
-        /// Constant which determines how long is the factor depending on VehicleLength which is used to compute searching rectangle length
+        ///     Constant which determines how long is the factor depending on VehicleLength which is used to compute searching rectangle length
         /// </summary>
         public const double VehicleLengthSearchingDependantFactor = 3;
 
@@ -124,12 +131,12 @@ namespace Traffic.Utilities
         public const double TrafficLightHeight = 7;
 
         /// <summary>
-        /// How far (fraction of intersection size) from the intersection center should the driver start turning
+        ///     How far (fraction of intersection size) from the intersection center should the driver start turning
         /// </summary>
         public const double TurnStartingPoint = 0.25;
 
         /// <summary>
-        /// How far (fraction of street length) from the beginning of street should the driver start breaking
+        ///     How far (fraction of street length) from the beginning of street should the driver start breaking
         /// </summary>
         public const double BreakStartingPoint = 0.8;
 
@@ -138,7 +145,7 @@ namespace Traffic.Utilities
         #region Time related constants
 
         /// <summary>
-        /// Time interval in which we spawn new vehicles if there is a need
+        ///     Time interval in which we spawn new vehicles if there is a need
         /// </summary>
         public const int TimeSpawnInterval = 1000; //ms
 
@@ -183,7 +190,7 @@ namespace Traffic.Utilities
         #region Other constants
 
         /// <summary>
-        /// Name of the file we log some data to
+        ///     Name of the file we log some data to
         /// </summary>
         public const string LogFile = @"logs.txt";
 

@@ -6,7 +6,7 @@ using Traffic.Utilities;
 namespace Traffic.Physics
 {
     /// <summary>
-    /// Main class controlling the simulation
+    ///     Main class controlling the simulation
     /// </summary>
     public class SimulationController
     {
@@ -27,7 +27,7 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Initializes simulation
+        ///     Initializes simulation
         /// </summary>
         public void InitSimulation()
         {
@@ -36,7 +36,7 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Single simulation tick
+        ///     Single simulation tick
         /// </summary>
         public void PerformSimulationTick()
         {
@@ -47,12 +47,11 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Moves vehicles from spawn point to street if necessary
+        ///     Moves vehicles from spawn point to street if necessary
         /// </summary>
         private void HandleSpawnPoints()
         {
-            //Póki co tylko przesuwamy pojazdy po zrespieniu ze spawn pointu (który nie ma wymiarów), na drogę, która z nim graniczy (żeby przetestować funkcjonalności spawnera)
-            //Później jak już będą jeździć to tutaj trzeba będzie ohandlować czy ten co jest na endpoincie to ma zostać zaraz usunięty cyz on się dopiero co zrespił
+            //TODO: won't work for very large amount of vehicles, either make some constraint on amount of vehicles per streets or handle this properly
             foreach (var vehicle in this.World.Vehicles)
             {
                 //if vehicle is on spawn point
@@ -66,7 +65,7 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Spawns new vehicles if it is necessary
+        ///     Spawns new vehicles if it is necessary
         /// </summary>
         private void HandleSpawning()
         {
@@ -74,7 +73,6 @@ namespace Traffic.Physics
             long time = this.World.sw.ElapsedMilliseconds % Constants.TimeSpawnInterval;
             if (time < 100 && this.IsSpawningAllowed)
             {
-                //ConsoleLogger.Log("Time " + this.World.sw.ElapsedMilliseconds + "ms");
                 this.vehicleGenerator.VehiclesSpawner(this.World.Vehicles, this.World.DesiredAmountOfVehicles, this.World.SpawnPoints.Count);
                 this.IsSpawningAllowed = false;
             }
@@ -83,7 +81,7 @@ namespace Traffic.Physics
         }
 
         /// <summary>
-        /// Moves vehicle from spawn point to street and add them to vehicles list
+        ///     Moves vehicle from spawn point to street and add them to vehicles list
         /// </summary>
         private void MoveToStreetFromSpawn(Vehicle vehicle)
         {

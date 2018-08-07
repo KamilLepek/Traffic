@@ -9,44 +9,44 @@ using Traffic.World.Vertices;
 namespace Traffic.Vehicles
 {
     /// <summary>
-    /// Class which determines abstract vehicle that all implemented vehicles inherits from
+    ///     Class which determines abstract vehicle that all implemented vehicles inherits from
     /// </summary>
     public abstract class Vehicle
     {
         /// <summary>
-        /// Object the vehicle is on (Spawn/Street/Intersection)
+        ///     Object the vehicle is on (Spawn/Street/Intersection)
         /// </summary>
         public WorldObject Place { get; set; }
 
         /// <summary>
-        /// Finish point of the vehicle, will be needed to determine in-flight route optimalization
+        ///     Finish point of the vehicle, will be needed to determine in-flight route optimalization
         /// </summary>
         private readonly EndPoint FinishPoint;
 
         /// <summary>
-        /// coordinates of vehicle on World Object
+        ///     Coordinates of vehicle on World Object
         /// </summary>
         public Point Position { get; set; }
 
         /// <summary>
-        /// vector that determines where is the front of the vehicle
+        ///     Vector that determines where is the front of the vehicle
         /// </summary>
         public Point FrontVector { get; set; }
 
         /// <summary>
-        /// maximum velocity in km/h
+        ///     Maximum velocity in km/h
         /// </summary>
-        public double MaximumVelocity { get; private set; }
+        public double MaximumVelocity { get; }
 
         /// <summary>
-        /// reaction time in ms
+        ///     Reaction time in ms
         /// </summary>
-        public double ReactionTime { get; private set; }
+        public double ReactionTime { get; }
 
         /// <summary>
-        /// minimum distance held in m
+        ///     Minimum distance held in m
         /// </summary>
-        public double DistanceHeld { get; private set; }
+        public double DistanceHeld { get; }
 
         public double VehicleLength { get; protected set; }
 
@@ -57,31 +57,31 @@ namespace Traffic.Vehicles
         public Point AccelerationVector { get; set; }
 
         /// <summary>
-        /// List of decisions to make to finish the race
+        ///     List of decisions to make to finish the race
         /// </summary>
         public List<Decision> Route { get; protected set; }
 
         /// <summary>
-        /// Current Maneuver to execute
+        ///     Current Maneuver to execute
         /// </summary>
         public Maneuver Maneuver { get; set; }
 
         public Vehicle VehicleInFrontOfUs { get; set; }
 
         /// <summary>
-        /// If the vehicle is turning, it's the middle point of the arc. Else it's null
+        ///     If the vehicle is turning, it's the middle point of the arc. Else it's null
         /// </summary>
         public double TurningArcRadius { get; set; }
 
         /// <summary>
-        /// Vector determining turning direction when entering turning maneuver
+        ///     Vector determining turning direction when entering turning maneuver
         /// </summary>
         public Point InitialTurningDirection { get; set; }
 
         /// <summary>
-        /// Visual representation of the vehicle
+        ///     Visual representation of the vehicle
         /// </summary>
-        public int TextureAssigned { get; private set; }
+        public int TextureAssigned { get; }
 
         protected Vehicle(double v, double t, double dist, EndPoint spawnPlace, List<Decision> initialRoute, EndPoint finishPoint, int textureAssigned)
         {
@@ -99,7 +99,7 @@ namespace Traffic.Vehicles
         }
 
         /// <summary>
-        /// Prints statistics of the vehicle
+        ///     Prints statistics of the vehicle
         /// </summary>
         public virtual void PrintStatistics()
         {
@@ -110,12 +110,12 @@ namespace Traffic.Vehicles
         }
 
         /// <summary>
-        /// Sets initial position and velocity vector of given vehicle
+        ///     Sets initial position and velocity vector of given vehicle
         /// </summary>
-        /// <param name="spawnPlace">Place the vehicle spawns on</param>
-        /// <param name="vehicleLength">Length of the vehicle</param>
-        /// <param name="vehicleWidth">Width of the vehicle</param>
-        /// <param name="value">Initial velocity of the vehicle</param>
+        /// <param name="spawnPlace"> Place the vehicle spawns on </param>
+        /// <param name="vehicleLength"> Length of the vehicle </param>
+        /// <param name="vehicleWidth"> Width of the vehicle </param>
+        /// <param name="value"> Initial velocity of the vehicle </param>
         protected void SetInitialPositionAndVelocityVector(EndPoint spawnPlace, double vehicleLength, double vehicleWidth, double value = Constants.InitialVelocity)
         {
             switch (spawnPlace.Orient)
@@ -146,14 +146,14 @@ namespace Traffic.Vehicles
         }
 
         /// <summary>
-        /// If vehicle is on intersection, method returns current intersection.
-        /// If the vehicle is on the street it returns reference to the next intersection the vehicle will enter. If such intersection doesn't exist, return value is null
-        /// If the vehicle is on endpoint, return value is null
+        ///     If vehicle is on intersection, method returns current intersection.
+        ///     If the vehicle is on the street it returns reference to the next intersection the vehicle will enter. If such intersection doesn't exist, return value is null
+        ///     If the vehicle is on endpoint, return value is null
         /// </summary>
         public Intersection GetNextIntersection()
         {
             if (this.Place is Intersection)
-                return (Intersection) this.Place;
+                return (Intersection)this.Place;
 
             if (this.Place is EndPoint)
                 return null;
@@ -165,7 +165,7 @@ namespace Traffic.Vehicles
         }
 
         /// <summary>
-        /// Returns distance in meters which car has to drive to get to the end of the street
+        ///     Returns distance in meters which car has to drive to get to the end of the street
         /// </summary>
         public double GetDistanceToEndOfStreet()
         {
@@ -184,7 +184,10 @@ namespace Traffic.Vehicles
             }
             throw new InvalidOperationException();
         }
-
+        
+        /// <summary>
+        ///     Returns vehicle coordinates on the map
+        /// </summary>
         public Vector2 GetCoordinates()
         {
             var placeCoords = this.Place.GetCoordinates();
