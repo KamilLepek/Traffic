@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using OpenTK;
 using Traffic.Utilities;
 using Traffic.World;
 using Traffic.World.Edges;
@@ -182,6 +183,12 @@ namespace Traffic.Vehicles
                     return this.Position.X - this.VehicleLength / 2;
             }
             throw new InvalidOperationException();
+        }
+
+        public Vector2 GetCoordinates()
+        {
+            var placeCoords = this.Place.GetCoordinates();
+            return new Vector2((float) (placeCoords.X + this.Position.X), (float) (placeCoords.Y + this.Position.Y));
         }
     }
 }

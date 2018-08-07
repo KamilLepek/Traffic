@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using OpenTK;
 using Traffic.Vehicles;
 
 namespace Traffic.World
@@ -25,6 +27,11 @@ namespace Traffic.World
             this.RowNumber = row;
             this.ColumnNumber = column;
             this.Vehicles = new List<Vehicle>();
+        }
+
+        public virtual Vector2 GetCoordinates()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Adds randomly generated vehicles to list
+        ///     Adds randomly generated vehicles to list
         /// </summary>
         /// <param name="vehicles">List that we add to</param>
         /// <param name="amount">amount of cars to generate</param>
@@ -42,7 +42,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Method to respawn vehicles in order to achieve desired amount of vehicles at any time
+        ///     Method to respawn vehicles in order to achieve desired amount of vehicles at any time
         /// </summary>
         public void VehiclesSpawner(List<Vehicle> vehicles, int desiredAmountOfVehicles, int spawnPointsAmount)
         {
@@ -56,7 +56,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random EndPoint that is not occupied
+        ///     Returns random EndPoint that is not occupied
         /// </summary>
         private EndPoint GenerateRandomSpawn()
         {
@@ -69,7 +69,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Returns random finish point diffrent than spawn point
+        ///     Returns random finish point diffrent than spawn point
         /// </summary>
         private EndPoint GenerateRandomFinish(EndPoint spawnPoint)
         {
@@ -85,7 +85,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Generates initial route for spawn point to finish point
+        ///     Generates initial route for spawn point to finish point
         /// </summary>
         /// <returns>List of decisions</returns>
         private List<Decision> GenerateInitialRoute(EndPoint spawnPoint, EndPoint finishPoint)
@@ -129,7 +129,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Add accurate amount of forward decision decided by the distance between points on map
+        ///     Add accurate amount of forward decision decided by the distance between points on map
         /// </summary>
         private void AddForwardDecisions(int columnDistance, int rowDistance, List<Decision> list)
         {
@@ -139,10 +139,10 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// For scenarios where we go forward then turn and go forward.
-        /// Determines wheter we need to turn right or left
+        ///     For scenarios where we go forward then turn and go forward.
+        ///     Determines wheter we need to turn right or left
         /// </summary>
-        /// <returns>Right or Left decision</returns>
+        /// <returns> Right or Left decision </returns>
         private Orientation ForwardRightXorLeft(EndPoint spawnPoint, EndPoint finishPoint)
         {
             switch (spawnPoint.Orient)
@@ -160,7 +160,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Adds list of decisions in case we need to move forward, then turn and move forward again
+        ///     Adds list of decisions in case we need to move forward, then turn and move forward again
         /// </summary>
         /// <param name="or">orientation of spawn point</param>
         /// <param name="columnDistance">distance in columns between spawn and finish point</param>
@@ -191,7 +191,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Adds list of decisions for case when we go forward turn and go forward again and turn at the end 
+        ///     Adds list of decisions for case when we go forward turn and go forward again and turn at the end 
         /// </summary>
         private void AddForwardTurnForwardTurn(EndPoint spawnPoint, EndPoint finishPoint, List<Decision> list)
         {
@@ -259,7 +259,7 @@ namespace Traffic.Utilities
         }
 
         /// <summary>
-        /// Adds list of decisions for case when we start at the same side of the map as we finnish
+        ///     Adds list of decisions for case when we start at the same side of the map as we finnish
         /// </summary>
         private void DoubleTurn(EndPoint spawnPoint, EndPoint finishPoint, List<Decision> list)
         {

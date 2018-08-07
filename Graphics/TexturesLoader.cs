@@ -8,20 +8,20 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 namespace Traffic.Graphics
 {
     /// <summary>
-    /// Handles loading textures
+    ///     Handles loading textures
     /// </summary>
     internal static class TexturesLoader
     {
         /// <summary>
-        /// List of unique id of textures
+        ///     List of unique id of textures
         /// </summary>
         public static List<int> TexturesList { get; private set; }
 
         /// <summary>
-        /// Loads textures from given path
+        ///     Loads textures from given path
         /// </summary>
-        /// <param name="path">given path</param>
-        /// <returns>unique ID in texture loading context</returns>
+        /// <param name="path"> given path </param>
+        /// <returns> unique ID in texture loading context </returns>
         public static int LoadTexture(string path)
         {
             int textureId = GL.GenTexture();
@@ -53,13 +53,14 @@ namespace Traffic.Graphics
         }
 
         /// <summary>
-        /// Initializes textures
+        ///     Initializes textures
         /// </summary>
         public static void InitTextures()
         {
             TexturesList = new List<int>();
             for (int i = 0; i < Constants.NumberOfTextures; i++)
-                TexturesList.Add(LoadTexture(string.Format("Car{0}.png", i + 1)));
+                TexturesList.Add(LoadTexture($"Car{i + 1}.png"));
+            TexturesList.Add(LoadTexture("Cursor.png"));
         }
     }
 }

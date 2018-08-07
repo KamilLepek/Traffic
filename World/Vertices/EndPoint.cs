@@ -12,11 +12,11 @@ namespace Traffic.World.Vertices
         public bool IsOccupied { get; set; } 
 
         /// <summary>
-        /// determines side of the map where the spawn point exist
+        ///     Determines side of the map where the spawn point exist
         /// </summary>
-        public Orientation Orient {get; private set;} 
+        public Orientation Orient { get; private set; } 
 
-        public Street Street { get; private set; }
+        public Street Street { get; }
 
         public EndPoint(Street street)
         {

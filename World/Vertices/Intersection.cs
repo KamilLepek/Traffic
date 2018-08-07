@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using OpenTK;
 using Traffic.Utilities;
 using Traffic.World.Edges;
 
@@ -11,17 +12,17 @@ namespace Traffic.World.Vertices
     {
 
         /// <summary>
-        /// Streets that come out of this intersection
+        ///     Streets that come out of this intersection
         /// </summary>
-        public List<Street> IntersectingStreets { get; private set; }
+        public List<Street> IntersectingStreets { get; }
         public Light VerticalTrafficLight { get; private set; }
         public Light HorizontalTrafficLight { get; private set; }
 
-        private int lightChangeInterval;
+        private readonly int lightChangeInterval;
         private int lightChangeTimer;
 
         /// <summary>
-        /// If it's true, while all the lights are red, then next green lights will be on horizontal road, else on vertical.
+        ///     If it's true, while all the lights are red, then next green lights will be on horizontal road, else on vertical.
         /// </summary>
         private bool horizontalLightShouldBeGreen;
 
@@ -71,6 +72,21 @@ namespace Traffic.World.Vertices
                 return this.VerticalTrafficLight;
             else
                 return this.HorizontalTrafficLight;
+        }
+
+        public override Vector2 GetCoordinates()
+        {
+            var coordinates = new Vector2
+            {
+                X = (float) ((this.ColumnNumber / 2) * Constants.StreetLength
+                             + ((this.ColumnNumber / 2) - 1) * Constants.IntersectionSize
+                             + Constants.IntersectionSize / 2),
+                Y = (float) ((this.RowNumber / 2) * Constants.StreetLength
+                             + ((this.RowNumber / 2) - 1) * Constants.IntersectionSize
+                             + Constants.IntersectionSize / 2)
+            };
+
+            return coordinates;
         }
     }
 }

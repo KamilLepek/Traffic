@@ -4,11 +4,13 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using OpenTK.Input;
+using Traffic.Physics;
+using Traffic.Utilities;
 
 namespace Traffic.Graphics
 {
     /// <summary>
-    /// Class handling graphics of the application
+    ///     Class handling graphics of the application
     /// </summary>
     public class GraphicsController : GameWindow
     {
@@ -18,9 +20,12 @@ namespace Traffic.Graphics
         private readonly DrawingService drawingService;
         private readonly CameraService cameraService;
         private bool mousePressed;
-
+        private readonly VehicleFinder vehicleFinder;
+        
         public GraphicsController(Map world, Action updateWorldHandler)
         {
+            this.CursorVisible = false;
+            this.vehicleFinder = new VehicleFinder(world.Vehicles);
             this.gameWorld = world;
             this.updateWorldHandler = updateWorldHandler;
             this.drawingService = new DrawingService();
@@ -29,7 +34,7 @@ namespace Traffic.Graphics
         }
 
         /// <summary>
-        /// Initializing method called after the openGL loads but before it starts rendering
+        ///     Initializing method called after the openGL loads but before it starts rendering
         /// </summary>
         protected override void OnLoad(EventArgs e)
         {
@@ -41,16 +46,36 @@ namespace Traffic.Graphics
         }
 
         /// <summary>
-        /// Event emitted by openGL each time the world state needs to be updated
+        ///     Event emitted by openGL each time the world state needs to be updated
         /// </summary>
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
             this.updateWorldHandler();
+
+            if (this.mousePressed == false && this.Focused)
+            {
+                var cameraTranslationVector =
+                    new Vector2(
+                        (float) (this.cameraService.DeltaMousePosition.X * Constants.CursorMovementSpeed *
+                                 this.cameraService.CameraDistance),
+                        (float) (this.cameraService.DeltaMousePosition.Y * Constants.CursorMovementSpeed *
+                                 this.cameraService.CameraDistance));
+                if (this.cameraService.WillCursorBeInBoundsAfterTranslating(cameraTranslationVector, this.Bounds.Width, this.Bounds.Height))
+                {
+                    this.cameraService.CursorPosition += cameraTranslationVector;
+                }              
+                this.cameraService.ResetCursor(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
+            }
+            this.cameraService.UpdateLastMousePosition();
+            if (this.vehicleFinder.VehicleWeClickedOn != null)
+            {
+                this.cameraService.CenterCameraOnVehicle(this.vehicleFinder.VehicleWeClickedOn.GetCoordinates());
+            }
         }
 
         /// <summary>
-        /// Main frame rendering method
+        ///     Main frame rendering method
         /// </summary>
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -67,15 +92,19 @@ namespace Traffic.Graphics
 
             foreach (var intersection in this.gameWorld.Intersections)
                 this.drawingService.GlDrawIntersection(intersection);
-
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            
             foreach (var vehicle in this.gameWorld.Vehicles)
-                this.drawingService.GlDrawVehicle(vehicle);
-
+                this.drawingService.GlDrawVehicle(vehicle, this. vehicleFinder.VehicleWeClickedOn != null, this.vehicleFinder.VehicleWeClickedOn);
+            
+            this.drawingService.GlDrawCursor(this.cameraService.CursorPosition.X , this.cameraService.CursorPosition.Y , this.cameraService.CameraDistance);
+            
             this.SwapBuffers();
         }
 
         /// <summary>
-        /// Properly handle window resize
+        ///     Properly handle window resize
         /// </summary>
         protected override void OnResize(EventArgs e)
         {
@@ -89,16 +118,20 @@ namespace Traffic.Graphics
         }
 
         /// <summary>
-        /// Moves camera on pressed arrow keys
+        ///     Moves camera on pressed arrow keys
         /// </summary>
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             base.OnKeyDown(e);
             this.cameraService.Move(e.Key);
+            if (e.Key == Key.Escape)
+                this.Exit();
+            if (e.Alt && e.Key == Key.Enter)
+                this.WindowState = WindowState.Fullscreen;
         }
 
         /// <summary>
-        /// Zooms in and out on mouse scroll event
+        ///     Zooms in and out on mouse scroll event
         /// </summary>
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
@@ -107,17 +140,18 @@ namespace Traffic.Graphics
         }
 
         /// <summary>
-        /// Enables camera movement via OnMouseMove event
+        ///     Enables camera movement via OnMouseMove event
         /// </summary>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
                 this.mousePressed = true;
+            this.vehicleFinder.CheckIfClickedOnVehicle(this.cameraService.CursorPosition);
         }
 
         /// <summary>
-        /// Disables camera movement via OnMouseMove event
+        ///     Disables camera movement via OnMouseMove event
         /// </summary>
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
@@ -127,13 +161,22 @@ namespace Traffic.Graphics
         }
 
         /// <summary>
-        /// Handles camera movement on mouse click and move
+        ///     Handles camera movement on mouse click and move
         /// </summary>
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
             if (this.mousePressed)
-                this.cameraService.Move(e);
+            {
+                var cameraTranslationVector =
+                    new Vector2(
+                        (float) (-e.XDelta * Constants.CameraMouseMovementSpeed * this.cameraService.CameraDistance),
+                        (float) (-e.YDelta * Constants.CameraMouseMovementSpeed * this.cameraService.CameraDistance));
+                if (this.cameraService.WillCursorBeInBoundsAfterTranslating(cameraTranslationVector, this.Bounds.Width, this.Bounds.Height))
+                {
+                    this.cameraService.Move(e);
+                }   
+            }    
         }
     }
 }
