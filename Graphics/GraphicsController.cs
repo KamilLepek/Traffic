@@ -20,12 +20,10 @@ namespace Traffic.Graphics
         private readonly DrawingService drawingService;
         private readonly CameraService cameraService;
         private bool mousePressed;
-        private readonly VehicleFinder vehicleFinder;
         
         public GraphicsController(Map world, Action updateWorldHandler)
         {
             this.CursorVisible = false;
-            this.vehicleFinder = new VehicleFinder(world.Vehicles);
             this.gameWorld = world;
             this.updateWorldHandler = updateWorldHandler;
             this.drawingService = new DrawingService();
@@ -68,9 +66,9 @@ namespace Traffic.Graphics
                 this.cameraService.ResetCursor(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
             }
             this.cameraService.UpdateLastMousePosition();
-            if (this.vehicleFinder.VehicleWeClickedOn != null)
+            if (VehicleFinder.VehicleWeClickedOn != null)
             {
-                this.cameraService.CenterCameraOnVehicle(this.vehicleFinder.VehicleWeClickedOn.GetCoordinates());
+                this.cameraService.CenterCameraOnVehicle(VehicleFinder.VehicleWeClickedOn.GetCoordinates());
             }
         }
 
@@ -96,7 +94,7 @@ namespace Traffic.Graphics
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             
             foreach (var vehicle in this.gameWorld.Vehicles)
-                this.drawingService.GlDrawVehicle(vehicle, this. vehicleFinder.VehicleWeClickedOn != null, this.vehicleFinder.VehicleWeClickedOn);
+                this.drawingService.GlDrawVehicle(vehicle, VehicleFinder.VehicleWeClickedOn != null, VehicleFinder.VehicleWeClickedOn);
             
             this.drawingService.GlDrawCursor(this.cameraService.CursorPosition.X , this.cameraService.CursorPosition.Y , this.cameraService.CameraDistance);
             
@@ -147,7 +145,7 @@ namespace Traffic.Graphics
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
                 this.mousePressed = true;
-            this.vehicleFinder.CheckIfClickedOnVehicle(this.cameraService.CursorPosition);
+            VehicleFinder.CheckIfClickedOnVehicle(this.cameraService.CursorPosition, this.gameWorld.Vehicles);
         }
 
         /// <summary>

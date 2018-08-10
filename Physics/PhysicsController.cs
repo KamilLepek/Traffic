@@ -99,6 +99,8 @@ namespace Traffic.Physics
         /// <param name="veh"> vehicle to get rid of </param>
         private void KillVehicle(Vehicle veh)
         {
+            if (veh != null && veh == VehicleFinder.VehicleWeClickedOn)
+                VehicleFinder.VehicleWeClickedOn = null;
             this.world.Vehicles.Remove(veh);
         }
 
