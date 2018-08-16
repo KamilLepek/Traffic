@@ -1,0 +1,40 @@
+﻿<Window x:Class="Traffic_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Traffic_WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="235" Width="200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="1" Grid.Row="3" Name="StartButton" Content="Start" Click="StartButton_Click" Margin="1"/>
+        <Label Grid.Column="0" Grid.Row="0" Name="CarAmountLabel" Margin="0">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="Amount of cars: "></AccessText>
+            </Label.Content>
+        </Label>
+        <TextBox Grid.Column="1" Grid.Row="0" Name="CarAmountTextBox" Margin="15" FontSize="20" TextChanged="CarAmountTextBox_TextChanged"></TextBox>
+        <Label Grid.Column="0" Grid.Row="1" Name="VerticalAmountLabel">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="Amount of vertical lines: "></AccessText>
+            </Label.Content>
+        </Label>
+        <TextBox Grid.Column="1" Grid.Row="1" Name="VerticalLinesAmountTextBox" Margin="15" FontSize="20"></TextBox>
+        <Label Grid.Column="0" Grid.Row="2" Name="HorizontalAmountLabel"  Margin="0">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="Amount of horizontal lines: "></AccessText>
+            </Label.Content>
+        </Label>
+        <TextBox Grid.Column="1" Grid.Row="2" Name="HorizontalLinesAmountTextBox" Margin="15" FontSize="20"></TextBox>
+    </Grid>
+</Window>
