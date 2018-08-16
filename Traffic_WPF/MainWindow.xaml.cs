@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using Traffic.Graphics;
 using Traffic.Physics;
 using Traffic.Utilities;
@@ -14,44 +13,67 @@ namespace Traffic_WPF
     {
         public MainWindow()
         {
-            InitializeComponent();
-        }
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(CarAmountTextBox.Text) && !string.IsNullOrWhiteSpace(VerticalLinesAmountTextBox.Text) &&
-                !string.IsNullOrWhiteSpace(HorizontalLinesAmountTextBox.Text))
-            {
-                int verticalLines = Convert.ToInt32(CarAmountTextBox.Text);
-                int horizontalLines = Convert.ToInt32(HorizontalLinesAmountTextBox.Text);
-                int desiredNumberOfVehicles = Convert.ToInt32(VerticalLinesAmountTextBox.Text);
-                this.Hide();
-                var simulationController = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
-                simulationController.InitSimulation();
-                var graphicsController = new GraphicsController(simulationController.World, simulationController.PerformSimulationTick);
-                graphicsController.Run(Constants.TicksPerSecond);
-                InitializeComponent();
-                CarAmountTextBox.Text = "";
-                VerticalLinesAmountTextBox.Text = "";
-                HorizontalLinesAmountTextBox.Text = "";
-                this.Show();
-            }
-            else
-            {
-                MessageBox.Show("Don't leave white space");
-            }
+            this.InitializeComponent();
         }
 
-        private void CarAmountTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        public void Clear()
         {
-            string input = CarAmountTextBox.Text;
-            foreach (char c in input)
+            this.CarAmountTextBox.Text = "";
+            this.VerticalLinesAmountTextBox.Text = "";
+            this.HorizontalLinesAmountTextBox.Text = "";
+        }
+
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            int verticalLines, horizontalLines, desiredNumberOfVehicles;
+            try
             {
-                if (char.IsNumber(c) == false)
+                verticalLines = Convert.ToInt32(this.VerticalLinesAmountTextBox.Text);
+                if (verticalLines > Constants.MaxAmountOfLines)
                 {
-                    MessageBox.Show("Please enter a valid number");
-                    CarAmountTextBox.Text = "";
+                    MessageBox.Show("Max amount of vertical lines is: " + Constants.MaxAmountOfLines);
+                    this.VerticalLinesAmountTextBox.Text = Constants.MaxAmountOfLines.ToString();
+                    return;
+                }
+                horizontalLines = Convert.ToInt32(this.HorizontalLinesAmountTextBox.Text);
+                if (horizontalLines > Constants.MaxAmountOfLines)
+                {
+                    MessageBox.Show("Max amount of horizontal lines is: " + Constants.MaxAmountOfLines);
+                    this.HorizontalLinesAmountTextBox.Text = Constants.MaxAmountOfLines.ToString();
+                    return;
+                }
+                desiredNumberOfVehicles = Convert.ToInt32(this.CarAmountTextBox.Text);
+                if (desiredNumberOfVehicles > horizontalLines * verticalLines * Constants.CarAmountNormalizationConstant)
+                {
+                    MessageBox.Show("For given amount of vertical and horizontal lines max amount of cars is: " +
+                        horizontalLines * verticalLines * Constants.CarAmountNormalizationConstant);
+                    this.CarAmountTextBox.Text = (horizontalLines * verticalLines * Constants.CarAmountNormalizationConstant).ToString();
+                    return;
                 }
             }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+                this.Clear();
+                return;
+            }
+            this.Hide();
+            var simulationController = new SimulationController(horizontalLines, verticalLines, desiredNumberOfVehicles);
+            simulationController.InitSimulation();
+            var graphicsController = new GraphicsController(simulationController.World, simulationController.PerformSimulationTick);
+            graphicsController.Run(Constants.TicksPerSecond);
+            this.Show();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Window win2 = new Window();
+            win2.Height = Constants.HelpWindowHeight;
+            win2.Width = Constants.HelpWindowWidth;
+            win2.ResizeMode = ResizeMode.NoResize;
+            win2.Title = "Help";
+            win2.Content = "Placeholder for description...";
+            win2.Show();
         }
     }
 }
