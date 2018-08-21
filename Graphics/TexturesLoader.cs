@@ -26,7 +26,7 @@ namespace Traffic.Graphics
         {
             int textureId = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, textureId);
-            string pathToFile = @"../../Textures/" + path;
+            string pathToFile = @"../../../Textures/" + path;
             var bitmap = new Bitmap(pathToFile);
             var bitmapDataLockedMemory = bitmap.LockBits(
                 new Rectangle(0, 0, bitmap.Width, bitmap.Height),

@@ -199,5 +199,17 @@ namespace Traffic.Utilities
         public const int NumberOfTextures = 5;
 
         #endregion
+
+        #region GUI related constants
+
+        public const int HelpWindowWidth = 200;
+
+        public const int HelpWindowHeight = 200;
+
+        public const int MaxAmountOfLines = 30;
+
+        public const int CarAmountNormalizationConstant = 50;
+
+        #endregion
     }
 }
