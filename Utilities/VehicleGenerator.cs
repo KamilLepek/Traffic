@@ -37,7 +37,7 @@ namespace Traffic.Utilities
                 //TODO: if vehicles different than cars will be implemented then we will randomize it here as well
                 vehicles.Add(new Car(RandomGenerator.Velocity(), RandomGenerator.ReactionTime(),
                         RandomGenerator.DistanceHeld(), RandomGenerator.RegistrationNumber(),
-                        spawnPoint, initialRoute, finishPoint, RandomGenerator.Int(Constants.NumberOfTextures)));
+                        spawnPoint, initialRoute, finishPoint, RandomGenerator.Int(Constants.NumberOfVehicleTextures)));
             }
         }
 

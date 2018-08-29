@@ -52,6 +52,7 @@
     <Compile Include="Graphics\CameraService.cs" />
     <Compile Include="Graphics\DrawingService.cs" />
     <Compile Include="Graphics\GraphicsController.cs" />
+    <Compile Include="Graphics\TextDrawingService.cs" />
     <Compile Include="Physics\VehicleFinder.cs" />
     <Compile Include="Physics\DecisionController.cs" />
     <Compile Include="Physics\ManeuverService.cs" />

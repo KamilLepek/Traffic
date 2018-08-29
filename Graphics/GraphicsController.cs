@@ -14,7 +14,6 @@ namespace Traffic.Graphics
     /// </summary>
     public class GraphicsController : GameWindow
     {
-
         private readonly Map gameWorld;
         private readonly Action updateWorldHandler;
         private readonly DrawingService drawingService;
@@ -97,7 +96,7 @@ namespace Traffic.Graphics
                 this.drawingService.GlDrawVehicle(vehicle, VehicleFinder.VehicleWeClickedOn != null, VehicleFinder.VehicleWeClickedOn);
             
             this.drawingService.GlDrawCursor(this.cameraService.CursorPosition.X , this.cameraService.CursorPosition.Y , this.cameraService.CameraDistance);
-            
+            this.drawingService.DrawStatsBox(VehicleFinder.VehicleWeClickedOn, this.cameraService);
             this.SwapBuffers();
         }
 
@@ -110,7 +109,7 @@ namespace Traffic.Graphics
 
             GL.Viewport(this.ClientRectangle.X, this.ClientRectangle.Y, this.ClientRectangle.Width, this.ClientRectangle.Height);
 
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, this.Width / (float) this.Height, 1.0f, 6400.0f);
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, this.Width / (float) this.Height, 0.5f, 6400.0f);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
         }

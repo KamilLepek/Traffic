@@ -196,7 +196,7 @@ namespace Traffic.Utilities
 
         public const double MaximumVehicleAngle = 30; //to check if we go in a specified direction +- this degrees, make sure it stays below 45 to make sense
 
-        public const int NumberOfTextures = 5;
+        public const int NumberOfVehicleTextures = 5;
 
         #endregion
 
@@ -209,6 +209,26 @@ namespace Traffic.Utilities
         public const int MaxAmountOfLines = 30;
 
         public const int CarAmountNormalizationConstant = 50;
+
+        #endregion
+
+        #region Text related constants
+
+        public const double DisplayedCharSize = 0.02;
+
+        public const double DistanceBetweenChars = 0.019;
+
+        public const double XCoordTranslationOfStatsBox = 0.55;
+
+        public const double YCoordTranslationOfStatsBox = 0.4;
+
+        public const int WidthHeightOfBitmapChar = 16;
+
+        public const int MaxVelocityRectangleSize = 9;
+
+        public const int CurVelRectangleSize = 5;
+
+        public const int HeldDistRectangleSize = 8;
 
         #endregion
     }
