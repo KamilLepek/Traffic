@@ -6,6 +6,8 @@ using Traffic.World.Vertices;
 using Traffic.Vehicles;
 using System;
 using Traffic.Utilities;
+using System.Linq;
+using Point = Traffic.Utilities.Point;
 
 namespace Traffic.Graphics
 {
@@ -139,7 +141,7 @@ namespace Traffic.Graphics
             }
             GL.End();
         }
-        
+
         public void GlDrawVehicle(Vehicle vehicle, bool isVehicleClicked, Vehicle selectedVehicle)
         {
             if (!(vehicle.Place is Street) && !(vehicle.Place is Intersection))
@@ -147,7 +149,7 @@ namespace Traffic.Graphics
             var placeCoordinates = vehicle.Place.GetCoordinates();
 
             double rotationAngle = vehicle.FrontVector.GetRotationAngle();
-            
+
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             GL.Translate(placeCoordinates.X + vehicle.Position.X, 0, placeCoordinates.Y + vehicle.Position.Y);
@@ -155,14 +157,14 @@ namespace Traffic.Graphics
 
             GL.Enable(EnableCap.Texture2D);
 
-            GL.BindTexture(TextureTarget.Texture2D, TexturesLoader.TexturesList[vehicle.TextureAssigned]);
+            GL.BindTexture(TextureTarget.Texture2D, TexturesLoader.VehiclesTexturesList[vehicle.TextureAssigned]);
 
             GL.Begin(PrimitiveType.Quads);
             if (isVehicleClicked && vehicle == selectedVehicle)
                 GL.Color4(Color.LightSalmon);
             else
                 GL.Color3(Color.White);
-            
+
             GL.TexCoord2(1, 0);
             GL.Vertex3(-Constants.CarWidth / 2, 0.0f, -Constants.CarLength / 2);
 
@@ -177,7 +179,7 @@ namespace Traffic.Graphics
 
             GL.End();
             GL.Disable(EnableCap.Texture2D);
-           
+
             GL.PopMatrix();
         }
 
@@ -235,6 +237,26 @@ namespace Traffic.Graphics
                 y + 2 * Constants.CursorSize * Math.Abs(cameraDistance) / 260);
             GL.End();
             GL.PopMatrix();
+        }
+
+        public void DrawStatsBox(Vehicle vehicle, CameraService camServ)
+        {
+            if (vehicle != null)
+            {
+                double curVel = vehicle.VelocityVector.Length();
+                string maxVelocity = Math.Round(vehicle.MaximumVelocity, 1).ToString();
+                string heldDist = Math.Round(vehicle.DistanceHeld, 1).ToString();
+                string currentVelocity = Math.Round(curVel, 1).ToString();
+                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Max velocity: " + maxVelocity +
+                    string.Concat(Enumerable.Repeat(" ", Constants.MaxVelocityRectangleSize - maxVelocity.Length)),
+                    new Point(0,0), camServ);
+                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Distance held: " + heldDist +
+                    string.Concat(Enumerable.Repeat(" ", Constants.HeldDistRectangleSize - heldDist.Length)),
+                    new Point(0, Constants.DistanceBetweenChars), camServ);
+                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Current velocity: " + currentVelocity +
+                    string.Concat(Enumerable.Repeat(" ", Constants.CurVelRectangleSize - currentVelocity.Length)),
+                    new Point(0, 2*Constants.DistanceBetweenChars), camServ);
+            }
         }
     }
 }
