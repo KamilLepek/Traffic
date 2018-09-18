@@ -114,8 +114,7 @@ namespace Traffic.Graphics
             for (int i = 0; i < Constants.NumberOfVehicleTextures; i++)
                 VehiclesTexturesList.Add(LoadVehiclesTexture($"Car{i + 1}.png"));
             VehiclesTexturesList.Add(LoadVehiclesTexture("Cursor.png"));
-            List<Bitmap> listOfBmp = GetCharsFromBitmap();
-            CharsTextures = LoadCharsTextures(listOfBmp);
+            CharsTextures = LoadCharsTextures(GetCharsFromBitmap());
         }
     }
 }

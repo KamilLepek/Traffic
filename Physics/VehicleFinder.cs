@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using OpenTK;
-using Traffic.Graphics;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World.Edges;
@@ -18,7 +17,7 @@ namespace Traffic.Physics
         /// <param name="vehiclesList"> list of vehicles that we search on </param>
         public void CheckIfClickedOnVehicle(Vector2 cursorPosition, List<Vehicle> vehiclesList)
         {
-            VehicleWeClickedOn = null;
+            this.VehicleWeClickedOn = null;
 
             foreach (var vehicle in vehiclesList)
             {
@@ -33,7 +32,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarLength / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarLength / 2)
                         {
-                            VehicleWeClickedOn = vehicle;
+                            this.VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }
@@ -44,7 +43,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarWidth / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarWidth / 2)
                         {
-                            VehicleWeClickedOn = vehicle;
+                            this.VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }
@@ -59,7 +58,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarLength / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarLength / 2)
                         {
-                            VehicleWeClickedOn = vehicle;
+                            this.VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }
@@ -70,7 +69,7 @@ namespace Traffic.Physics
                             && cursorPosition.Y > placeCoordinates.Y + vehicle.Position.Y - Constants.CarWidth / 2 &&
                             cursorPosition.Y < placeCoordinates.Y + vehicle.Position.Y + Constants.CarWidth / 2)
                         {
-                            VehicleWeClickedOn = vehicle;
+                            this.VehicleWeClickedOn = vehicle;
                             return;
                         }
                     }

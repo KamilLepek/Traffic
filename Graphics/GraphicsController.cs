@@ -19,7 +19,7 @@ namespace Traffic.Graphics
         private readonly DrawingService drawingService;
         private readonly CameraService cameraService;
         private readonly TextDrawingService textDrawingService;
-        public VehicleFinder vehicleFinder { get; set; }
+        private readonly VehicleFinder vehicleFinder;
         private bool mousePressed;
         
         public GraphicsController(Map world, Action updateWorldHandler)
@@ -27,9 +27,9 @@ namespace Traffic.Graphics
             this.CursorVisible = false;
             this.gameWorld = world;
             this.updateWorldHandler = updateWorldHandler;
-            this.drawingService = new DrawingService();
             this.cameraService = new CameraService();
             this.textDrawingService = new TextDrawingService();
+            this.drawingService = new DrawingService(this.cameraService, this.textDrawingService);
             this.vehicleFinder = new VehicleFinder();
             TexturesLoader.InitTextures();
         }
@@ -101,7 +101,7 @@ namespace Traffic.Graphics
                 this.drawingService.GlDrawVehicle(vehicle, this.vehicleFinder.VehicleWeClickedOn != null, this.vehicleFinder.VehicleWeClickedOn);
             
             this.drawingService.GlDrawCursor(this.cameraService.CursorPosition.X , this.cameraService.CursorPosition.Y , this.cameraService.CameraDistance);
-            this.drawingService.DrawStatsBox(this.vehicleFinder.VehicleWeClickedOn, this.cameraService, this.textDrawingService);
+            this.drawingService.DrawStatsBox(this.vehicleFinder.VehicleWeClickedOn);
             this.SwapBuffers();
 
         }

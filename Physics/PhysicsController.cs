@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Traffic.Graphics;
 using Traffic.Utilities;
 using Traffic.Vehicles;
 using Traffic.World;
