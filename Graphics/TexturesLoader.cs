@@ -53,6 +53,23 @@ namespace Traffic.Graphics
             return textureId;
         }
 
+        public static List<Bitmap> GetCharsFromBitmap()
+        {
+            List<Bitmap> listOfBitmaps = new List<Bitmap>();
+            Bitmap textBitmap = new Bitmap(@"..\..\..\Textures\TextBitmap.bmp");
+            for (int i = 0; i <= Constants.WidthHeightOfBitmapChar - 1; i++)
+            {
+                for (int k = 0; k <= Constants.WidthHeightOfBitmapChar - 1; k++)
+                {
+                    Rectangle cropRect = new Rectangle(k * Constants.WidthHeightOfBitmapChar, i * Constants.WidthHeightOfBitmapChar,
+                        Constants.WidthHeightOfBitmapChar, Constants.WidthHeightOfBitmapChar);
+                    Bitmap bmpChar = textBitmap.Clone(cropRect, textBitmap.PixelFormat);
+                    listOfBitmaps.Add(bmpChar);
+                }
+            }
+            return listOfBitmaps;
+        }
+
         public static List<int> LoadCharsTextures(List<Bitmap> listOfBitmaps)
         {
             List<int> textureIndexes = new List<int>();
@@ -97,8 +114,7 @@ namespace Traffic.Graphics
             for (int i = 0; i < Constants.NumberOfVehicleTextures; i++)
                 VehiclesTexturesList.Add(LoadVehiclesTexture($"Car{i + 1}.png"));
             VehiclesTexturesList.Add(LoadVehiclesTexture("Cursor.png"));
-            List<Bitmap> listOfBmp = TextDrawingService.GetCharsFromBitmap();
-            CharsTextures = LoadCharsTextures(listOfBmp);
+            CharsTextures = LoadCharsTextures(GetCharsFromBitmap());
         }
     }
 }

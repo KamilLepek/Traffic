@@ -14,10 +14,12 @@ namespace Traffic.Physics
     public class PhysicsController
     {
         private readonly Map world;
+        private readonly VehicleFinder vehicleFinder;
 
         public PhysicsController(Map world)
         {
             this.world = world;
+            this.vehicleFinder = new VehicleFinder();
         }
 
         /// <summary>
@@ -99,8 +101,8 @@ namespace Traffic.Physics
         /// <param name="veh"> vehicle to get rid of </param>
         private void KillVehicle(Vehicle veh)
         {
-            if (veh != null && veh == VehicleFinder.VehicleWeClickedOn)
-                VehicleFinder.VehicleWeClickedOn = null;
+            if (veh != null && veh == this.vehicleFinder.VehicleWeClickedOn)
+                this.vehicleFinder.VehicleWeClickedOn = null;
             this.world.Vehicles.Remove(veh);
         }
 

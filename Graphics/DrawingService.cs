@@ -16,6 +16,14 @@ namespace Traffic.Graphics
     /// </summary>
     internal class DrawingService
     {
+        private readonly CameraService cameraService;
+        private readonly TextDrawingService textDrawingService;
+
+        public DrawingService(CameraService camServ, TextDrawingService textServ)
+        {
+            this.cameraService = camServ;
+            this.textDrawingService = textServ;
+        }
 
         /// <summary>
         ///     Draws street on map with respect to its coordinates
@@ -239,23 +247,22 @@ namespace Traffic.Graphics
             GL.PopMatrix();
         }
 
-        public void DrawStatsBox(Vehicle vehicle, CameraService camServ)
+        public void DrawStatsBox(Vehicle vehicle)
         {
             if (vehicle != null)
             {
-                double curVel = vehicle.VelocityVector.Length();
                 string maxVelocity = Math.Round(vehicle.MaximumVelocity, 1).ToString();
                 string heldDist = Math.Round(vehicle.DistanceHeld, 1).ToString();
-                string currentVelocity = Math.Round(curVel, 1).ToString();
-                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Max velocity: " + maxVelocity +
+                string currentVelocity = Math.Round(vehicle.VelocityVector.Length(), 1).ToString();
+                this.textDrawingService.DisplayText(TexturesLoader.CharsTextures, "Max velocity: " + maxVelocity +
                     string.Concat(Enumerable.Repeat(" ", Constants.MaxVelocityRectangleSize - maxVelocity.Length)),
-                    new Point(0,0), camServ);
-                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Distance held: " + heldDist +
+                    new Point(0, 0), this.cameraService);
+                this.textDrawingService.DisplayText(TexturesLoader.CharsTextures, "Distance held: " + heldDist +
                     string.Concat(Enumerable.Repeat(" ", Constants.HeldDistRectangleSize - heldDist.Length)),
-                    new Point(0, Constants.DistanceBetweenChars), camServ);
-                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Current velocity: " + currentVelocity +
+                    new Point(0, Constants.DistanceBetweenChars), this.cameraService);
+                this.textDrawingService.DisplayText(TexturesLoader.CharsTextures, "Current velocity: " + currentVelocity +
                     string.Concat(Enumerable.Repeat(" ", Constants.CurVelRectangleSize - currentVelocity.Length)),
-                    new Point(0, 2*Constants.DistanceBetweenChars), camServ);
+                    new Point(0, 2 * Constants.DistanceBetweenChars), this.cameraService);
             }
         }
     }
