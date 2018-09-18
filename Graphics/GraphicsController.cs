@@ -18,6 +18,8 @@ namespace Traffic.Graphics
         private readonly Action updateWorldHandler;
         private readonly DrawingService drawingService;
         private readonly CameraService cameraService;
+        private readonly TextDrawingService textDrawingService;
+        public VehicleFinder vehicleFinder { get; set; }
         private bool mousePressed;
         
         public GraphicsController(Map world, Action updateWorldHandler)
@@ -27,6 +29,8 @@ namespace Traffic.Graphics
             this.updateWorldHandler = updateWorldHandler;
             this.drawingService = new DrawingService();
             this.cameraService = new CameraService();
+            this.textDrawingService = new TextDrawingService();
+            this.vehicleFinder = new VehicleFinder();
             TexturesLoader.InitTextures();
         }
 
@@ -65,11 +69,12 @@ namespace Traffic.Graphics
                 this.cameraService.ResetCursor(this.Bounds.Left, this.Bounds.Width, this.Bounds.Top, this.Bounds.Height);
             }
             this.cameraService.UpdateLastMousePosition();
-            if (VehicleFinder.VehicleWeClickedOn != null)
+            if (this.vehicleFinder.VehicleWeClickedOn != null)
             {
-                this.cameraService.CenterCameraOnVehicle(VehicleFinder.VehicleWeClickedOn.GetCoordinates());
+                this.cameraService.CenterCameraOnVehicle(this.vehicleFinder.VehicleWeClickedOn.GetCoordinates());
             }
         }
+
 
         /// <summary>
         ///     Main frame rendering method
@@ -93,11 +98,12 @@ namespace Traffic.Graphics
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             
             foreach (var vehicle in this.gameWorld.Vehicles)
-                this.drawingService.GlDrawVehicle(vehicle, VehicleFinder.VehicleWeClickedOn != null, VehicleFinder.VehicleWeClickedOn);
+                this.drawingService.GlDrawVehicle(vehicle, this.vehicleFinder.VehicleWeClickedOn != null, this.vehicleFinder.VehicleWeClickedOn);
             
             this.drawingService.GlDrawCursor(this.cameraService.CursorPosition.X , this.cameraService.CursorPosition.Y , this.cameraService.CameraDistance);
-            this.drawingService.DrawStatsBox(VehicleFinder.VehicleWeClickedOn, this.cameraService);
+            this.drawingService.DrawStatsBox(this.vehicleFinder.VehicleWeClickedOn, this.cameraService, this.textDrawingService);
             this.SwapBuffers();
+
         }
 
         /// <summary>
@@ -144,7 +150,7 @@ namespace Traffic.Graphics
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
                 this.mousePressed = true;
-            VehicleFinder.CheckIfClickedOnVehicle(this.cameraService.CursorPosition, this.gameWorld.Vehicles);
+            this.vehicleFinder.CheckIfClickedOnVehicle(this.cameraService.CursorPosition, this.gameWorld.Vehicles);
         }
 
         /// <summary>

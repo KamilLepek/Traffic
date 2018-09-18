@@ -9,29 +9,13 @@ namespace Traffic.Graphics
 {
     public class TextDrawingService
     {
-        public static List<Bitmap> GetCharsFromBitmap()
-        {
-            List<Bitmap> listOfBitmaps = new List<Bitmap>();
-            Bitmap textBitmap = new Bitmap(@"..\..\..\Textures\TextBitmap.bmp");
-            for (int i = 0; i <= Constants.WidthHeightOfBitmapChar - 1; i++)
-            {
-                for (int k = 0; k <= Constants.WidthHeightOfBitmapChar - 1; k++)
-                {
-                    Rectangle cropRect = new Rectangle(k * Constants.WidthHeightOfBitmapChar, i * Constants.WidthHeightOfBitmapChar,
-                        Constants.WidthHeightOfBitmapChar, Constants.WidthHeightOfBitmapChar);
-                    Bitmap bmpChar = textBitmap.Clone(cropRect, textBitmap.PixelFormat);
-                    listOfBitmaps.Add(bmpChar);
-                }
-            }
-            return listOfBitmaps;
-        }
 
-        internal static void DisplayText(List<int> texturesID, string textToDisplay, Point dispCoord, CameraService camServ)
+        internal void DisplayText(List<int> texturesID, string textToDisplay, Point dispCoord, CameraService camServ)
         {
             double translation = 0;
             GL.PushMatrix();
-            GL.Translate(camServ.CameraPosition.X - Constants.XCoordTranslationOfStatsBox, Math.Abs(camServ.CameraDistance)-1,
-                camServ.CameraPosition.Y- Constants.YCoordTranslationOfStatsBox);
+            GL.Translate(camServ.CameraPosition.X - Constants.XCoordTranslationOfStatsBox, Math.Abs(camServ.CameraDistance) - 1,
+                camServ.CameraPosition.Y - Constants.YCoordTranslationOfStatsBox);
             foreach (char character in textToDisplay)
             {
                 GL.Enable(EnableCap.Texture2D);

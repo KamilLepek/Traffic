@@ -239,7 +239,7 @@ namespace Traffic.Graphics
             GL.PopMatrix();
         }
 
-        public void DrawStatsBox(Vehicle vehicle, CameraService camServ)
+        public void DrawStatsBox(Vehicle vehicle, CameraService camServ, TextDrawingService textServ)
         {
             if (vehicle != null)
             {
@@ -247,15 +247,15 @@ namespace Traffic.Graphics
                 string maxVelocity = Math.Round(vehicle.MaximumVelocity, 1).ToString();
                 string heldDist = Math.Round(vehicle.DistanceHeld, 1).ToString();
                 string currentVelocity = Math.Round(curVel, 1).ToString();
-                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Max velocity: " + maxVelocity +
+                textServ.DisplayText(TexturesLoader.CharsTextures, "Max velocity: " + maxVelocity +
                     string.Concat(Enumerable.Repeat(" ", Constants.MaxVelocityRectangleSize - maxVelocity.Length)),
-                    new Point(0,0), camServ);
-                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Distance held: " + heldDist +
+                    new Point(0, 0), camServ);
+                textServ.DisplayText(TexturesLoader.CharsTextures, "Distance held: " + heldDist +
                     string.Concat(Enumerable.Repeat(" ", Constants.HeldDistRectangleSize - heldDist.Length)),
                     new Point(0, Constants.DistanceBetweenChars), camServ);
-                TextDrawingService.DisplayText(TexturesLoader.CharsTextures, "Current velocity: " + currentVelocity +
+                textServ.DisplayText(TexturesLoader.CharsTextures, "Current velocity: " + currentVelocity +
                     string.Concat(Enumerable.Repeat(" ", Constants.CurVelRectangleSize - currentVelocity.Length)),
-                    new Point(0, 2*Constants.DistanceBetweenChars), camServ);
+                    new Point(0, 2 * Constants.DistanceBetweenChars), camServ);
             }
         }
     }
