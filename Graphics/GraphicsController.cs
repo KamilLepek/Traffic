@@ -102,6 +102,7 @@ namespace Traffic.Graphics
             
             this.drawingService.GlDrawCursor(this.cameraService.CursorPosition.X , this.cameraService.CursorPosition.Y , this.cameraService.CameraDistance);
             this.drawingService.DrawStatsBox(this.vehicleFinder.VehicleWeClickedOn);
+            this.drawingService.DrawFPSCounter(e);
             this.SwapBuffers();
 
         }
