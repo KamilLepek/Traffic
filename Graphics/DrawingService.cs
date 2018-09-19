@@ -265,11 +265,5 @@ namespace Traffic.Graphics
                     new Point(0, 2 * Constants.DistanceBetweenChars), this.cameraService);
             }
         }
-
-        public void DrawFPSCounter(FrameEventArgs e)
-        {
-            this.textDrawingService.DisplayText(TexturesLoader.CharsTextures, "FPS: " + Math.Round((1/e.Time),0).ToString(),
-                new Point(0.95 ,0), this.cameraService);
-        }
     }
 }
