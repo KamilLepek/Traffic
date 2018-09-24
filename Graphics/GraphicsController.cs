@@ -20,6 +20,7 @@ namespace Traffic.Graphics
         private readonly CameraService cameraService;
         private readonly TextDrawingService textDrawingService;
         private readonly VehicleFinder vehicleFinder;
+        private readonly FpsCounter fpsCounter;
         private bool mousePressed;
         
         public GraphicsController(Map world, Action updateWorldHandler)
@@ -29,6 +30,7 @@ namespace Traffic.Graphics
             this.updateWorldHandler = updateWorldHandler;
             this.cameraService = new CameraService();
             this.textDrawingService = new TextDrawingService();
+            this.fpsCounter = new FpsCounter();
             this.drawingService = new DrawingService(this.cameraService, this.textDrawingService);
             this.vehicleFinder = new VehicleFinder();
             TexturesLoader.InitTextures();
@@ -102,6 +104,9 @@ namespace Traffic.Graphics
             
             this.drawingService.GlDrawCursor(this.cameraService.CursorPosition.X , this.cameraService.CursorPosition.Y , this.cameraService.CameraDistance);
             this.drawingService.DrawStatsBox(this.vehicleFinder.VehicleWeClickedOn);
+            this.fpsCounter.OnNewFrame();
+            this.textDrawingService.DisplayText(TexturesLoader.CharsTextures, "FPS: " + (int)this.fpsCounter.Fps,
+                new Utilities.Point(0.94, 0), cameraService);
             this.SwapBuffers();
 
         }
