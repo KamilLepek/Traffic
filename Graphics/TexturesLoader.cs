@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
@@ -27,7 +28,7 @@ namespace Traffic.Graphics
         {
             int textureId = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, textureId);
-            string pathToFile = @"../../../Textures/" + path;
+            string pathToFile = ConfigurationManager.AppSettings["Textures"] + path;
             var bitmap = new Bitmap(pathToFile);
             var bitmapDataLockedMemory = bitmap.LockBits(
                 new Rectangle(0, 0, bitmap.Width, bitmap.Height),
